@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 02: Torrent & Streaming Engine
+# Ushark — Architecture 02: Torrent & Streaming Engine
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Architecture Specification  
 **Dependências:**  
 - `01-prd-master.md`
@@ -175,7 +175,7 @@ Responsável por:
 O torrent engine deve preferencialmente rodar fora da UI.
 
 ```text
-TorrentStream.exe
+Ushark.exe
       │
       ├── UI
       ├── Core
@@ -220,7 +220,7 @@ Motivos:
 
 # 7. Abstração obrigatória
 
-O restante do TorrentStream não deve depender diretamente de libtorrent.
+O restante do Ushark não deve depender diretamente de libtorrent.
 
 Contrato conceitual:
 

@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 06: Data Model
+# Ushark — Architecture 06: Data Model
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Architecture Specification  
 **Dependências:**  
 - `01-prd-master.md`
@@ -18,7 +18,7 @@
 
 # 1. Objetivo
 
-Este documento define o modelo de dados persistente do TorrentStream.
+Este documento define o modelo de dados persistente do Ushark.
 
 A base local precisa representar de forma consistente:
 

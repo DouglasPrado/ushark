@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 04: Playback, MPV, Sunshine & Moonlight
+# Ushark — Architecture 04: Playback, MPV, Sunshine & Moonlight
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Architecture Specification  
 **Dependências:**  
 - `01-prd-master.md`
@@ -16,7 +16,7 @@
 
 # 1. Objetivo
 
-Este documento define a arquitetura de reprodução do TorrentStream.
+Este documento define a arquitetura de reprodução do Ushark.
 
 Ele cobre:
 
@@ -39,13 +39,13 @@ Ele cobre:
 
 O objetivo é:
 
-> **Fazer o TorrentStream parecer um aplicativo nativo de TV, mesmo sendo executado no PC e transmitido via Sunshine/Moonlight.**
+> **Fazer o Ushark parecer um aplicativo nativo de TV, mesmo sendo executado no PC e transmitido via Sunshine/Moonlight.**
 
 ---
 
 # 2. Princípio central
 
-O TorrentStream não deve expor ao usuário:
+O Ushark não deve expor ao usuário:
 
 ```text
 desktop
@@ -61,7 +61,7 @@ A experiência deve parecer:
 ```text
 Moonlight
 ↓
-TorrentStream
+Ushark
 ↓
 Biblioteca
 ↓
@@ -185,7 +185,7 @@ Motivos:
 Estrutura:
 
 ```text
-TorrentStream.exe
+Ushark.exe
 │
 ├── UI/Core
 ├── torrentd.exe
@@ -1075,22 +1075,22 @@ input forwarding
 stream PC → Moonlight
 ```
 
-TorrentStream não deve duplicar essa função.
+Ushark não deve duplicar essa função.
 
 ---
 
 # 63. App Entry no Sunshine
 
-TorrentStream deve poder ser configurado como app.
+Ushark deve poder ser configurado como app.
 
 Conceitualmente:
 
 ```text
 Name:
-TorrentStream
+Ushark
 
 Command:
-TorrentStream.exe --tv
+Ushark.exe --tv
 ```
 
 ---
@@ -1146,17 +1146,17 @@ Fluxo desejado:
 ```text
 Moonlight
 ↓
-launch TorrentStream
+launch Ushark
 ↓
 Sunshine starts process
 ↓
-TorrentStream opens TV mode
+Ushark opens TV mode
 ↓
 session active
 ↓
 user exits
 ↓
-TorrentStream closes
+Ushark closes
 ↓
 Sunshine ends app session
 ```
@@ -1180,7 +1180,7 @@ após UI estar carregada.
 Se necessário:
 
 ```text
-TorrentStream logo
+Ushark logo
 ```
 
 curto e sem bloquear excessivamente.
@@ -1203,7 +1203,7 @@ preferível a mostrar desktop.
 
 # 72. Focus Ownership
 
-TorrentStream deve capturar foco ao iniciar em TV mode.
+Ushark deve capturar foco ao iniciar em TV mode.
 
 ---
 
@@ -1212,7 +1212,7 @@ TorrentStream deve capturar foco ao iniciar em TV mode.
 Se MPV fechar:
 
 ```text
-focus retorna para TorrentStream
+focus retorna para Ushark
 ```
 
 automaticamente.
@@ -1531,7 +1531,7 @@ Ao reconectar:
 ```text
 Sunshine stream retorna
 ↓
-TorrentStream mantém sessão
+Ushark mantém sessão
 ```
 
 quando possível.
@@ -1613,7 +1613,7 @@ torrentd
 
 # 108. Restart MPV
 
-Permitido sem reiniciar TorrentStream.
+Permitido sem reiniciar Ushark.
 
 ---
 
@@ -1927,7 +1927,7 @@ Usar ID aleatório por sessão.
 Exemplo:
 
 ```text
-\\.\pipe\torrentstream-mpv-<uuid>
+\\.\pipe\ushark-mpv-<uuid>
 ```
 
 ---
@@ -2071,7 +2071,7 @@ Considerado funcional quando:
 
 Considerado funcional quando:
 
-1. Sunshine consegue iniciar TorrentStream;
+1. Sunshine consegue iniciar Ushark;
 2. TV mode entra fullscreen;
 3. toda navegação essencial funciona com gamepad;
 4. desktop não aparece no fluxo normal;

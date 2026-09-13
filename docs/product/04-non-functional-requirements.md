@@ -1,7 +1,7 @@
-# TorrentStream — Documento 04: Non-Functional Requirements
+# Ushark — Documento 04: Non-Functional Requirements
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Non-Functional Requirements  
 **Dependências:**  
 - `01-prd-master.md`
@@ -12,7 +12,7 @@
 
 # 1. Objetivo
 
-Este documento define os requisitos não funcionais do TorrentStream.
+Este documento define os requisitos não funcionais do Ushark.
 
 Enquanto os Functional Requirements definem **o que** o produto deve fazer, este documento define **como bem** o sistema deve fazer isso.
 
@@ -1525,4 +1525,4 @@ stories
 
 > **Performance percebida, segurança e resiliência são requisitos do produto, não otimizações opcionais posteriores.**
 
-O TorrentStream deve parecer simples na interface porque a complexidade técnica é tratada internamente.
+O Ushark deve parecer simples na interface porque a complexidade técnica é tratada internamente.

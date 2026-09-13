@@ -1,7 +1,7 @@
-# TorrentStream — Documento 03: Functional Requirements
+# Ushark — Documento 03: Functional Requirements
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Functional Requirements  
 **Dependências:**  
 - `01-prd-master.md`
@@ -592,7 +592,7 @@ Playback deve funcionar em fullscreen sem exposição do desktop.
 
 ## FR-070 — Inicialização via Sunshine
 
-O TorrentStream deve poder ser executado como app do Sunshine.
+O Ushark deve poder ser executado como app do Sunshine.
 
 ---
 

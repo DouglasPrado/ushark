@@ -1,6 +1,6 @@
 # M01 — Entrar no app e configurar a biblioteca
 
-Status: PREPARED — stories documentadas, implementação não iniciada. O mapa foi aprovado pelo usuário com “aprovadissimo”. Isso não aprova a UX, a integração nem o fechamento.
+Status: FRONTEND_UX_APPROVED — S00–S02 implementadas com mocks; UX aprovada explicitamente pelo usuário: “a ux esta aprovado”. Validação Windows/TV física e controle físico pendentes. Integração e fechamento continuam adiados.
 
 ## Objetivo e resultado
 
@@ -30,11 +30,11 @@ Rotas propostas para S00: /onboarding, /home e /settings. Estados: idle/loading/
 
 Entre S02 e S03: [checkpoint UX](UX_CHECKPOINT.md). Entre S05 e S06: [checkpoint funcional](FUNCTIONAL_CHECKPOINT.md).
 
-Na onda A, executar futuramente somente S00–S02, depois revisar UX. A integração S03–S05 aguarda a UX principal M01–M18 aprovada, como definido no mapa. Não tratar essa espera planejada como falha nem encerrar M01; preparar o próximo frontend quando autorizado. CI frontend básico pode entrar após aprovação da experiência inicial, sem antecipar gates de componentes ausentes.
+Na onda A, S00–S02 têm implementação e aprovação UX; verificações Windows/TV física e controle físico continuam pendentes. A integração S03–S05 aguarda o fim da fase frontend M01–M22 aprovada, conforme diretriz posterior do usuário. Não tratar essa espera planejada como falha nem encerrar M01; preparar o próximo frontend quando autorizado. CI frontend básico pode entrar após aprovação da experiência inicial, sem antecipar gates de componentes ausentes.
 
 ## Dependências e limites
 
-Sem dependência funcional anterior. Depende de autorização de execução, toolchain frontend e definição do contrato da experiência. Não há banco, torrentd, player, provider ou serviço remoto no frontend. Defaults, estratégia de paths no controle e hardware de medição são decisões de S00/UX; não foram aprovados implicitamente pelo mapa.
+Sem dependência funcional anterior. Execução S00–S02 autorizada; toolchain frontend e contrato da experiência disponíveis. Não há banco, torrentd, player, provider ou serviço remoto no frontend. Defaults, estratégia de paths no controle e hardware de medição são decisões de S00/UX; não foram aprovados implicitamente pelo mapa.
 
 ## Conclusão
 

@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 05: Shared Libraries & Sync
+# Ushark — Architecture 05: Shared Libraries & Sync
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Architecture Specification  
 **Dependências:**  
 - `01-prd-master.md`
@@ -17,7 +17,7 @@
 
 # 1. Objetivo
 
-Este documento define como bibliotecas TorrentStream podem ser:
+Este documento define como bibliotecas Ushark podem ser:
 
 - criadas;
 - exportadas;
@@ -379,7 +379,7 @@ conteúdo audiovisual
 Uma biblioteca publicada remotamente pode usar:
 
 ```text
-torrentstream://library/<id>
+ushark://library/<id>
 ```
 
 ou uma URL HTTPS associada.
@@ -402,7 +402,7 @@ entregar assinatura
 
 # 20. O Registry não deve ser necessário para biblioteca local
 
-O TorrentStream deve continuar funcionando sem Registry.
+O Ushark deve continuar funcionando sem Registry.
 
 ---
 
@@ -1510,7 +1510,7 @@ libraryId
 Aplicativo pode registrar:
 
 ```text
-torrentstream://
+ushark://
 ```
 
 para abrir import.

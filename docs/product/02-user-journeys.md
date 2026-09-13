@@ -1,7 +1,7 @@
-# TorrentStream — Documento 02: User Journeys
+# Ushark — Documento 02: User Journeys
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** User Journeys  
 **Dependência:** `01-prd-master.md`
 
@@ -9,7 +9,7 @@
 
 # 1. Objetivo
 
-Este documento descreve as principais jornadas do usuário dentro do TorrentStream.
+Este documento descreve as principais jornadas do usuário dentro do Ushark.
 
 O objetivo é transformar a visão do PRD em fluxos claros de uso, definindo:
 
@@ -101,12 +101,12 @@ Toda jornada deve seguir os princípios:
 
 ## Objetivo
 
-Permitir que o usuário abra o TorrentStream pela primeira vez e chegue rapidamente a uma biblioteca utilizável.
+Permitir que o usuário abra o Ushark pela primeira vez e chegue rapidamente a uma biblioteca utilizável.
 
 ## Entrada
 
 ```text
-TorrentStream iniciado
+Ushark iniciado
 ```
 
 ## Fluxo
@@ -132,7 +132,7 @@ Entrar na Home
 Exemplo:
 
 ```text
-TorrentStream
+Ushark
 
 Sua biblioteca.
 Suas fontes.
@@ -147,7 +147,7 @@ Usuário escolhe:
 
 ```text
 Pasta da biblioteca
-C:\TorrentStream\Library
+C:\Ushark\Library
 ```
 
 O app cria:
@@ -194,7 +194,7 @@ Se Sunshine for detectado:
 ```text
 Sunshine encontrado.
 
-Deseja preparar o TorrentStream para uso no Moonlight?
+Deseja preparar o Ushark para uso no Moonlight?
 
 [ Configurar ]
 [ Depois ]
@@ -226,14 +226,14 @@ Sua biblioteca está vazia.
 
 ## Objetivo
 
-Entrar no TorrentStream pela TV sem interagir com o desktop.
+Entrar no Ushark pela TV sem interagir com o desktop.
 
 ## Fluxo
 
 ```text
 Abrir Moonlight
 ↓
-Selecionar TorrentStream
+Selecionar Ushark
 ↓
 Sunshine inicia aplicativo
 ↓
@@ -260,7 +260,7 @@ Ao iniciar via Moonlight:
 ```text
 Usuário escolhe "Sair"
 ↓
-TorrentStream encerra UI
+Ushark encerra UI
 ↓
 processos são finalizados conforme política
 ↓
@@ -1205,7 +1205,7 @@ O curador vê exatamente:
 ```text
 Exportar
 ↓
-TorrentStream Library
+Ushark Library
 ↓
 douglas-library.tslib
 ```
@@ -1237,7 +1237,7 @@ Gerar link
 Resultado:
 
 ```text
-torrentstream://library/ABC123
+ushark://library/ABC123
 ```
 
 Usuário pode copiar e compartilhar.
@@ -2401,7 +2401,7 @@ Detalhes ficam em área avançada.
 
 # 86. Critério geral de sucesso das jornadas
 
-O usuário deve conseguir usar o TorrentStream sem precisar entender:
+O usuário deve conseguir usar o Ushark sem precisar entender:
 
 ```text
 piece

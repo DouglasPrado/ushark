@@ -63,6 +63,8 @@ export function useNavigation(back: () => void) {
       else moveFocus(action);
     };
     const key = (e: KeyboardEvent) => {
+      // Modal dismissal consumes Escape before the window navigation handler.
+      if (e.defaultPrevented) return;
       if (e.key === "Escape") {
         e.preventDefault();
         callback.current();

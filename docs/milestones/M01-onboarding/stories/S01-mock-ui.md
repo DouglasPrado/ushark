@@ -1,6 +1,6 @@
 # S01 — Onboarding e Home vazia com mocks
 
-Status: PLANNED. Preparação documental; não executada.
+Status: IMPLEMENTED — testes automatizados aprovados; UX aprovada; validação Windows/TV física e controle físico pendentes.
 
 ## Objetivo
 
@@ -34,7 +34,7 @@ Build/typecheck e teste de componente do percurso; inspecionar manualmente deskt
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+Código presente no checkout e validado nesta retomada. Ver [evidências e limitações](../evidence/RESUME.md). Aceite completo pendente das verificações manuais registradas.
 
 ## Conclusão
 

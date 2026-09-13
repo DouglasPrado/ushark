@@ -79,7 +79,7 @@ A coluna de milestone aponta para a responsabilidade final. **S01/S02 simulam; S
 | FR-067 | Legendas embutidas | O player deve suportar legendas presentes no arquivo. | [M05](PLAN.md#m05) | [FR-067](../product/03-functional-requirements.md):573 |
 | FR-068 | Legendas externas | O sistema deve permitir legendas externas quando suportado. | [M05](PLAN.md#m05) | [FR-068](../product/03-functional-requirements.md):579 |
 | FR-069 | Fullscreen | Playback deve funcionar em fullscreen sem exposição do desktop. | [M05](PLAN.md#m05) | [FR-069](../product/03-functional-requirements.md):585 |
-| FR-070 | Inicialização via Sunshine | O TorrentStream deve poder ser executado como app do Sunshine. | [M18](PLAN.md#m18) | [FR-070](../product/03-functional-requirements.md):593 |
+| FR-070 | Inicialização via Sunshine | O Ushark deve poder ser executado como app do Sunshine. | [M18](PLAN.md#m18) | [FR-070](../product/03-functional-requirements.md):593 |
 | FR-071 | Detectar modo TV | Quando iniciado por esse fluxo, o app pode entrar em experiência de TV. | [M18](PLAN.md#m18) | [FR-071](../product/03-functional-requirements.md):599 |
 | FR-072 | Fullscreen automático | Modo TV deve poder iniciar fullscreen. | [M18](PLAN.md#m18) | [FR-072](../product/03-functional-requirements.md):605 |
 | FR-073 | Encerramento integrado | Ao sair do app, a sessão deve poder terminar corretamente. | [M18](PLAN.md#m18) | [FR-073](../product/03-functional-requirements.md):611 |

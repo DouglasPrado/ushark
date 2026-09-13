@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 10: CI/CD, Quality Gates & Anti-Drift
+# Ushark — Architecture 10: CI/CD, Quality Gates & Anti-Drift
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Engineering / Delivery Architecture  
 **Dependências:**
 - `01-prd-master.md`
@@ -22,7 +22,7 @@
 
 # 1. Objetivo
 
-Este documento define a arquitetura de CI/CD, Quality Gates, release e proteção contra drift do TorrentStream.
+Este documento define a arquitetura de CI/CD, Quality Gates, release e proteção contra drift do Ushark.
 
 O pipeline não deve existir apenas para:
 
@@ -1072,8 +1072,8 @@ release secrets
 Exemplo:
 
 ```text
-TorrentStream-0.8.0-Setup.exe
-TorrentStream-0.8.0.msi
+Ushark-0.8.0-Setup.exe
+Ushark-0.8.0.msi
 checksums.txt
 sbom.spdx.json
 build-metadata.json

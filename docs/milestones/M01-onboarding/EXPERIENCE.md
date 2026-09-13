@@ -7,8 +7,8 @@ Fluxo: /onboarding (boas-vindas → biblioteca → cache → preferências) → 
 | Campo | Default proposto | Validação |
 |---|---|---|
 | Nome da biblioteca | Minha biblioteca | Obrigatório; até 80 caracteres |
-| Biblioteca | C:\TorrentStream\Library | Obrigatória; mock simula seletor/inacessível |
-| Cache | C:\TorrentStream\Cache | Obrigatória; distinta da biblioteca |
+| Biblioteca | C:\Ushark\Library | Obrigatória; mock simula seletor/inacessível |
+| Cache | C:\Ushark\Cache | Obrigatória; distinta da biblioteca |
 | Limite | 100 GB | Número inteiro entre 1 e 10000 (UX, não quota real) |
 | Estratégia | Equilíbrio | Qualidade / equilíbrio / início rápido |
 | Resolução | 4K | 720p / 1080p / 4K |
@@ -20,8 +20,10 @@ Fluxo: /onboarding (boas-vindas → biblioteca → cache → preferências) → 
 
 Estados: pronto, salvando, sucesso, loading, offline, degraded, erro recuperável. Simulador dev oferece normal/loading/offline/erro ao salvar/pasta inacessível/degraded. Nada salva em disco; reiniciar volta ao onboarding. Reset restaura apenas preferências de reprodução, não paths/cache/biblioteca ou dados pessoais das fixtures.
 
-Direção visual: interface de sala escura, tipografia grande, accent verde-lima, hierarquia de passos e um CTA principal. Sem imagens externas. Safe areas e escala em 1080p/1440p/4K. Focus ring sempre visível; modais Radix prendem e restauram foco.
+Direção visual: interface de sala escura, tipografia grande, accent azul-claro (#87bbef), com superfícies e bordas azuladas, hierarquia de passos e um CTA principal. Sem imagens externas. Safe areas e escala em 1080p/1440p/4K. Focus ring sempre visível; modais Radix prendem e restauram foco.
 
 Validação local: macOS, Node 26.8.1; testes Chromium/Electron conforme disponibilidade. Corpus: biblioteca vazia, rascunho, fixture pessoal protegida e cenários de falha. Medir setas/rota local <100ms em amostras automatizadas como evidência local, não certificação Windows/TV. Windows x64, gamepad físico e TV real permanecem validações manuais pendentes.
 
 Referências: A11 §§3–26/53–64/69–84, A09 §§5–13/89–95/107–133, A08 §21; UJ01/22/62/79/80. Defaults são propostas; limites de filesystem/persistência definitivos só S03.
+
+Marca global: apenas o nome Ushark, sem ícone de tubarão no cabeçalho ou favicon, conforme última orientação do usuário.

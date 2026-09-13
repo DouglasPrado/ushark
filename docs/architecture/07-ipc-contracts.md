@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 07: IPC Contracts
+# Ushark — Architecture 07: IPC Contracts
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Architecture Specification  
 **Dependências:**  
 - `01-prd-master.md`
@@ -19,7 +19,7 @@
 
 # 1. Objetivo
 
-Este documento define os contratos de comunicação entre os processos e módulos principais do TorrentStream.
+Este documento define os contratos de comunicação entre os processos e módulos principais do Ushark.
 
 Os contratos devem permitir:
 

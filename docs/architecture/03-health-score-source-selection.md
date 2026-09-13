@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 03: Health Score & Source Selection
+# Ushark — Architecture 03: Health Score & Source Selection
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Architecture Specification  
 **Dependências:**  
 - `01-prd-master.md`

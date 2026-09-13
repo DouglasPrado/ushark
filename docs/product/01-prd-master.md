@@ -1,7 +1,7 @@
-# TorrentStream — PRD Master
+# Ushark — PRD Master
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Product Requirements Document (PRD)  
 **Objetivo:** consolidar a visão, escopo, regras e requisitos funcionais do produto antes das especificações técnicas.
 
@@ -9,7 +9,7 @@
 
 # 1. Visão do Produto
 
-O TorrentStream é um media center desktop orientado a torrents, projetado para permitir que o usuário organize, descubra, reproduza e compartilhe bibliotecas de mídia baseadas em referências torrent.
+O Ushark é um media center desktop orientado a torrents, projetado para permitir que o usuário organize, descubra, reproduza e compartilhe bibliotecas de mídia baseadas em referências torrent.
 
 O produto deve oferecer uma experiência próxima de plataformas modernas de streaming, porém com uma arquitetura local-first, na qual:
 
@@ -46,7 +46,7 @@ Os problemas principais são:
 - compartilhamento geralmente significa compartilhar apenas magnets ou arquivos `.torrent`, sem preservar a curadoria;
 - bibliotecas de terceiros não possuem sincronização ou layout padronizado.
 
-O TorrentStream resolve esses problemas unificando biblioteca, torrent, reprodução, qualidade e compartilhamento.
+O Ushark resolve esses problemas unificando biblioteca, torrent, reprodução, qualidade e compartilhamento.
 
 ---
 
@@ -197,7 +197,7 @@ TV
 
 ## 5.2 TV
 
-Não haverá requisito inicial de cliente TorrentStream nativo para TV.
+Não haverá requisito inicial de cliente Ushark nativo para TV.
 
 Moonlight será o cliente de apresentação.
 
@@ -219,11 +219,11 @@ Fluxo principal:
 ```text
 Abrir Moonlight
 ↓
-Selecionar TorrentStream
+Selecionar Ushark
 ↓
 Sunshine inicia o app
 ↓
-TorrentStream abre em tela cheia
+Ushark abre em tela cheia
 ↓
 Biblioteca aparece
 ↓
@@ -393,7 +393,7 @@ Breaking.Bad.S01.torrent
 └── ...
 ```
 
-O TorrentStream deverá mapear automaticamente cada arquivo ao episódio correspondente.
+O Ushark deverá mapear automaticamente cada arquivo ao episódio correspondente.
 
 ---
 
@@ -629,22 +629,22 @@ Moonlight
 
 # 24. Sunshine
 
-TorrentStream deverá poder ser cadastrado como aplicação do Sunshine.
+Ushark deverá poder ser cadastrado como aplicação do Sunshine.
 
 O comportamento desejado:
 
 ```text
-Moonlight abre TorrentStream
+Moonlight abre Ushark
 ↓
 Sunshine inicia executável
 ↓
-TorrentStream entra em fullscreen
+Ushark entra em fullscreen
 ↓
 Usuário navega e assiste
 ↓
 Usuário sai
 ↓
-TorrentStream encerra
+Ushark encerra
 ↓
 Sessão do Sunshine termina
 ```
@@ -1025,7 +1025,7 @@ douglas-library.tslib
 Exemplo conceitual:
 
 ```text
-torrentstream://library/ABC123
+ushark://library/ABC123
 ```
 
 ou uma URL associada ao serviço de bibliotecas.
@@ -1452,7 +1452,7 @@ Quando possível, o sistema deve tentar outra source automaticamente.
 
 # 71. Direitos e Distribuição
 
-TorrentStream é uma ferramenta neutra.
+Ushark é uma ferramenta neutra.
 
 O produto deve ser compatível com referências a:
 
@@ -1543,19 +1543,19 @@ O produto deverá possuir:
 
 # 73. O que não deve ser confundido
 
-## TorrentStream não é um cliente torrent tradicional
+## Ushark não é um cliente torrent tradicional
 
 Download é uma capacidade, não o centro da experiência.
 
-## TorrentStream não é um servidor de transcodificação obrigatório
+## Ushark não é um servidor de transcodificação obrigatório
 
 Direct play é preferencial.
 
-## TorrentStream não é um cliente de TV próprio
+## Ushark não é um cliente de TV próprio
 
 Moonlight cobre essa função no desenho atual.
 
-## TorrentStream não deve depender de uma nuvem para funcionar
+## Ushark não deve depender de uma nuvem para funcionar
 
 A biblioteca principal é local-first.
 
@@ -1564,7 +1564,7 @@ A biblioteca principal é local-first.
 # 74. Arquitetura Conceitual do Produto
 
 ```text
-                     TORRENTSTREAM
+                     USHARK
 
                           │
           ┌───────────────┼────────────────┐
@@ -1669,7 +1669,7 @@ Assim o fluxo de automação permanece determinístico.
 
 # 78. Definição Final do Produto
 
-TorrentStream é:
+Ushark é:
 
 > **Um media center local-first que transforma torrents em uma biblioteca de streaming organizada, capaz de avaliar a qualidade das fontes, reproduzir conteúdo progressivamente, funcionar na TV através de Sunshine/Moonlight e permitir que usuários compartilhem bibliotecas completas de forma versionada e sincronizável.**
 

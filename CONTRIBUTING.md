@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for contributing to ushark / TorrentStream.
+Thank you for contributing to ushark / Ushark.
 
 This repository is specification-first. Application code is not present yet. Read [README.md](README.md) and [docs/README.md](docs/README.md) before opening a pull request.
 

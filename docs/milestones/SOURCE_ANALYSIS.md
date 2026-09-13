@@ -26,7 +26,7 @@ Status: proposta de planejamento, 2026-09-12. A análise utiliza a documentaçã
 | [CONTRIBUTING](../../CONTRIBUTING.md), [CHANGELOG](../../CHANGELOG.md), [templates de PR](../../.github/PULL_REQUEST_TEMPLATE.md) e issues | Rastreabilidade, validação proporcional, divulgação de mudanças e fluxo de contribuição. |
 | [SECURITY](../../SECURITY.md), [SUPPORT](../../SUPPORT.md), [CODE_OF_CONDUCT](../../CODE_OF_CONDUCT.md), [LICENSE](../../LICENSE) | Limites de comunicação, suporte, privacidade e distribuição; não criam módulos sociais no app. |
 
-A skill [frontend-guided-milestones](../../.agents/skills/frontend-guided-milestones/SKILL.md), referências de planejamento/método/lifecycle e templates pertinentes orientaram a forma do plano. Exemplos de clientes/CRM dentro da skill não são requisitos do TorrentStream. O arquivo `MANIFEST.md` mencionado nas abas do IDE não foi encontrado no inventário do checkout; o documento de produto correspondente encontrado é A01, listado acima. Não foi presumido conteúdo de arquivo não salvo ou ausente.
+A skill [frontend-guided-milestones](../../.agents/skills/frontend-guided-milestones/SKILL.md), referências de planejamento/método/lifecycle e templates pertinentes orientaram a forma do plano. Exemplos de clientes/CRM dentro da skill não são requisitos do Ushark. O arquivo `MANIFEST.md` mencionado nas abas do IDE não foi encontrado no inventário do checkout; o documento de produto correspondente encontrado é A01, listado acima. Não foi presumido conteúdo de arquivo não salvo ou ausente.
 
 ## Como a cobertura foi extraída
 

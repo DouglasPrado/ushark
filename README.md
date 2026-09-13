@@ -1,6 +1,6 @@
 # ushark
 
-ushark is the repository for **TorrentStream**: a local-first desktop media center that treats torrents as replaceable media sources, not as the identity of the content.
+ushark is the repository for **Ushark**: a local-first desktop media center that treats torrents as replaceable media sources, not as the identity of the content.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status: draft specifications](https://img.shields.io/badge/status-draft%20specifications-lightgrey.svg)](docs/README.md)
@@ -9,7 +9,7 @@ This repository currently contains product and architecture specifications. Appl
 
 ## About
 
-TorrentStream is specified as a desktop application for organizing, discovering, playing, and sharing torrent-based media libraries.
+Ushark is specified as a desktop application for organizing, discovering, playing, and sharing torrent-based media libraries.
 
 The documented product model is:
 
@@ -169,7 +169,7 @@ See [Frontend-First Project Setup](docs/architecture/11-frontend-first-project-s
 - features start on mocks
 - renderer must not get unrestricted Node access
 - gamepad navigation is part of the foundation, not a later add-on
-- a TV-oriented `--tv` flag is planned for fullscreen / controller-first layout
+- `pnpm dev --tv` opens the mock preview fullscreen (simple fullscreen on macOS); physical controller and Windows/TV validation remain pending
 
 Human contributors can ignore agent skill packs. Optional agent workflow is described in [AGENTS.md](AGENTS.md).
 

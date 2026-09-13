@@ -11,8 +11,8 @@
   },
   "aliases": {
     "components": "@/components",
-    "utils": "@torrentstream/ui",
-    "ui": "@torrentstream/ui",
+    "utils": "@ushark/ui",
+    "ui": "@ushark/ui",
     "lib": "@/lib",
     "hooks": "@/hooks"
   }

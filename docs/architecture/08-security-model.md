@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 08: Security Model
+# Ushark — Architecture 08: Security Model
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Architecture Specification  
 **Dependências:**  
 - `01-prd-master.md`
@@ -20,7 +20,7 @@
 
 # 1. Objetivo
 
-Este documento define o modelo de segurança do TorrentStream.
+Este documento define o modelo de segurança do Ushark.
 
 O produto manipula entradas potencialmente não confiáveis: arquivos `.torrent`, magnet links, manifests, pacotes `.tslib`, assets remotos, deep links, bibliotecas compartilhadas, metadata remota, paths, arquivos de legenda e IPC entre processos.
 
@@ -348,7 +348,7 @@ Após a primeira importação assinada, `libraryId + public key` ficam registrad
 
 # 15. Deep Links
 
-`torrentstream://` deve ser tratado como input não confiável.
+`ushark://` deve ser tratado como input não confiável.
 
 Deep link pode sugerir import/open, mas nunca executar ação destrutiva automaticamente.
 
@@ -405,7 +405,7 @@ MPV IPC deve ser local, randomizado e com permissões restritas.
 Exemplo:
 
 ```text
-\\.\pipe\torrentstream-mpv-<random>
+\\.\pipe\ushark-mpv-<random>
 ```
 
 ---
@@ -565,7 +565,7 @@ Endpoint resolve internamente apenas `sessionId` autorizado e valida Range.
 
 # 27. Sunshine/Moonlight
 
-TorrentStream não deve construir comandos Sunshine a partir de input externo sem validação.
+Ushark não deve construir comandos Sunshine a partir de input externo sem validação.
 
 Inputs Moonlight equivalem a input local de UI, não a comandos privilegiados do SO.
 

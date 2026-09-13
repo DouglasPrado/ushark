@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 09: UX & Navigation Specification
+# Ushark — Architecture 09: UX & Navigation Specification
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** UX / Interaction Architecture  
 **Dependências:**  
 - `01-prd-master.md`
@@ -21,7 +21,7 @@
 
 # 1. Objetivo
 
-Este documento define a experiência de navegação do TorrentStream.
+Este documento define a experiência de navegação do Ushark.
 
 A interface deve funcionar igualmente bem em:
 
@@ -81,7 +81,7 @@ Estrutura conceitual:
 
 ```text
 ┌──────────────────────────────────────────────┐
-│ TorrentStream      Home Filmes Séries ...   │
+│ Ushark      Home Filmes Séries ...   │
 ├──────────────────────────────────────────────┤
 │                                              │
 │                 SCREEN CONTENT               │

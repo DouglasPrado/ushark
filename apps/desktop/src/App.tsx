@@ -13,7 +13,6 @@ import {
   Settings,
   ShieldCheck,
   SlidersHorizontal,
-  Waves,
   X,
 } from "lucide-react";
 import { Button } from "../../../packages/ui/src";
@@ -383,7 +382,7 @@ export function App() {
       <>
         <div className="eyebrow">
           {step === 0
-            ? "BEM-VINDO AO TORRENTSTREAM"
+            ? "BEM-VINDO AO USHARK"
             : `VAMOS PREPARAR TUDO · ${String(step).padStart(2, "0")} / 03`}
         </div>
         <h1 ref={heading}>
@@ -500,34 +499,6 @@ export function App() {
     );
   return (
     <div className="app">
-      <header>
-        <a
-          className="brand"
-          href="#/home"
-          onClick={(e) => {
-            e.preventDefault();
-            if (route !== "onboarding") navigate("home");
-          }}
-        >
-          <Waves /> TorrentStream<span>LOCAL FIRST</span>
-        </a>
-        <div className="header-right">
-          <span className="preview-badge">PRÉVIA · DADOS SIMULADOS</span>
-          {route !== "onboarding" && (
-            <Button
-              variant="ghost"
-              onClick={() => navigate(route === "home" ? "settings" : "home")}
-            >
-              {route === "home" ? (
-                <Settings size={19} />
-              ) : (
-                <ArrowLeft size={19} />
-              )}{" "}
-              {route === "home" ? "Configurações" : "Biblioteca"}
-            </Button>
-          )}
-        </div>
-      </header>
       <main>
         <aside>
           <div className="aside-top">
@@ -663,26 +634,24 @@ export function App() {
             </Dialog.Description>
             {modal !== "reset" && (
               <div className="folder-options">
-                {["C:\\TorrentStream\\", "D:\\Cinema\\", "E:\\Media\\"].map(
-                  (base) => {
-                    const path =
-                      base + (modal === "libraryPath" ? "Library" : "Cache");
-                    return (
-                      <Button
-                        variant="secondary"
-                        key={base}
-                        onClick={() => {
-                          if (modal === "libraryPath" || modal === "cachePath")
-                            update(modal, path);
-                          setModal(null);
-                        }}
-                      >
-                        <Folder size={19} />
-                        {path}
-                      </Button>
-                    );
-                  },
-                )}
+                {["C:\\Ushark\\", "D:\\Cinema\\", "E:\\Media\\"].map((base) => {
+                  const path =
+                    base + (modal === "libraryPath" ? "Library" : "Cache");
+                  return (
+                    <Button
+                      variant="secondary"
+                      key={base}
+                      onClick={() => {
+                        if (modal === "libraryPath" || modal === "cachePath")
+                          update(modal, path);
+                        setModal(null);
+                      }}
+                    >
+                      <Folder size={19} />
+                      {path}
+                    </Button>
+                  );
+                })}
               </div>
             )}
             {error && (

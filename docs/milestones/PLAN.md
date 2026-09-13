@@ -1,4 +1,4 @@
-# Plano de milestones — TorrentStream
+# Plano de milestones — Ushark
 
 Status: **MAPA APROVADO PELO USUÁRIO**. Data: 2026-09-12. Nenhuma implementação autorizada por este documento.
 
@@ -35,7 +35,7 @@ Todos os milestones têm duas dependências distintas: a **UI pode simular capac
 
 Percorrer S00–S02 e os checkpoints UX de M01 a M22, uma story por vez. M01 fornece o shell mínimo para inspecionar onboarding → Home vazia; os demais acrescentam fluxos verticais simulados. Não criar todos os arquivos de stories antecipadamente. Para milestones cujo frontend depende de outro, reutilizar a interface mockada já aprovada.
 
-A UX principal (M01–M18) deve estar aprovada antes da primeira persistência/provider/runtime real, conforme Architecture 11 §35. M19–M22 também começam por mocks e aprovação antes de sua própria integração. O shell, mocks e testes frontend são ferramentas para inspecionar o produto; CI básico entra após a experiência inicial aprovada, sem antecipar pipelines nativos/deploy/release. Teste manual da UI transmitida por Sunshine já instalado pode ocorrer cedo, sem automação/serviço novo.
+A UX de M01–M22 deve estar aprovada antes da primeira persistência/provider/runtime real. A diretriz posterior do usuário — “o backend pode continuar pendente até o fim” — estende a precedência da UX principal (M01–M18) definida em Architecture 11 §35 até o fim da fase frontend planejada. Pendências de backend não bloqueiam a próxima fatia frontend após aceite UX; permanecem exigidas para integração e closure. M23–M28 continuam fora do escopo executável. As sequências de integração descritas por milestone serão retomadas nas ondas seguintes, após essa fase. O shell, mocks e testes frontend são ferramentas para inspecionar o produto; CI básico entra após a experiência inicial aprovada, sem antecipar pipelines nativos/deploy/release. Teste manual da UI transmitida por Sunshine já instalado pode ocorrer cedo, sem automação/serviço novo.
 
 ### Onda B — completar capacidades locais
 

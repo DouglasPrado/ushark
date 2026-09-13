@@ -19,8 +19,8 @@ export const defaults: Preferences = {
 export const initial: Configuration = {
   libraryId: "library:mock-local",
   name: "Minha biblioteca",
-  libraryPath: "C:\\TorrentStream\\Library",
-  cachePath: "C:\\TorrentStream\\Cache",
+  libraryPath: "C:\\Ushark\\Library",
+  cachePath: "C:\\Ushark\\Cache",
   cacheGB: 100,
   cleanup: true,
   retainPartial: true,

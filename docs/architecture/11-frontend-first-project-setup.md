@@ -1,7 +1,7 @@
-# TorrentStream — Architecture 11: Frontend-First Project Setup
+# Ushark — Architecture 11: Frontend-First Project Setup
 
 **Status:** Draft v1  
-**Produto:** TorrentStream  
+**Produto:** Ushark\
 **Documento:** Engineering / Project Foundation  
 **Dependências:**  
 - `01-prd-master.md`
@@ -23,7 +23,7 @@
 
 # 1. Objetivo
 
-Este documento define como o projeto TorrentStream deve ser iniciado e estruturado respeitando sua regra principal de desenvolvimento:
+Este documento define como o projeto Ushark deve ser iniciado e estruturado respeitando sua regra principal de desenvolvimento:
 
 > **O produto será guiado pelo frontend.**
 
@@ -169,7 +169,7 @@ Integrações reais
 # 6. Estrutura inicial do monorepo
 
 ```text
-torrentstream/
+ushark/
 │
 ├── apps/
 │   └── desktop/

@@ -12,8 +12,9 @@ app.whenReady().then(() => {
     height: 960,
     minWidth: 900,
     minHeight: 650,
-    backgroundColor: "#10130f",
-    fullscreen: tv,
+    backgroundColor: "#0f1113",
+    fullscreen: tv && process.platform !== "darwin",
+    fullscreenable: true,
     autoHideMenuBar: true,
     webPreferences: {
       contextIsolation: true,
@@ -23,6 +24,10 @@ app.whenReady().then(() => {
       devTools: dev,
     },
   });
+  // Keep TV mode on the current macOS desktop instead of creating a Space.
+  if (tv && process.platform === "darwin") {
+    window.once("ready-to-show", () => window.setSimpleFullScreen(true));
+  }
   window.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
   window.webContents.on("will-navigate", (event) => event.preventDefault());
   window.webContents.on("will-attach-webview", (event) =>

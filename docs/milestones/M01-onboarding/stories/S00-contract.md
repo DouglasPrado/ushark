@@ -34,7 +34,7 @@ Revisar contrato contra UJ01/22/62/79/80, FRs de M01 e pendências D02/D08/D18. 
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+Contrato existente em EXPERIENCE.md, conferido na retomada. Defaults continuam propostos até aprovação UX. Ver [retomada](../evidence/RESUME.md).
 
 ## Conclusão
 

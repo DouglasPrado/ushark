@@ -1,21 +1,24 @@
-project: torrentstream
+project: ushark
 status: in_progress
 mode: EXECUTE_MILESTONE
 planning_artifacts: approved
 implementation_authorized: true
 execution_scope: M01_until_UX_checkpoint
+backend_policy: deferred_until_M01_M22_frontend_UX_approved
 current:
   milestone: M01
-  phase: frontend
-  story: S01
-next_on_execution_authorization: M01/S00
+  phase: ux_approved
+  story: S02
+next_action: prepare_M02_frontend
 checkpoints:
   milestone_plan: approved
   milestone_plan_evidence: "Usuário: aprovadissimo"
-  ux: not_started
+  ux: approved
+  ux_evidence: docs/milestones/M01-onboarding/UX_CHECKPOINT.md
+  desktop_tv_validation: macos_passed_physical_hardware_pending
   functional: not_started
 milestones:
-  M01: in_progress
+  M01: frontend_ux_approved_integration_deferred
   M02: planned
   M03: planned
   M04: planned

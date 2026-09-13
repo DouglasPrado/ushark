@@ -1,6 +1,6 @@
 # Documentation
 
-TorrentStream / ushark documentation index.
+Ushark / ushark documentation index.
 
 All product and architecture documents below are **Draft v1** unless a document says otherwise.
 

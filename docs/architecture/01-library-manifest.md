@@ -1,8 +1,8 @@
-# TorrentStream — Documento 01: Library Manifest v1
+# Ushark — Documento 01: Library Manifest v1
 
 ## 1. Objetivo
 
-O **Library Manifest** é o formato que descreve uma biblioteca do TorrentStream.
+O **Library Manifest** é o formato que descreve uma biblioteca do Ushark.
 
 Ele não é responsável por baixar torrents, reproduzir vídeos ou guardar o progresso do usuário.
 
@@ -86,7 +86,7 @@ Arquivos separados são opcionais; bibliotecas pequenas podem estar descritas ap
 
 ```json
 {
-  "schema": "torrentstream.library",
+  "schema": "ushark.library",
   "schemaVersion": "1.0.0",
   "id": "library:douglas:main",
   "name": "Compartilhado por Douglas",
@@ -110,7 +110,7 @@ Todo manifest começa com:
 
 ```json
 {
-  "schema": "torrentstream.library",
+  "schema": "ushark.library",
   "schemaVersion": "1.0.0"
 }
 ```
@@ -684,7 +684,7 @@ O formato deve funcionar para conteúdo próprio, domínio público, Creative Co
 
 ```json
 {
-  "schema": "torrentstream.library",
+  "schema": "ushark.library",
   "schemaVersion": "1.0.0",
   "id": "library:douglas:main",
   "version": 14,
