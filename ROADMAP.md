@@ -12,14 +12,17 @@ Status values:
 
 Application code is not present, so implementation items remain **Planned**.
 
+The [proposed execution plan](docs/milestones/PLAN.md) reorganizes the documented scope into vertical milestones and provides a [requirement coverage matrix](docs/milestones/REQUIREMENTS_COVERAGE.md). The map is **approved**; M01 is prepared for future execution. Its M01–M28 IDs are distinct from the earlier frontend examples below; no milestone has been implemented.
+
 ## Specifications
 
 | Item | Status | Source |
 |------|--------|--------|
 | PRD, journeys, FRs, NFRs | Completed (Draft v1) | [`docs/product/`](docs/product/01-prd-master.md) |
 | Architecture 01–11 | Completed (Draft v1) | [`docs/architecture/`](docs/architecture/11-frontend-first-project-setup.md) |
-| Epics and milestones document | Planned | Named as next spec in [Architecture 10](docs/architecture/10-ci-cd-quality-gates.md) (`11-epics-and-milestones.md`) |
-| Stories / goal files | Planned | [PRD](docs/product/01-prd-master.md), [Architecture 11](docs/architecture/11-frontend-first-project-setup.md) |
+| Milestone plan and coverage | Approved; M01 prepared | [Plan](docs/milestones/PLAN.md), [coverage](docs/milestones/REQUIREMENTS_COVERAGE.md) |
+| Stories | M01 prepared; other milestones not prepared | [PRD](docs/product/01-prd-master.md), [Architecture 11](docs/architecture/11-frontend-first-project-setup.md) |
+| Planning policy / state | Map approved; implementation not started | [GOAL](docs/execution/GOAL.md), [STATE](docs/execution/STATE.yaml) |
 
 Folders mentioned as future docs (`docs/ux/`, `docs/data/`, `docs/security/`, `docs/engineering/`) are **not** created yet; equivalent material currently lives under `docs/architecture/`.
 

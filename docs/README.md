@@ -51,14 +51,14 @@ There are no GitHub Actions workflow files in the repository yet.
 
 ## Milestones
 
-There is no `docs/milestones/` tree yet.
+The [proposed milestone plan](milestones/PLAN.md) and [requirements coverage matrix](milestones/REQUIREMENTS_COVERAGE.md) have been approved. M01 stories are prepared; implementation has not started. See [source analysis and open decisions](milestones/SOURCE_ANALYSIS.md).
 
-Phase and milestone names (M00–M08, then application and runtime phases) are listed in:
+Earlier example phase and milestone names (M00–M08, then application and runtime phases) are listed in:
 
 - [Frontend-first setup](architecture/11-frontend-first-project-setup.md)
 - [Roadmap](../ROADMAP.md)
 
-The CI document names a follow-up spec `11-epics-and-milestones.md`, which has not been written.
+The new proposal uses vertical capabilities with its own M01–M28 IDs. The follow-up planning material named by the CI document is delivered under `docs/milestones/`; it does not renumber the architecture specifications.
 
 ## Community
 

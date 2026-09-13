@@ -217,7 +217,7 @@ See [ROADMAP.md](ROADMAP.md). High-level phases already documented:
 2. **Application layer** — persistence, real metadata provider, contracts
 3. **Runtime** — `torrentd`, MPV, health engine, Sunshine integration
 
-Epics, milestone files, and stories have not been written yet.
+A [vertical milestone plan](docs/milestones/PLAN.md) and [coverage matrix](docs/milestones/REQUIREMENTS_COVERAGE.md) have been approved. Its IDs differ from the earlier frontend examples above. M01 stories are prepared; application code has not been written.
 
 ## Contributing
 

@@ -1,0 +1,10 @@
+{
+  "name": "@torrentstream/desktop",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "main.cjs",
+  "scripts": {
+    "build": "vite build"
+  }
+}

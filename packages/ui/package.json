@@ -1,0 +1,7 @@
+{
+  "name": "@torrentstream/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.tsx"
+}
