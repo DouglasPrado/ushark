@@ -1,0 +1,9 @@
+project: project-name
+status: planning
+current:
+  milestone: null
+  phase: null
+  story: null
+milestones: {}
+checkpoints: {}
+last_update: null

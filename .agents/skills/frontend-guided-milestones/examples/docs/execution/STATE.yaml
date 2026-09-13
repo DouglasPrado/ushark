@@ -1,0 +1,39 @@
+project: example-product
+status: running
+current:
+  milestone: M04
+  phase: S04
+  story: S04.2
+milestones:
+  M01:
+    name: Authentication
+    status: done
+  M02:
+    name: Onboarding
+    status: done
+  M03:
+    name: Dashboard
+    status: done
+  M04:
+    name: Customers
+    status: running
+    stories:
+      S00: done
+      S01: done
+      S02: done
+      S03: done
+      S04.1: done
+      S04.2: running
+      S04.3: pending
+      S05: pending
+      S06: pending
+      S07: pending
+      S08: pending
+  M05:
+    name: Transactions
+    status: pending
+checkpoints:
+  M04:
+    ux: approved
+    functional: pending
+last_update: 2026-09-12

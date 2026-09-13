@@ -1,0 +1,90 @@
+name: Bug report
+description: Report a defect in the documentation or in the application (when it exists).
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report.
+
+        **Do not paste secrets, tokens, API keys, credentials, private tracker URLs, full magnet links, or personal file paths.** Redact logs before attaching them.
+
+        This repository currently publishes specifications; application bugs apply only after code exists.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What is wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps another person can follow.
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, hardware, and how you ran the app or viewed the docs.
+      placeholder: |
+        OS:
+        Desktop / Moonlight / etc.:
+    validations:
+      required: true
+  - type: input
+    id: app_version
+    attributes:
+      label: Application version
+      description: Git commit, tag, or "docs only / unreleased".
+      placeholder: docs only / unreleased
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: Windows 11 x64
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Redact secrets. Prefer the smallest snippet that shows the failure.
+      render: text
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Drag images here if they help. Avoid personal media posters you do not have rights to share.
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Related FR/NFR IDs, spec files, or previous issues.
+    validations:
+      required: false
