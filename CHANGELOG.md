@@ -11,3 +11,4 @@ and this project intends to follow [Semantic Versioning](https://semver.org/spec
 
 - Product and architecture draft specifications under `docs/`
 - Open-source community files (license, contributing, security, issue/PR templates)
+- TanStack Query, Zustand, and Zod frontend state foundation with adapter-boundary validation

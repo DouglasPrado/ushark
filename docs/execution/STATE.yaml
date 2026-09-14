@@ -17,6 +17,9 @@ checkpoints:
   ux_evidence: docs/milestones/M01-onboarding/UX_CHECKPOINT.md
   desktop_tv_validation: macos_passed_physical_hardware_pending
   functional: not_started
+technical_foundation:
+  frontend_state: implemented_local_validated
+  stack: tanstack_query_zod_zustand
 milestones:
   M01: frontend_ux_approved_integration_deferred
   M02: planned
@@ -46,4 +49,4 @@ milestones:
   M26: deferred_not_specified
   M27: deferred_not_specified
   M28: deferred_not_specified
-last_update: "2026-09-12"
+last_update: "2026-09-13"

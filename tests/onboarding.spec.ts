@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { MockConfigurationService, initial } from "../packages/mocks/src";
+import { configurationSchema } from "../packages/types/src";
+import { createConfigurationStore } from "../apps/desktop/src/state/configuration.store";
 import { gamepadAction } from "../apps/desktop/src/navigation";
 
 test("percurso, validação, rascunho, falha e retry, reset seletivo", async ({
@@ -104,6 +106,26 @@ test("reset do adapter preserva dados pessoais, paths e cache", async () => {
   expect(reset.preferences.strategy).toBe("balanced");
   expect(service.personalData).toEqual(data);
 });
+test("schema compartilhado rejeita dados inválidos na fronteira", () => {
+  const result = configurationSchema.safeParse({
+    ...initial,
+    preferences: { ...initial.preferences, strategy: "unknown" },
+  });
+  expect(result.success).toBe(false);
+});
+test("store preserva rascunho local durante hidratação assíncrona", () => {
+  const store = createConfigurationStore();
+  store.getState().updateConfiguration("name", "Rascunho local");
+  store.getState().hydrate({
+    ...initial,
+    name: "Resposta atrasada",
+  });
+  expect(store.getState().configuration.name).toBe("Rascunho local");
+  expect(store.getState().hydrated).toBe(true);
+  expect(store.getState().dirty).toBe(true);
+  store.getState().acceptSaved({ ...initial, name: "Rascunho local" });
+  expect(store.getState().dirty).toBe(false);
+});
 test("controle mapeia botões/analógico e retorna ao soltar", () => {
   const pad = {
     buttons: Array.from({ length: 16 }, () => ({
@@ -128,7 +150,7 @@ test("setas navegam com foco visível e controle virtual confirma", async ({
   await page.goto("/");
   const start = page.getByRole("button", { name: "Começar", exact: true });
   await expect(start).toBeFocused();
-  await page.keyboard.press("ArrowUp");
+  await page.keyboard.press("ArrowDown");
   await expect(start).not.toBeFocused();
   await start.focus();
   await page.evaluate(() => {

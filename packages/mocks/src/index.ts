@@ -4,6 +4,7 @@ import type {
   Preferences,
   Scenario,
 } from "../../types/src/index";
+import { configurationError } from "../../types/src/index";
 export const defaults: Preferences = {
   strategy: "balanced",
   resolution: "2160p",
@@ -27,22 +28,7 @@ export const initial: Configuration = {
   preferences: { ...defaults },
 };
 export function validate(value: Configuration): string | null {
-  if (!value.name.trim() || value.name.length > 80)
-    return "Dê um nome à biblioteca (até 80 caracteres).";
-  if (!value.libraryPath.trim() || !value.cachePath.trim())
-    return "Escolha as pastas da biblioteca e do cache.";
-  if (
-    value.libraryPath.trim().toLowerCase() ===
-    value.cachePath.trim().toLowerCase()
-  )
-    return "Escolha pastas diferentes para biblioteca e cache.";
-  if (
-    !Number.isInteger(value.cacheGB) ||
-    value.cacheGB < 1 ||
-    value.cacheGB > 10000
-  )
-    return "Use um limite inteiro entre 1 e 10.000 GB.";
-  return null;
+  return configurationError(value);
 }
 export class MockConfigurationService implements ConfigurationService {
   private value = structuredClone(initial);
@@ -52,6 +38,9 @@ export class MockConfigurationService implements ConfigurationService {
     downloads: ["fixture-download"],
     subscriptions: ["fixture-library"],
   };
+  setScenario(scenario: Scenario) {
+    this.scenario = scenario;
+  }
   async read() {
     await this.delay();
     return structuredClone(this.value);
