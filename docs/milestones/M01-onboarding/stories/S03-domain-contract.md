@@ -14,7 +14,7 @@ Ler [M01](../README.md), [plano aprovado](../../PLAN.md#m01), [matriz](../../REQ
 
 ## Dependências
 
-UX de M01 e UX principal M01–M18 aprovadas, conforme onda B.
+UX de M01 e UX da fase frontend M01–M22 aprovadas, conforme onda B.
 
 ## Escopo
 

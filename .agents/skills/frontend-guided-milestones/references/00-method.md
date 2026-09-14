@@ -2,15 +2,16 @@
 
 ## Objetivo
 
-Transformar um PRD grande em um sistema de execução previsível para agentes de código, mantendo o progresso visível para humanos.
+Transformar documentação extensa de produto e arquitetura em um sistema de execução previsível para agentes de código, mantendo o progresso visível para humanos.
 
-A hierarquia é:
+A relação é:
 
 ```text
-PRD → Milestones → Stories → GOAL → STATE/UPDATE
+Produto + Arquitetura → Milestones → Stories → GOAL → STATE/UPDATE
 ```
 
-- **PRD**: define o produto e requisitos.
+- **Produto/PRD**: define o que o produto precisa entregar.
+- **Arquitetura**: define como construir, separar responsabilidades e provar qualidades sem antecipar a arquitetura-alvo.
 - **Milestone**: entrega uma capacidade vertical reconhecível.
 - **Story**: unidade pequena e verificável de execução.
 - **GOAL**: define como o agente trabalha.
@@ -26,6 +27,8 @@ Experience → Mock UI → Interaction → UX Review
 → Domain Contract → Backend → Integration
 → Functional Review → Tests → Hardening → Closure
 ```
+
+As fases não suspendem a arquitetura. S00–S02 já devem preservar contratos substituíveis, ownership, estados e restrições de UX/segurança aplicáveis. S03–S08 materializam somente a infraestrutura exigida pelo fluxo aprovado e comprovam os boundaries e gates correspondentes.
 
 ## Milestones verticais
 

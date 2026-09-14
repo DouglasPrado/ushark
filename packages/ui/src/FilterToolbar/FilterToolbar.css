@@ -1,0 +1,143 @@
+.filter-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-width: 0;
+  margin: 20px 0 32px;
+  padding: 14px 16px;
+  border: 1px solid #ffffff14;
+  border-radius: 12px;
+  background: #101820cc;
+  color: #91a0ae;
+  font-size: 12px;
+}
+
+.filter-toolbar__summary {
+  flex: 0 0 auto;
+}
+
+.filter-toolbar__controls,
+.filter-toolbar__group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.filter-toolbar__controls {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.filter-search {
+  position: relative;
+  display: flex;
+  flex: 1 1 240px;
+  align-items: center;
+  min-width: min(260px, 100%);
+  margin: 0;
+}
+
+.filter-search__icon {
+  position: absolute;
+  left: 13px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.filter-search input,
+.filter-select select {
+  height: 42px;
+  border: 1px solid #ffffff1f;
+  border-radius: 8px;
+  outline: none;
+  background: #151e27;
+  color: #dfe8f0;
+}
+
+.filter-toolbar .button[aria-pressed="true"] {
+  border-color: #a7d2f5;
+  background: #a7d2f5;
+  color: #102235;
+}
+
+.filter-search input {
+  width: 100%;
+  padding: 0 38px;
+}
+
+.filter-search input::placeholder {
+  color: #7f8d9a;
+}
+
+.filter-search input:focus,
+.filter-select select:focus {
+  border-color: #9dceff;
+  box-shadow: 0 0 0 3px #79b9ef2e;
+}
+
+.filter-search__actions {
+  position: absolute;
+  right: 5px;
+  display: flex;
+  gap: 4px;
+}
+
+.filter-search__actions > button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #b9c9d8;
+}
+
+.filter-select {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 150px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.filter-select > span {
+  color: #8998a6;
+}
+
+.filter-select select {
+  min-width: 150px;
+  padding: 0 34px 0 12px;
+}
+
+@media (max-width: 760px) {
+  .filter-toolbar,
+  .filter-toolbar__controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .filter-toolbar__controls {
+    width: 100%;
+  }
+
+  .filter-search {
+    flex-basis: auto;
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .filter-select {
+    justify-content: space-between;
+  }
+
+  .filter-select select {
+    flex: 1;
+  }
+}

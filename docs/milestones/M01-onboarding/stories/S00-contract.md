@@ -41,3 +41,5 @@ Contrato existente em EXPERIENCE.md, conferido na retomada. Defaults continuam p
 Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
 
 Evidência: [Contrato da experiência](../EXPERIENCE.md).
+
+Estado consolidado da fase: S00–S02 implementadas; aceite UX já existente de M01 preservado em ../UX_CHECKPOINT.md. Referências a revisão pendente acima registram o estágio histórico anterior ao aceite. S03–S08 adiadas.

@@ -1,0 +1,80 @@
+.source-selection {
+  width: 100%;
+  min-width: 0;
+  margin: 12px 0;
+}
+.selection-launch {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.selection-launch > span {
+  font-size: 13px;
+  color: #a9b7c6;
+}
+.source-selection details {
+  padding: 12px 0;
+}
+.selection-options {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.selection-options label {
+  flex: 1;
+  min-width: 150px;
+}
+.source-comparison {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+}
+.source-comparison article {
+  border: 1px solid #354253;
+  border-radius: 12px;
+  padding: 16px;
+}
+.source-comparison h4 {
+  margin: 0 0 8px;
+}
+.source-comparison p {
+  font-size: 13px;
+  margin: 8px 0;
+}
+.source-comparison meter {
+  width: 65%;
+  margin-right: 12px;
+}
+.source-selection input[type="checkbox"] {
+  width: auto !important;
+  display: inline !important;
+}
+/* Source comparison is a larger detail surface, above the editorial hero. */
+.modal-overlay {
+  z-index: 100;
+}
+.modal {
+  z-index: 101;
+}
+.modal.discovery-detail:has(.source-selection) {
+  width: min(1100px, 92vw);
+}
+.discovery-detail:has(.source-selection) .discovery-detail-body {
+  grid-template-columns: 160px minmax(0, 1fr);
+}
+.discovery-detail .source-comparison {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.discovery-detail .source-selection {
+  grid-column: 1/-1;
+}
+@media (max-width: 750px) {
+  .discovery-detail:has(.source-selection) .discovery-detail-body {
+    grid-template-columns: 1fr;
+  }
+  .discovery-detail:has(.source-selection) .discovery-art {
+    display: none;
+  }
+}

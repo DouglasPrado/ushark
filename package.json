@@ -14,6 +14,9 @@
     "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
   },
   "dependencies": {
+    "@ushark/mocks": "workspace:*",
+    "@ushark/types": "workspace:*",
+    "@ushark/ui": "workspace:*",
     "@radix-ui/react-dialog": "1.1.23",
     "@radix-ui/react-slot": "1.3.3",
     "class-variance-authority": "0.7.1",

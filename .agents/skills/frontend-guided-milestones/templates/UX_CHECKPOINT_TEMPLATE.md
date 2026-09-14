@@ -17,6 +17,9 @@ READY_FOR_REVIEW
 - loading/empty/error
 - responsiveness
 - usability
+- focus/gamepad/keyboard behavior when applicable
+- recovery and non-blocking async states
+- clarity of simulated versus real behavior
 
 ## Decision
 PENDING

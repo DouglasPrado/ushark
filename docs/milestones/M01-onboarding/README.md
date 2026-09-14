@@ -4,7 +4,7 @@ Status: FRONTEND_UX_APPROVED — S00–S02 implementadas com mocks; UX aprovada 
 
 ## Objetivo e resultado
 
-Primeiro acesso → boas-vindas → pasta de biblioteca → pasta/limite de cache → preferências → Home vazia. Usuário navega por controle e pode rever configurações. Ao concluir a integração posterior, biblioteca vazia e preferências sobrevivem ao restart.
+Primeiro acesso → boas-vindas → pasta de biblioteca → pasta/limite de cache → preferências → Home vazia. Usuário navega por controle e pode rever configurações. A conclusão do onboarding já fica marcada localmente para que os próximos acessos abram direto na Home; biblioteca e preferências completas continuam aguardando a integração posterior para sobreviver ao restart.
 
 ## Requisitos
 
@@ -39,3 +39,11 @@ Sem dependência funcional anterior. Execução S00–S02 autorizada; toolchain 
 ## Conclusão
 
 S08 com UX e funcional aprovados, fluxo real persistido e reabrível, gates e revisão/merge aplicáveis, evidências de foco/segurança/performance e ausência de perda silenciosa. M01 não comprova gamepad nas telas futuras nem sessão Sunshine/Moonlight real.
+
+## Preparação documental M01–M22
+
+S00–S08 e roteiros de checkpoints conferidos em 2026-09-13. [Cobertura individual](PREPARATION_COVERAGE.md) e [auditoria global](../PREPARATION_AUDIT.md). Esta conferência não executou stories nem alterou aceites.
+
+## Estado da fase frontend M01–M22
+
+S00–S02 implementadas no checkout real com mocks. UX aprovada anteriormente; aceite humano preservado. S03–S08 DEFERRED; não DONE. [Roteiro único](../../execution/FRONTEND_REVIEW.md), [auditoria](../../execution/FRONTEND_COVERAGE_AUDIT.md) e [regressão final](../../execution/evidence/FINAL_VALIDATION.md). Planos futuros neste README continuam sujeitos à integração e autorização.

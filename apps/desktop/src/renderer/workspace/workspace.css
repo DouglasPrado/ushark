@@ -1,0 +1,90 @@
+main.workspace-page {
+  display: block;
+  max-width: 1500px;
+  min-height: 80vh;
+  margin: 0 auto;
+  padding: 36px 48px;
+}
+.workspace-page header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.workspace-page h1 {
+  flex: 1;
+  margin: 12px 0;
+  font-size: 42px;
+}
+.workspace-page > p {
+  color: #aebaca;
+  line-height: 1.6;
+}
+.workspace-list {
+  display: grid;
+  gap: 20px;
+  margin: 28px 0;
+}
+.workspace-list article,
+.workspace-empty,
+.workspace-scenarios {
+  padding: 24px;
+  background: #151d26;
+  border: 1px solid #354252;
+  border-radius: 16px;
+}
+.workspace-list h2 {
+  font-size: 24px;
+}
+.workspace-list h2 button {
+  font: inherit;
+  text-align: left;
+}
+.workspace-list progress {
+  width: 100%;
+  height: 12px;
+}
+.workspace-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.workspace-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.workspace-page label {
+  display: block;
+  margin: 12px 0;
+}
+.workspace-page label select {
+  display: block;
+}
+.workspace-page .workspace-scenarios {
+  margin: 24px 0;
+}
+.workspace-empty {
+  text-align: center;
+  margin: 40px 0;
+}
+@media (max-width: 800px) {
+  main.workspace-page {
+    padding: 24px;
+  }
+  .workspace-fields {
+    grid-template-columns: 1fr;
+  }
+}
+.workspace-page label:has(> input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.workspace-page label > input[type="checkbox"] {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+  flex: 0 0 auto;
+}

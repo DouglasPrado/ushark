@@ -28,6 +28,14 @@ RUNNING
 - Typecheck: —
 - Tests: —
 
+## Architecture / Delivery Gates
+- Architecture conformance: —
+- Local validation: —
+- CI: —
+- Review: —
+- Merge: —
+- Manual/environment: —
+
 ## Blockers
 None.
 

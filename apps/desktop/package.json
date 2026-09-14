@@ -3,7 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "main.cjs",
+  "main": "src/main/index.cjs",
+  "dependencies": {
+    "@radix-ui/react-dialog": "1.1.23",
+    "@ushark/mocks": "workspace:*",
+    "@ushark/types": "workspace:*",
+    "@ushark/ui": "workspace:*",
+    "lucide-react": "1.45.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
   "scripts": {
     "build": "vite build"
   }

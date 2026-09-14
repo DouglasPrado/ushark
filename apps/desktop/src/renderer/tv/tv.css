@@ -1,0 +1,54 @@
+.tv-session-trigger {
+  position: fixed;
+  top: 112px;
+  right: 28px;
+  z-index: 90;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px #0008;
+}
+.tv-power-symbol {
+  display: block;
+  font-size: 24px;
+  line-height: 1;
+}
+.modal-overlay.tv-overlay {
+  z-index: 200;
+}
+.modal.tv-session-dialog {
+  z-index: 201;
+  width: min(800px, 85vw);
+}
+.tv-session-dialog .workspace-actions {
+  margin: 16px 0;
+}
+.tv-session-dialog label {
+  display: block;
+  margin: 16px 0;
+}
+.tv-session-dialog label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tv-session-dialog input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+.tv-review-controls {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+@media (min-width: 1800px) {
+  .modal.tv-session-dialog {
+    max-height: 65vh;
+  }
+}
+@media (min-width: 3000px) {
+  .modal.tv-session-dialog {
+    max-height: 40vh;
+  }
+}

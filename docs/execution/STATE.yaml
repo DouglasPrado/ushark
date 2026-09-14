@@ -1,49 +1,189 @@
 project: ushark
-status: in_progress
-mode: EXECUTE_MILESTONE
+status: awaiting_final_ux_review
+mode: UX_CHECKPOINT
 planning_artifacts: approved
 implementation_authorized: true
-execution_scope: M01_until_UX_checkpoint
-backend_policy: deferred_until_M01_M22_frontend_UX_approved
+execution_scope: M01_M22_frontend_S00_S02_final_UX_review
+ux_review_policy: intermediate_pending_reviews_deferred_by_explicit_user_instruction
+backend_policy: deferred_requires_UX_and_new_explicit_authorization
 current:
-  milestone: M01
-  phase: ux_approved
-  story: S02
-next_action: prepare_M02_frontend
+  milestone: M22
+  phase: frontend_ready_for_final_review
+  story: null
+next_action: await_human_final_UX_review_M04_M22
 checkpoints:
   milestone_plan: approved
   milestone_plan_evidence: "Usuário: aprovadissimo"
-  ux: approved
-  ux_evidence: docs/milestones/M01-onboarding/UX_CHECKPOINT.md
-  desktop_tv_validation: macos_passed_physical_hardware_pending
+  ux: ready_for_review
+  ux_evidence: docs/execution/FRONTEND_REVIEW.md
+  previous_M03_ux: approved
+  previous_M03_ux_evidence_quote: "Usuário: aprovado, após correção do ícone de Séries"
+  previous_M03_ux_evidence: docs/milestones/M03-series/UX_CHECKPOINT.md
+  previous_M02_ux: approved
+  previous_M02_ux_evidence_quote: "Usuário: UX Aprovada"
+  previous_M02_ux_evidence: docs/milestones/M02-movies/UX_CHECKPOINT.md
+  previous_M01_ux: approved
+  previous_M01_ux_evidence: docs/milestones/M01-onboarding/UX_CHECKPOINT.md
+  previous_M01_desktop_tv_validation: macos_passed_physical_hardware_pending
+  desktop_tv_validation: macos_electron_passed_windows_tv_physical_gamepad_pending
   functional: not_started
 milestones:
   M01: frontend_ux_approved_integration_deferred
-  M02: planned
-  M03: planned
-  M04: planned
-  M05: planned
-  M06: planned
-  M07: planned
-  M08: planned
-  M09: planned
-  M10: planned
-  M11: planned
-  M12: planned
-  M13: planned
-  M14: planned
-  M15: planned
-  M16: planned
-  M17: planned
-  M18: planned
-  M19: planned
-  M20: planned
-  M21: planned
-  M22: planned
+  M02: frontend_ux_approved_integration_deferred
+  M03: frontend_ux_approved_integration_deferred
+  M04: frontend_ux_ready_for_review
+  M05: frontend_ux_ready_for_review
+  M06: frontend_ux_ready_for_review
+  M07: frontend_ux_ready_for_review
+  M08: frontend_ux_ready_for_review
+  M09: frontend_ux_ready_for_review
+  M10: frontend_ux_ready_for_review
+  M11: frontend_ux_ready_for_review
+  M12: frontend_ux_ready_for_review
+  M13: frontend_ux_ready_for_review
+  M14: frontend_ux_ready_for_review
+  M15: frontend_ux_ready_for_review
+  M16: frontend_ux_ready_for_review
+  M17: frontend_ux_ready_for_review
+  M18: frontend_ux_ready_for_review
+  M19: frontend_ux_ready_for_review
+  M20: frontend_ux_ready_for_review
+  M21: frontend_ux_ready_for_review
+  M22: frontend_ux_ready_for_review
   M23: deferred_not_specified
   M24: deferred_not_specified
   M25: deferred_not_specified
   M26: deferred_not_specified
   M27: deferred_not_specified
   M28: deferred_not_specified
-last_update: "2026-09-12"
+current_story_statuses:
+  S00: done
+  S01: done
+  S02: done
+  S03_S08: deferred
+planning_evidence: docs/milestones/PLAN.md
+last_update: "2026-09-13"
+prepared_milestone_evidence:
+  M01: docs/milestones/M01-onboarding/README.md
+  M02: docs/milestones/M02-movies/README.md
+  M03: docs/milestones/M03-series/README.md
+  M04: docs/milestones/M04-home-search/README.md
+  M05: docs/milestones/M05-local-playback/README.md
+  M06: docs/milestones/M06-torrent-import/README.md
+  M07: docs/milestones/M07-progressive-playback/README.md
+  M08: docs/milestones/M08-source-selection/README.md
+  M09: docs/milestones/M09-downloads/README.md
+  M10: docs/milestones/M10-storage-retention/README.md
+  M11: docs/milestones/M11-episode-sequence/README.md
+  M12: docs/milestones/M12-curation-editor/README.md
+  M13: docs/milestones/M13-library-file/README.md
+  M14: docs/milestones/M14-library-trust/README.md
+  M15: docs/milestones/M15-library-publish/README.md
+  M16: docs/milestones/M16-library-subscriptions/README.md
+  M17: docs/milestones/M17-library-fork/README.md
+  M18: docs/milestones/M18-tv-session/README.md
+  M19: docs/milestones/M19-playback-fallback/README.md
+  M20: docs/milestones/M20-diagnostics/README.md
+  M21: docs/milestones/M21-backup-recovery/README.md
+  M22: docs/milestones/M22-release-update/README.md
+
+preparation:
+  scope: M01_M22
+  status: complete
+  completed_through: M22
+  implementation_performed: false
+  checkpoint_approvals_granted: false
+  note: "Preparação preservada; autorização atual em GOAL amplia execução frontend M01–M22."
+state_discrepancies:
+  M04_ux:
+    status: resolved_checkpoint_scope
+    historical_recorded_state: approved
+    historical_quote: "Usuário: aprovado"
+    evidence: docs/milestones/M03-series/UX_CHECKPOINT.md
+    resolution: "Citação corresponde ao aceite M03; M04 READY_FOR_REVIEW, decisão PENDING."
+
+frontend_phase:
+  scope: M01_M22_S00_S02
+  status: implemented_validated_ready_for_review
+  stories_completed: 66
+  audit: docs/execution/FRONTEND_COVERAGE_AUDIT.md
+  requirements_inventory: docs/execution/FRONTEND_REQUIREMENTS_AUDIT.md
+  review_guide: docs/execution/FRONTEND_REVIEW.md
+  validation: docs/execution/evidence/FINAL_VALIDATION.md
+  regression: 141_passed_0_failed_0_skipped
+  latest_targeted_validation: movie_detail_redundant_facts_removed_recommendations_directly_after_hero_3_passed_plus_1920_2560_3840_and_480_geometry_passed
+  latest_synopsis_transparency_validation: shared_movie_detail_8_passed_1920_2560_3840
+  latest_full_regression: 141_passed_in_2_2_minutes_5_workers_trace_off
+  latest_typecheck: passed
+  latest_build: passed_with_known_chunk_size_warning
+  latest_changed_files_lint_and_format: passed
+  latest_full_lint: passed
+  metadata_seed:
+    source: imdb_title_basics_and_ratings_official_noncommercial_datasets
+    artwork_source: imdb_public_title_page_snapshots
+    dataset_run: 2026-09-12
+    access_mode: development_time_snapshot
+    runtime_network: false
+    titles: 8
+    poster_files: 8
+    backdrop_files: 8
+    commercial_license: not_established
+    evidence: docs/milestones/M02-movies/evidence/IMDB_SEED.md
+  series_metadata_seed:
+    source: imdb_title_basics_and_ratings_official_noncommercial_datasets
+    artwork_source: imdb_public_title_page_snapshots
+    access_date: 2026-09-13
+    access_mode: development_time_snapshot
+    runtime_network: false
+    series: 8
+    mock_episodes: 48
+    poster_files: 8
+    backdrop_files: 8
+    commercial_license: not_established
+    evidence: docs/milestones/M03-series/evidence/IMDB_SERIES_SEED.md
+  human_review: pending_M02_M03_post_approval_adjustments_and_M04_M22_previous_M01_M03_approvals_preserved
+  S03_S08: deferred
+  milestone_closure: not_performed
+  actual_backend_integrations: not_implemented
+  hardware: windows_TV_physical_controller_media_runtime_pending
+  PR: not_created
+  CI: not_run_local_validation_only
+  merge_deploy_release: not_performed
+  review_adjustments:
+    - M01_onboarding_completion_marker_persisted_locally
+    - M04_streaming_home_and_horizontal_navigation
+    - M04_imdb_backdrops_in_home_hero_and_rails
+    - M02_clean_movie_shell_and_icon_actions_ready_for_confirmation
+    - M18_tv_consumer_only_shell_ready_for_confirmation
+    - A11_frontend_repository_structure_aligned_and_guarded
+    - M02_default_imdb_dataset_seed_ready_for_confirmation
+    - M02_imdb_poster_and_backdrop_snapshots_applied
+    - M02_imdb_rating_votes_id_duration_and_genres_visible
+    - M03_default_imdb_series_seed_ready_for_confirmation
+    - M03_imdb_posters_backdrops_ratings_and_mock_episode_hierarchy
+    - M03_series_shell_aligned_with_movies_home
+    - mock_torrent_health_bars_and_labels_on_cards_home_details_and_source_comparison
+    - series_cover_unique_torrent_health_average_and_episode_badges
+    - A09_fluid_spatial_navigation_for_remote_and_gamepad
+    - M03_episode_artwork_image_or_gif_session_mock
+    - M05_streaming_player_bottom_icon_chrome_auto_hide
+    - M04_rich_movie_series_detail_with_badges_and_local_trailer_preview
+    - M04_back_action_adjacent_to_play_with_focus_restore
+    - M04_recommendations_at_detail_footer_with_in_modal_navigation
+    - M02_M03_catalog_search_and_sort_by_votes_or_title
+    - M02_M03_M04_ushark_brand_static_not_focusable_or_selectable
+    - M02_M04_movie_card_media_contains_health_and_favorite_overlays
+    - M02_M04_single_canonical_movie_detail_page_series_modal_preserved
+    - M02_M04_detail_back_icon_play_trailer_order_and_initial_play_focus
+    - M02_movie_card_internal_content_contained_and_responsive
+    - global_vertical_scrollbar_uses_ushark_blue_accent
+    - M02_M04_detail_actions_above_synopsis
+    - M02_M04_movie_detail_actions_tight_to_hero_bottom
+    - M02_M04_movie_hero_title_actions_and_right_synopsis
+    - A09_first_button_focus_restores_vertical_scroll_top
+    - A11_renderer_grouped_by_responsibility_with_colocated_css
+    - shared_ui_two_button_variants_filter_toolbar_and_responsive_media_card
+    - M02_M04_recommendations_use_shared_discovery_rail_and_card
+    - M02_M04_movie_detail_vertical_center_and_shared_content_guides
+    - M02_M04_movie_synopsis_card_background_58_percent_opacity
+    - M02_M04_movie_redundant_facts_removed_and_recommendations_directly_after_hero

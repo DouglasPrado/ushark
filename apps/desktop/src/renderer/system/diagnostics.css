@@ -1,0 +1,19 @@
+.diagnostic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.diagnostic-grid article {
+  background: #151d26;
+  border: 1px solid #354252;
+  border-radius: 14px;
+  padding: 20px;
+}
+.diagnostic-grid h2 {
+  font-size: 18px;
+}
+.diagnostic-grid p {
+  font-size: 20px;
+  color: #b2cde8;
+}

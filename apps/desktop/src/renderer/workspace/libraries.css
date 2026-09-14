@@ -1,0 +1,174 @@
+.library-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.library-editor {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.library-editor label {
+  display: block;
+  margin: 12px 0;
+}
+.library-editor input:not([type="checkbox"]),
+.library-editor textarea,
+.library-editor select {
+  display: block;
+  width: 100%;
+}
+.library-editor input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+.library-banner {
+  min-height: 200px;
+  border-radius: 18px;
+  padding: 36px !important;
+  background: #142330;
+  background-size: cover;
+  border-bottom: 3px solid var(--library-accent);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.library-banner h1 {
+  font-size: 40px;
+}
+.library-avatar-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.library-logo-image {
+  max-width: 120px;
+  max-height: 80px;
+}
+.library-section {
+  margin: 32px 0;
+}
+.library-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+}
+.library-content-card {
+  text-align: left;
+  background: #17222e;
+  border: 1px solid #324353;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 0;
+}
+.library-content-card img,
+.library-art-fallback {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  display: block;
+}
+.library-content-card strong {
+  display: block;
+  padding: 14px;
+}
+.library-art-fallback {
+  display: grid;
+  place-items: center;
+  color: #8d9aab;
+}
+.library-hero .library-items {
+  grid-template-columns: 1fr;
+}
+.library-hero .library-content-card img {
+  aspect-ratio: 3/1;
+  max-height: 320px;
+}
+.library-carousel .library-items {
+  display: flex;
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+.library-carousel .library-content-card {
+  flex: 0 0 190px;
+}
+.library-preview {
+  border: 1px solid #354252;
+  border-radius: 20px;
+  padding: 24px;
+}
+.libraries-page .workspace-fields textarea {
+  min-height: 100px;
+}
+.library-package-modal {
+  max-width: 1000px;
+  width: min(90vw, 1000px);
+}
+.package-payload {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 240px;
+  overflow: auto;
+  font-size: 12px;
+}
+.modal.library-package-modal {
+  width: min(90vw, 1000px);
+  max-width: 1000px;
+}
+.library-package-modal .library-preview {
+  max-height: 260px;
+  overflow: auto;
+}
+.library-package-modal .library-banner {
+  min-height: 80px;
+  padding: 18px !important;
+}
+.library-package-modal .library-banner h1 {
+  font-size: 24px;
+}
+.library-package-modal .library-content-card {
+  max-width: 130px;
+}
+.library-package-modal > .workspace-actions {
+  position: sticky;
+  bottom: -1px;
+  background: #171d24;
+  padding: 12px 0;
+}
+@media (min-width: 1800px) {
+  .modal.library-package-modal {
+    max-height: 65vh;
+  }
+}
+@media (min-width: 3000px) {
+  .modal.library-package-modal {
+    max-height: 40vh;
+  }
+}
+.trust-panel {
+  padding: 16px;
+  border: 1px solid #43526a;
+  border-radius: 12px;
+  margin: 14px 0;
+}
+.trust-panel label {
+  display: block;
+  margin: 12px 0;
+}
+.trust-panel input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+.library-package-modal label:has(> input[type="checkbox"]) {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 14px 0;
+}
+.library-package-modal label > input[type="checkbox"] {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+}

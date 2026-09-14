@@ -11,3 +11,7 @@ Para revisar: `pnpm dev` (desktop) ou `pnpm dev:web` (navegador). A prévia usa 
 A aprovação libera a sequência frontend; não comprova testes em hardware físico nem fecha M01. Backend, persistência e integrações reais continuam adiados até o fim da fase frontend M01–M22. Próximo passo: preparar M02.
 
 Ajuste visual posterior solicitado pelo usuário: identidade Ushark e paleta azul (#87bbef). Aplicado globalmente, com capturas atualizadas em evidence/welcome-*.png; fluxos e aprovação UX preservados.
+
+Ajuste posterior solicitado em 2026-09-13: scroll vertical na cor azul padrão. Aplicado globalmente com thumb `#87bbef`, trilho escuro e hover azul-claro; os trilhos horizontais intencionalmente ocultos permanecem assim. Teste dedicado, layouts e regressão 138/138 passaram. O aceite histórico acima foi preservado, sem aprovação automática desta alteração.
+
+Ajuste posterior solicitado em 2026-09-13: quando a navegação direcional alcança o primeiro botão visível e habilitado da superfície, o scroll vertical volta ao topo. Teste direcionado 3/3 e regressão completa sem traces 139/139 passaram. O aceite histórico acima foi preservado, sem aprovação automática desta alteração; Windows/TV/controle físicos continuam pendentes.

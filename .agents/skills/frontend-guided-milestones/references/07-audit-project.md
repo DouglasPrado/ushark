@@ -26,6 +26,18 @@ Use para verificar se o planejamento e a execução continuam coerentes com o pr
 - mocks não vazaram para fluxos marcados como integrados;
 - mudanças de regra/arquitetura estão registradas em ADR quando relevante.
 
+## Auditoria de arquitetura
+
+- cada milestone/story cita somente as fontes arquiteturais aplicáveis;
+- decisões fechadas, ownership e separação de processos/módulos são respeitados;
+- mocks e adapters preservam o contrato de substituição;
+- infraestrutura real possui fluxo aprovado e story que a exige;
+- entradas não confiáveis atravessam validação e limites adequados;
+- contratos, schemas, migrations e artefatos possuem gates anti-drift aplicáveis;
+- exemplos/recomendações não foram promovidos silenciosamente a requisitos;
+- desvios possuem ADR/decisão e evidência, não apenas justificativa no código;
+- `IMPLEMENTED`, validação local, CI, review, merge e gates manuais não foram colapsados em `DONE`.
+
 ## Saída recomendada
 
 ```text
@@ -41,4 +53,6 @@ State consistency: PASS
 Coverage: PASS
 Dependency graph: PASS
 Open critical issues: 0
+Architecture conformance: PASS
+Delivery gates: PASS
 ```

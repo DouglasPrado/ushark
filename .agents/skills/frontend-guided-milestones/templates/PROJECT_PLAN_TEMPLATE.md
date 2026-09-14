@@ -1,8 +1,10 @@
 # Project Milestone Plan
 
-## Product source
-- PRD: `docs/product/PRD.md`
-- Architecture: `docs/product/ARCHITECTURE.md`
+## Product sources
+- `docs/product/`
+
+## Architecture sources
+- `docs/architecture/`
 
 ## Milestones
 
@@ -23,6 +25,15 @@ M01 → M02 → M03
 - Orphan: 0
 - Duplicate ownership: 0
 - Dependency cycles: 0
+- Architecture constraints discovered: 0
+- Architecture constraints mapped: 0
+- Open architecture decisions: 0
+
+## Architecture map
+
+| Constraint/Decision | Source | Milestone | Story/Gate | Status |
+|---|---|---|---|---|
+| ARCH-001 | `docs/architecture/...` | M01 | S03/S06 | MAPPED |
 
 ## Planning decisions
 - ...

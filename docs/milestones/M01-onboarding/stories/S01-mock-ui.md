@@ -18,7 +18,7 @@ S00.
 
 ## Escopo
 
-Shell Electron/React/TS/Vite/Tailwind/shadcn, pnpm/Turbo mínimos; desktop/ui/mocks/types. Rotas e formulários do contrato; configuração em memória por boundary substituível. Main cria janela/fullscreen; renderer isolado e preload mínimo.
+Shell Electron/React/TS/Vite/Tailwind/shadcn, pnpm/Turbo mínimos; desktop/ui/mocks/types. Rotas e formulários do contrato; configuração em memória por boundary substituível e marcador local versionado de conclusão do onboarding. Main cria janela/fullscreen; renderer isolado e preload mínimo.
 
 ## Fora de escopo
 
@@ -26,7 +26,7 @@ SQLite, filesystem de biblioteca/cache real, provider, MPV, torrentd, RPC, autom
 
 ## Critérios de aceite
 
-pnpm dev abre o percurso sem rede; completar mock leva à Home vazia com ações identificáveis para futuros fluxos; loading/error/offline são selecionáveis; renderer sem Node amplo e com CSP; --tv abre fullscreen; não afirmar persistência após restart.
+pnpm dev abre o percurso sem rede; completar mock leva à Home vazia com ações identificáveis para futuros fluxos; loading/error/offline são selecionáveis; renderer sem Node amplo e com CSP; --tv abre fullscreen; recarregar/reabrir não repete o onboarding concluído, sem afirmar persistência dos demais dados após restart.
 
 ## Validação
 
@@ -39,3 +39,5 @@ Código presente no checkout e validado nesta retomada. Ver [evidências e limit
 ## Conclusão
 
 Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+
+Estado consolidado da fase: S00–S02 implementadas; aceite UX já existente de M01 preservado em ../UX_CHECKPOINT.md. Referências a revisão pendente acima registram o estágio histórico anterior ao aceite. S03–S08 adiadas.

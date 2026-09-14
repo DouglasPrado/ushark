@@ -4,23 +4,23 @@ Implementação autorizada pelo usuário: EXECUTE_MILESTONE M01. Escopo atual S0
 
 Fluxo: /onboarding (boas-vindas → biblioteca → cache → preferências) → /home (vazia). /settings permite editar preferências e retornar. B/Escape fecha modal primeiro, volta etapa preservando rascunho ou volta à Home. Na primeira etapa permanece com saída de janela disponível. Teclado Tab/Enter e setas de navegação, gamepad A/B/D-pad/analógico. Campos usam teclado nativo; escolha de pastas é mockada com opções focáveis.
 
-| Campo | Default proposto | Validação |
-|---|---|---|
-| Nome da biblioteca | Minha biblioteca | Obrigatório; até 80 caracteres |
-| Biblioteca | C:\Ushark\Library | Obrigatória; mock simula seletor/inacessível |
-| Cache | C:\Ushark\Cache | Obrigatória; distinta da biblioteca |
-| Limite | 100 GB | Número inteiro entre 1 e 10000 (UX, não quota real) |
-| Estratégia | Equilíbrio | Qualidade / equilíbrio / início rápido |
-| Resolução | 4K | 720p / 1080p / 4K |
-| Áudio / legenda | Português / Português | Português / English; legenda também desligada |
-| Seleção automática / preflight foco | Ativos | Booleano |
-| Auto-switch / autoplay / preflight próximo | Desativados | Booleano |
-| Desconexão Moonlight | Pausar | Pausar / continuar; preferência sem integração |
-| Limpeza automática / reter parciais | Ativos | Booleano |
+| Campo                                      | Default proposto      | Validação                                           |
+| ------------------------------------------ | --------------------- | --------------------------------------------------- |
+| Nome da biblioteca                         | Minha biblioteca      | Obrigatório; até 80 caracteres                      |
+| Biblioteca                                 | C:\Ushark\Library     | Obrigatória; mock simula seletor/inacessível        |
+| Cache                                      | C:\Ushark\Cache       | Obrigatória; distinta da biblioteca                 |
+| Limite                                     | 100 GB                | Número inteiro entre 1 e 10000 (UX, não quota real) |
+| Estratégia                                 | Equilíbrio            | Qualidade / equilíbrio / início rápido              |
+| Resolução                                  | 4K                    | 720p / 1080p / 4K                                   |
+| Áudio / legenda                            | Português / Português | Português / English; legenda também desligada       |
+| Seleção automática / preflight foco        | Ativos                | Booleano                                            |
+| Auto-switch / autoplay / preflight próximo | Desativados           | Booleano                                            |
+| Desconexão Moonlight                       | Pausar                | Pausar / continuar; preferência sem integração      |
+| Limpeza automática / reter parciais        | Ativos                | Booleano                                            |
 
-Estados: pronto, salvando, sucesso, loading, offline, degraded, erro recuperável. Simulador dev oferece normal/loading/offline/erro ao salvar/pasta inacessível/degraded. Nada salva em disco; reiniciar volta ao onboarding. Reset restaura apenas preferências de reprodução, não paths/cache/biblioteca ou dados pessoais das fixtures.
+Estados: pronto, salvando, sucesso, loading, offline, degraded, erro recuperável. Simulador dev oferece normal/loading/offline/erro ao salvar/pasta inacessível/degraded. Concluir com sucesso grava apenas um marcador local versionado; recarregar ou reabrir passa a abrir a Home sem repetir o onboarding. Configuração, catálogos e demais fixtures continuam em memória até a integração posterior. Reset restaura apenas preferências de reprodução, não paths/cache/biblioteca ou dados pessoais das fixtures, e não apaga o marcador de conclusão.
 
-Direção visual: interface de sala escura, tipografia grande, accent azul-claro (#87bbef), com superfícies e bordas azuladas, hierarquia de passos e um CTA principal. Sem imagens externas. Safe areas e escala em 1080p/1440p/4K. Focus ring sempre visível; modais Radix prendem e restauram foco.
+Direção visual: interface de sala escura, tipografia grande, accent azul-claro (#87bbef), com superfícies e bordas azuladas, hierarquia de passos e um CTA principal. O scroll vertical usa o mesmo accent sobre trilho escuro; trilhos horizontais editoriais podem permanecer ocultos. Sem imagens externas. Safe areas e escala em 1080p/1440p/4K. Focus ring sempre visível; modais Radix prendem e restauram foco.
 
 Validação local: macOS, Node 26.8.1; testes Chromium/Electron conforme disponibilidade. Corpus: biblioteca vazia, rascunho, fixture pessoal protegida e cenários de falha. Medir setas/rota local <100ms em amostras automatizadas como evidência local, não certificação Windows/TV. Windows x64, gamepad físico e TV real permanecem validações manuais pendentes.
 
