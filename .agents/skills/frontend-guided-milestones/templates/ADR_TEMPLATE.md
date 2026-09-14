@@ -9,6 +9,11 @@ Accepted
 ## Decision
 ...
 
+## Architecture Impact
+- Sources affected:
+- Boundaries/ownership affected:
+- Supersedes:
+
 ## Consequences
 ...
 

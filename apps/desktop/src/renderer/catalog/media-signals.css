@@ -1,0 +1,111 @@
+.torrent-health-badge {
+  position: absolute;
+  z-index: 4;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 28px;
+  padding: 4px 8px;
+  border: 1px solid #d6eaff70;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px #0009;
+  background: #07111de8;
+  color: #ddecfa;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px #000;
+  backdrop-filter: blur(8px);
+}
+
+.torrent-health-badge > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-card-media > .torrent-health-badge,
+.series-card-media > .torrent-health-badge,
+.discovery-card-media > .torrent-health-badge {
+  max-width: calc(100% - 20px);
+}
+
+.torrent-health-bars {
+  display: inline-flex;
+  flex: 0 0 20px;
+  align-items: flex-end;
+  gap: 2px;
+  width: 20px;
+  height: 15px;
+}
+
+.torrent-health-bars i {
+  width: 3px;
+  border-radius: 2px 2px 0 0;
+  background: currentColor;
+  opacity: 0.2;
+}
+
+.torrent-health-bars i:nth-child(1) {
+  height: 4px;
+}
+
+.torrent-health-bars i:nth-child(2) {
+  height: 7px;
+}
+
+.torrent-health-bars i:nth-child(3) {
+  height: 10px;
+}
+
+.torrent-health-bars i:nth-child(4) {
+  height: 13px;
+}
+
+.torrent-health-bars i:nth-child(5) {
+  height: 15px;
+}
+
+.torrent-health-bars i.is-active {
+  opacity: 1;
+}
+
+.torrent-health-excellent,
+.torrent-health-very-good {
+  color: #9de3ca;
+}
+
+.torrent-health-good {
+  color: #b9dcfa;
+}
+
+.torrent-health-unstable,
+.torrent-health-poor {
+  color: #f2c884;
+}
+
+.torrent-health-unavailable {
+  color: #ef9c9c;
+}
+
+.torrent-health-inline {
+  position: static;
+  min-height: 26px;
+  vertical-align: middle;
+}
+
+button:hover > .torrent-health-badge,
+button:focus-visible > .torrent-health-badge {
+  border-color: currentColor;
+  background: #10263bf2;
+}
+
+.source-health-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+}

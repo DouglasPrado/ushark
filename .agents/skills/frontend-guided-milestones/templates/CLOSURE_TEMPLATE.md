@@ -1,7 +1,9 @@
 # MXX — Closure Report
 
 ## Final Status
-DONE
+PENDING
+
+Altere para `DONE` somente após todos os itens e gates obrigatórios terem evidência.
 
 ## Stories
 - [ ] S00
@@ -24,6 +26,20 @@ DONE
 - Unit:
 - Integration:
 - E2E:
+
+## Architecture Conformance
+- Sources checked:
+- Ownership/boundaries:
+- Security/trust boundaries:
+- Contract/drift checks:
+- Deviations/ADRs:
+
+## Delivery Gates
+- Local validation:
+- CI:
+- Review:
+- Merge:
+- Manual/environment validation:
 
 ## Requirements Covered
 - ...

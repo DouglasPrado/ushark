@@ -1,0 +1,9 @@
+# Experiência frontend M13
+
+Bibliotecas → Arquivos de biblioteca → escolher rascunho salvo → preparar exportação em memória → revisar nome/autor/versão/schema/conteúdos/assets e exclusões → escolher pacote exportado → validar → prévia → confirmar no perfil receptor simulado → abrir offline. Perfil receptor tem catálogo independente, alimentado apenas pelo snapshot clonado, sem acesso ao catálogo original. Layout usa LibraryPreview do M12.
+
+Pacotes são fixtures, nunca ZIPs reais. Nenhum arquivo é lido/escrito. Identificador de integridade explicitamente demonstrativo; schema 1.0 é proposta visual, versão da biblioteca separada. Snapshot não muda com edição do draft. Export inclui apenas dados declarativos selecionados e artes próprias; não contém vídeo, progresso, preferências ou caminhos pessoais.
+
+Estados: vazio oferece criar curadoria ou pacote sintético; preparando/validando/importando são canceláveis, sem efeito após cancelamento. Validação inválida/incompatível/assinatura não suportada/arquivo hostil bloqueia confirmação; retry usa novo staging. Asset ausente degrada para fallback. Pacote repetido é idempotente; mesmo ID/versão divergente gera conflito sem substituir. Falha de commit preserva catálogo receptor e permite retry. Offline mantém transferência simulada local e leitura. Voltar restaura foco ao acionador em Bibliotecas.
+
+Fixtures: válido, minor compatível, major incompatível, manifest inválido, traversal/absoluto/symlink/ZIP bomb/código executável/limites excessivos/protocolo proibido, assinatura não suportada, asset ausente, conflito, falha de importação e offline. Resultados de segurança são simulações de estado; parsing, sandbox, criptografia, portabilidade de arquivo real e limites D04/D08/D14/D21/D22 ficam em S03–S08. Cobertura FR/NFR/RX do PREPARATION_COVERAGE é representada nesses estados; nenhuma garantia de segurança real é atribuída a mocks.

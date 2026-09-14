@@ -1,6 +1,6 @@
 interface:
   display_name: "Frontend Guided Milestones"
-  short_description: "Plan and execute vertical milestones from PRDs"
+  short_description: "Plan and execute architecture-aware vertical milestones"
   default_prompt: "Use $frontend-guided-milestones to plan, prepare, execute, resume, or audit the current project milestone workflow."
 policy:
   allow_implicit_invocation: true

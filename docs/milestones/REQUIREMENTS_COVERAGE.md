@@ -1,10 +1,12 @@
 # Matriz de cobertura — Requisito → Milestone
 
-Status: **PLANEJADO, NÃO IMPLEMENTADO**. Ownership primário único. Cada definição original permanece normativa em sua fonte, inclusive condicionais como pode/quando suportado. Os resumos não substituem seus critérios de aceite.
+Status: **OWNERSHIP PLANEJADO; ENTREGA DEFINITIVA NÃO ENCERRADA**. Ownership primário único. Cada definição original permanece normativa em sua fonte, inclusive condicionais como pode/quando suportado. Os resumos não substituem seus critérios de aceite.
 
 FR/NFR são os IDs existentes. RX identifica complemento extraído de seção não numerada por requisito; alguns refinam um FR em vez de criar funcionalidade nova. FUT preserva intenção futura ainda insuficientemente especificada. UJ é índice de jornada, não requisito adicional no total.
 
 A coluna de milestone aponta para a responsabilidade final. **S01/S02 simulam; S03–S05 realizam após UX; S06–S08 comprovam e fecham.** A conclusão depende das regras transversais do [plano](PLAN.md). Nos FUT, cobertura é somente alocação para discovery, não cobertura de implementação já especificada.
+
+M01–M22 possuem preparação S00–S08 e cobertura individual vinculada no [índice](README.md). M01–M03 preservam UX aprovada; M04 concluiu S00–S02 e está [pronto para revisão UX](M04-home-search/UX_CHECKPOINT.md), com [evidências frontend](M04-home-search/evidence/VALIDATION.md); aceite PENDING e integração adiada. A atribuição do aceite M03 no estado foi reconciliada. Nenhum requisito foi promovido a DONE por esta preparação. M05–M22 têm implementação e checkpoints pendentes.
 
 ## Funcionais e não funcionais
 
@@ -574,6 +576,8 @@ O primeiro milestone é responsável pela aceitação principal da jornada; os s
 
 Validação mecânica comparou os IDs da fonte com os IDs da matriz e percorreu o grafo de dependências. A análise semântica cotejou também PRD, jornadas e Architecture 01–11; contagem de IDs sozinha não prova completude semântica nem funcionamento. FUT continua **DEFERRED_NOT_SPECIFIED** e exige detalhamento antes de implementação. Aprovar o mapa não elimina as pendências documentais listadas em [SOURCE_ANALYSIS](SOURCE_ANALYSIS.md).
 
-## Preparação de M01 após aprovação do mapa
+## Estado das preparações
 
-Mapa aprovado pelo usuário. Os requisitos primários de M01 estão detalhados em [stories S00–S08](M01-onboarding/README.md#sequência-preparada). Todas permanecem PLANNED; nenhum requisito foi implementado ou funcionalmente aprovado.
+Mapa aprovado pelo usuário. M01 e M02 executaram a fase frontend e receberam aprovação UX; integrações e closure permanecem pendentes. Os requisitos primários de M03 estão detalhados em [stories S00–S08](M03-series/README.md#sequência-preparada), S00–S02 concluídas com mocks, S03–S08 adiadas. FR-004/005/017/018/020/206, NFR-080 e RX-008 têm [cobertura frontend](M03-series/EXPERIENCE.md), sem inferência/persistência reais ou aceite UX implícito. Nenhum requisito de M03 foi promovido a funcionalmente aprovado ou DONE.
+
+M05 possui [stories S00–S08 preparadas](M05-local-playback/README.md#stories) e [cobertura por etapa](M05-local-playback/PREPARATION_COVERAGE.md) para seus 30 requisitos primários, incluindo sub-stories S04.1–S04.3 e checkpoints. Preparação documental em 2026-09-13, sem execução ou aprovação UX/funcional; ownership e status de entrega dos requisitos permanecem inalterados.

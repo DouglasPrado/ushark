@@ -11,6 +11,7 @@ STATE.yaml
 README do milestone atual
 story atual
 referências explicitamente citadas pela story
+seções arquiteturais citadas pela story
 ```
 
 Expanda o contexto somente quando necessário.
@@ -25,6 +26,8 @@ Normalmente o agente pode decidir:
 - estratégia de testes compatível com o projeto;
 - correções necessárias para deixar a story verde.
 
+Essa autonomia não permite redefinir ownership, atravessar boundaries, enfraquecer trust/security, antecipar infraestrutura da arquitetura-alvo ou dispensar gates vigentes.
+
 ## Mudanças que exigem registro especial
 
 - UX aprovada;
@@ -35,6 +38,8 @@ Normalmente o agente pode decidir:
 - dependências relevantes entre milestones.
 
 Use ADR quando a decisão for durável e impactar trabalho futuro.
+
+Quando fontes arquiteturais divergirem, registre a tensão e resolva somente o necessário para o escopo atual. Uma decisão fechada pode ser alterada por instrução explícita compatível com as permissões, mas a mudança e suas consequências devem ficar rastreáveis; não reescreva o passado nem presuma aprovação de efeitos adicionais.
 
 ## Precedência
 

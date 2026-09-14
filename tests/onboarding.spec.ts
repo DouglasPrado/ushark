@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
-import { MockConfigurationService, initial } from "../packages/mocks/src";
-import { gamepadAction } from "../apps/desktop/src/navigation";
+import { MockConfigurationService, initial } from "@ushark/mocks";
+import {
+  gamepadAction,
+  remoteActionForKey,
+} from "../apps/desktop/src/renderer/app/navigation";
 
 test("percurso, validação, rascunho, falha e retry, reset seletivo", async ({
   page,
@@ -33,6 +36,9 @@ test("percurso, validação, rascunho, falha e retry, reset seletivo", async ({
   await expect(
     page.getByRole("heading", { name: "Minha cinemateca" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Interestelar", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Ajustar preferências" }).click();
   await page
     .getByRole("button", { name: "Restaurar preferências", exact: true })
@@ -44,8 +50,11 @@ test("percurso, validação, rascunho, falha e retry, reset seletivo", async ({
   await expect(page.getByLabel("Limite do cache")).toHaveValue("250");
   await page.reload();
   await expect(
-    page.getByRole("button", { name: "Começar", exact: true }),
+    page.getByRole("heading", { name: "Minha biblioteca", exact: true }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Começar", exact: true }),
+  ).toHaveCount(0);
 });
 test("seletor simulado prende foco e restaura origem", async ({ page }) => {
   await page.goto("/");
@@ -121,6 +130,11 @@ test("controle mapeia botões/analógico e retorna ao soltar", () => {
   expect(gamepadAction(pad)).toBe("up");
   pad.buttons[1].pressed = true;
   expect(gamepadAction(pad)).toBe("back");
+  expect(remoteActionForKey("ArrowRight")).toBe("right");
+  expect(remoteActionForKey("Enter")).toBe("confirm");
+  expect(remoteActionForKey("BrowserBack")).toBe("back");
+  expect(remoteActionForKey("Unidentified", 10009)).toBe("back");
+  expect(remoteActionForKey("AudioVolumeUp")).toBeNull();
 });
 test("setas navegam com foco visível e controle virtual confirma", async ({
   page,
@@ -128,8 +142,8 @@ test("setas navegam com foco visível e controle virtual confirma", async ({
   await page.goto("/");
   const start = page.getByRole("button", { name: "Começar", exact: true });
   await expect(start).toBeFocused();
-  await page.keyboard.press("ArrowUp");
-  await expect(start).not.toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(page.getByLabel("Cenário de teste")).toBeFocused();
   await start.focus();
   await page.evaluate(() => {
     Object.defineProperty(navigator, "getGamepads", {

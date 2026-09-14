@@ -39,3 +39,5 @@ Código presente no checkout e validado nesta retomada. Ver [evidências e limit
 ## Conclusão
 
 Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+
+Estado consolidado da fase: S00–S02 implementadas; aceite UX já existente de M01 preservado em ../UX_CHECKPOINT.md. Referências a revisão pendente acima registram o estágio histórico anterior ao aceite. S03–S08 adiadas.

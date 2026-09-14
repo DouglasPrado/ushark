@@ -5,15 +5,15 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "src/styles.css",
+    "css": "src/renderer/app/styles.css",
     "baseColor": "neutral",
     "cssVariables": true
   },
   "aliases": {
-    "components": "@/components",
+    "components": "@/renderer/components",
     "utils": "@ushark/ui",
     "ui": "@ushark/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+    "lib": "@/renderer/lib",
+    "hooks": "@/renderer/hooks"
   }
 }

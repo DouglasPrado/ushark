@@ -1,0 +1,9 @@
+# Experiência frontend M16
+
+Bibliotecas → Assinaturas → inserir código/link .invalid ou deep link ushark://library/DEMO → resolver fixture → prévia e confiança M14 → confirmar → biblioteca instalada em memória. Botão de exemplo preenche DEMO-CINEMA sem abrir player. Links de publicações M15 resolvem o snapshot pelo mesmo boundary. URL arbitrária é rejeitada, nunca acessada.
+
+Abrir usa LibraryPreview M12, conteúdo abre SourceChoices M08 → player M05/M07 e download M09. Favoritos/override/progresso ficam separados do snapshot. Ocultar afeta só a origem selecionada, restaurar recupera; salvar na pessoal preserva metadata/fontes em cópia privada após unsubscribe. Home recebe origens e fontes agregadas sem duplicar identidade. Zero sources permite ler detalhes, sem assistir/baixar.
+
+Check manual e ciclo automático simulado (8 segundos com tela aberta) só preparam atualização para review; pausa suspende auto. Erro tem backoff demonstrativo de 10 segundos, manual pode retry. Atualização passa staging/verifying/applying e só troca após sucesso; abort/crash conserva snapshot anterior. Diff indica adições/remoções e versão. Mesmo número/hash divergente e downgrade são bloqueados. Rollback explícito restaura versão retida. Remoção/unsubscribe confirma o que mantém, não apaga player/download/overrides/favoritos/pessoal. Foco volta ao vizinho/abertura da biblioteca após remoção.
+
+Fixtures: normal, atualização, remoção de conteúdo/source, sem sources, offline, erro, crash stage/verify/commit, hash divergente, downgrade. Identidade simulada passa pelo painel M14 antes do commit. D06/D08/D15, concorrência DB/filesystem, GC real, backoff e limites definitivos ficam S03–S08. FR/NFR/RX listados na cobertura têm efeitos de estado e preservação simulados; nenhum processo/rede/persistência real.

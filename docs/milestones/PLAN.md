@@ -16,7 +16,7 @@ Foram analisados os quatro documentos de produto, as onze especificações de ar
 
 ## Ordem e limites de execução
 
-**Primeiro, provar a experiência completa com mocks.** Após aprovação deste plano, preparar somente o próximo milestone. A primeira story executável de UI é S01; S00 apenas define contrato de experiência, estados, escopo e aceite.
+**Primeiro, provar a experiência completa com mocks.** Autorização posterior em 2026-09-13 permite preparar sequencialmente todos os milestones M01–M22; implementação continua uma story por vez e sujeita aos checkpoints. A primeira story executável de UI é S01; S00 apenas define contrato de experiência, estados, escopo e aceite.
 
 Cada milestone percorre:
 
@@ -33,7 +33,7 @@ Todos os milestones têm duas dependências distintas: a **UI pode simular capac
 
 ### Onda A — experiência principal, sem integrações reais
 
-Percorrer S00–S02 e os checkpoints UX de M01 a M22, uma story por vez. M01 fornece o shell mínimo para inspecionar onboarding → Home vazia; os demais acrescentam fluxos verticais simulados. Não criar todos os arquivos de stories antecipadamente. Para milestones cujo frontend depende de outro, reutilizar a interface mockada já aprovada.
+Percorrer S00–S02 e os checkpoints UX de M01 a M22, uma story por vez. M01 fornece o shell mínimo para inspecionar onboarding → Home vazia; os demais acrescentam fluxos verticais simulados. A preparação antecipada S00–S08 foi autorizada pelo usuário em 2026-09-13; isso não antecipa execução ou contratos definitivos. Para milestones cujo frontend depende de outro, reutilizar a interface mockada já aprovada.
 
 A UX de M01–M22 deve estar aprovada antes da primeira persistência/provider/runtime real. A diretriz posterior do usuário — “o backend pode continuar pendente até o fim” — estende a precedência da UX principal (M01–M18) definida em Architecture 11 §35 até o fim da fase frontend planejada. Pendências de backend não bloqueiam a próxima fatia frontend após aceite UX; permanecem exigidas para integração e closure. M23–M28 continuam fora do escopo executável. As sequências de integração descritas por milestone serão retomadas nas ondas seguintes, após essa fase. O shell, mocks e testes frontend são ferramentas para inspecionar o produto; CI básico entra após a experiência inicial aprovada, sem antecipar pipelines nativos/deploy/release. Teste manual da UI transmitida por Sunshine já instalado pode ocorrer cedo, sem automação/serviço novo.
 
@@ -160,6 +160,8 @@ Antes de exigir aprovação quantitativa, S00/S03 do milestone responsável fixa
 
 ### M04 — Encontrar conteúdo e continuar pela Home
 
+Preparação: [S00–S08 e checkpoints](M04-home-search/README.md) conferidos. M04 concluiu S00–S02 e está READY_FOR_REVIEW/PENDING; integração adiada. A divergência de atribuição do aceite foi reconciliada com o checkpoint específico M03. M03 tem UX aprovada.
+
 - **ID:** M04.
 - **Objetivo:** Permitir descoberta local rápida entre todas as origens.
 - **Resultado esperado:** Home, busca global e filtros levam ao mesmo Content e restauram foco/contexto.
@@ -173,6 +175,8 @@ Antes de exigir aprovação quantitativa, S00/S03 do milestone responsável fixa
 <a id="m05"></a>
 
 ### M05 — Assistir mídia local e retomar
+
+Preparação: [S00–S08 detalhadas](M05-local-playback/README.md#stories), status PREPARED em 2026-09-13; nenhuma story executada. Backend e integração adiados conforme GOAL.
 
 - **ID:** M05.
 - **Objetivo:** Provar a jornada de reprodução sem depender de swarm.
@@ -508,4 +512,8 @@ Antes de exigir aprovação quantitativa, S00/S03 do milestone responsável fixa
 
 ## Aprovação registrada
 
-O usuário aprovou este mapa com “aprovadissimo”. Agrupamento, escopo e ordem aprovados; pendências técnicas permanecem nos contratos futuros. [M01 foi preparado](M01-onboarding/README.md) em S00–S08. Nenhuma implementação iniciada; aprovação UX/funcional e publicação externa continuam independentes.
+O usuário aprovou este mapa com “aprovadissimo”. Agrupamento, escopo e ordem aprovados; pendências técnicas permanecem nos contratos futuros. [M01](M01-onboarding/README.md) e [M02](M02-movies/README.md) têm frontend e UX aprovados, com integração e verificações físicas pendentes; S03–S08 continuam adiadas. [M03](M03-series/README.md) concluiu S00–S02 e tem UX aprovada; integração adiada. Aprovações UX/funcional dos demais milestones e publicação externa continuam independentes.
+
+## Preparação M01–M22 — 2026-09-13
+
+Todos os 22 milestones possuem S00–S08 e roteiros UX/funcional preparados. Veja [índice](README.md) e [auditoria](PREPARATION_AUDIT.md). Preparação não altera ownership, critérios de entrega ou aceites; contratos previstos serão refinados após UX.

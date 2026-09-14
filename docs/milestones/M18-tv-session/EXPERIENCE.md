@@ -1,0 +1,9 @@
+# Experiência frontend M18
+
+Configurações → Sessão de TV → orientação Sunshine/Moonlight e preset ilustrativo Ushark --tv → iniciar sessão simulada → Home compartilhada → conteúdo/player/tracks → painel flutuante da sessão → desconectar/reconectar → sair com confirmação. Não registra app no Sunshine, não observa Moonlight real nem cria janela/processo/helper. Matriz física mostra não verificado, sem inventar versões suportadas.
+
+Iniciar/reconectar/encerrar são canceláveis e têm fixtures erro/offline. Fullscreen é apenas a superfície do navegador quando suportada, ativada por gesto e recuperável se negada. Sessão ativa expõe painel contextual sem trocar catálogo. Política pause/continue herda configuração M01; desconectar grava posição confirmada e aplica pausa ou continuação, reconnect nunca retoma silenciosamente. Hotplug é fixture e mantém navegação de teclado disponível, com recuperação de foco. Encerrar fecha player simulado e volta ao app, sem alegar encerramento de helpers reais.
+
+FR070–074/219/RX044 representados por orientação, sessão e efeitos no player. NFR066/074/120/121/122: exercitar frontend/input sintético, registrar limites e roteiro físico Windows/TV/LAN/controle/encode/áudio pendentes. D11/D12/D18 e suporte real --tv, foco de janelas e sinal de conexão ficam S03–S08. Nenhuma integração Sunshine/Moonlight real nesta fase.
+
+Quando o modo TV está ativo, a superfície é somente de consumo: Home, Busca, Filmes, Séries, Favoritos, detalhes e reprodução. Bibliotecas, downloads, cadastro de filmes/séries, importação torrent, edição de identificação, gestão de fontes, diagnóstico e seletores de cenário não são renderizados. A escolha de fonte ocorre automaticamente atrás do CTA Assistir; áudio e legendas permanecem disponíveis durante a reprodução. O Electron propaga `--tv` ao renderer, e a mesma política é usada pela sessão demonstrativa. Ferramentas de fixtures da sessão exigem `?review=1` e não aparecem no modo TV normal.

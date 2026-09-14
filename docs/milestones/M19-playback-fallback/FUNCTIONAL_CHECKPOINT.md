@@ -1,0 +1,35 @@
+# Checkpoint funcional — M19
+
+## Status
+
+NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+
+## Pré-condições
+
+S03–S05 integradas após UX M01–M22 e dependências reais; só então READY_FOR_REVIEW.
+
+## Jornada para testar
+
+Fonte degrada → informar alternativa → confirmar ou auto-switch permitido → preparar → trocar → retomar posição.
+
+1. Percorrer o caminho principal e verificar o resultado: Fallback compatível retoma posição e histórico ajuda decisões futuras sem depender de servidor.
+2. Exercitar estados: degradado; sem alternativa; preparando; edição incompatível; cancelado; trocando; cooldown; falha.
+3. Voltar/cancelar/repetir e conferir foco, contexto e ausência de mutação não confirmada.
+4. Retirar peers de source controlada; auto-switch off não troca; outra edição não troca automaticamente; seek concorrente usa posição correta; cooldown impede loop; expiração reduz peso do histórico.
+5. Registrar ambiente, versões, corpus, evidências e limitações; separar controle sintético e hardware real.
+
+## Integrações reais e verificações
+
+PlaybackFallback: avaliar candidato/content/episódio/duração, preparar antes do handoff, trocar com geração/posição; HealthHistory agregado local com decay/TTL/algorithmVersion; override original preservado.
+
+Verificar ausência de mock no caminho principal, persistência pertinente após restart, permissões, erro/sucesso refletidos na UI e dependências M08. Testes verdes não substituem demonstração da jornada real.
+
+## Evidências e decisão
+
+PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
+
+## Mudanças solicitadas
+
+Nenhuma registrada; isso não equivale a aprovação.
+
+S03–S08 DEFERRED pela política atual. Validação frontend não comprova integração.

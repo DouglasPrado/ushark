@@ -1,0 +1,35 @@
+# S07 — Hardening — M14
+
+Status: DEFERRED; preparada documentalmente, não executada.
+
+## Objetivo
+
+Resolver riscos materiais de M14 com evidência.
+
+## Contexto e dependências
+
+S06 concluída. Ler [README](../README.md), [cobertura](../PREPARATION_COVERAGE.md) e apenas recortes de produto/arquitetura referidos pelos requisitos desta story.
+
+## Escopo
+
+Exercitar riscos: Confundir autenticidade com autorização ou direitos; perda/rotação de chave sem política fechada. Validar limites de entrada/recursos, privacidade, recuperação, responsividade/foco e NFRs da cobertura nas superfícies introduzidas; segurança necessária já acompanha S04.
+
+## Fora de escopo
+
+Otimização sem medição, ampliar escopo e usar ambiente mockado como comprovação de plataforma alvo.
+
+## Critérios de aceite
+
+NFRs aplicáveis medidos com ambiente/corpus/amostras/limites; nenhuma regressão crítica ou pendência obrigatória escondida; erros têm recuperação; secrets não aparecem em logs.
+
+## Validação
+
+Ensaios dirigidos de falha, segurança e performance, incluindo Modificar bytes invalida assinatura; chave diferente nunca entra silenciosamente; não assinado é identificado; roundtrip preserva assinatura; verificar ausência de chave privada em DB/logs. Usar budgets das fontes; definir baseline antes de medir, sem relaxar limites para passar.
+
+## Evidências
+
+Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+
+## Done When
+
+Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.

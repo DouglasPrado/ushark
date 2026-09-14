@@ -12,6 +12,15 @@ Ao final, o usuário consegue...
 ## Depends On
 - ...
 
+## Architecture Inputs
+- `docs/architecture/...` — applicable sections
+
+## Architecture Guardrails
+- ownership/boundary:
+- trust/security:
+- contract/versioning:
+- delivery gate:
+
 ## Main Journey
 ```text
 Start → Action → Result

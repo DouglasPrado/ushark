@@ -28,6 +28,8 @@ milestones:
   M05: { status: pending }
 ```
 
+No exemplo, `done` pressupõe que todos os gates exigidos pela política do projeto já passaram. Quando implementação local, CI, review, merge ou validação manual forem estados distintos, represente-os explicitamente e não antecipe `done`.
+
 ## UPDATE.md
 
 É a visão humana. Deve responder rapidamente:
@@ -40,6 +42,8 @@ milestones:
 - status do UX;
 - status funcional;
 - validações recentes;
+- conformidade/gates arquiteturais relevantes;
+- distinção entre implementado, validado localmente, CI, review, merge e validação manual quando aplicável;
 - decisões recentes.
 
 Não transforme `UPDATE.md` em log cronológico infinito. Mantenha o estado atual e decisões relevantes.

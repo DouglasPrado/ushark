@@ -3,5 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "exports": "./src/index.ts"
+  "exports": {
+    ".": "./index.ts",
+    "./data/*": "./data/*.ts",
+    "./scenarios/*": "./scenarios/*.ts",
+    "./*": "./services/*.ts"
+  },
+  "dependencies": {
+    "@ushark/types": "workspace:*"
+  }
 }

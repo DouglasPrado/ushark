@@ -10,3 +10,14 @@
 - Covered:
 - Orphan:
 - Duplicate ownership:
+
+## Architecture Coverage
+
+| Constraint/Decision | Source | Milestone | Story/Gate | Validation | Status |
+|---|---|---|---|---|---|
+| ARCH-001 | `docs/architecture/...` | M01 | S03/S06 | ... | PLANNED |
+
+- Architecture constraints discovered:
+- Architecture constraints mapped:
+- Unmapped architecture constraints:
+- Open architecture decisions:
