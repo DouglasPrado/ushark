@@ -6,7 +6,9 @@ Regressão final: **141 testes passaram**, incluindo Electron macOS, browser, la
 
 [Revisão final](FRONTEND_REVIEW.md) · [Auditoria](FRONTEND_COVERAGE_AUDIT.md) · [445 requisitos e 80 jornadas](FRONTEND_REQUIREMENTS_AUDIT.md).
 
-Backend, persistência definitiva, providers/MPV/torrentd/Registry e integrações reais não implementados. S03–S08 DEFERRED; nenhum milestone DONE. Windows/TV/controle físicos e runtime de mídia pendentes. Nenhum merge/deploy/publicação/M23–M28 executado. Próxima ação: aguardar decisão UX humana; novas etapas exigem autorização.
+PR [#1](https://github.com/DouglasPrado/ushark/pull/1) aberto a partir de `feat/frontend-m01-m22`; nenhum check remoto foi reportado no momento da criação. A validação local desta publicação passou em formatação, lint, typecheck e build. A repetição da regressão Playwright foi interrompida por `ENOSPC` no host, sem falha de assertion; a última regressão integral preservada permanece 141/141.
+
+Backend, persistência definitiva, providers/MPV/torrentd/Registry e integrações reais não implementados. S03–S08 DEFERRED; nenhum milestone DONE. Windows/TV/controle físicos e runtime de mídia pendentes. Nenhum merge/deploy/M23–M28 executado. Próxima ação: revisão humana do PR e decisão UX; novas etapas exigem autorização.
 
 ## Ajuste durante a revisão — renderer e design system
 

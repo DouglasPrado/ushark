@@ -146,8 +146,11 @@ frontend_phase:
   milestone_closure: not_performed
   actual_backend_integrations: not_implemented
   hardware: windows_TV_physical_controller_media_runtime_pending
-  PR: not_created
-  CI: not_run_local_validation_only
+  PR: created_open
+  PR_number: 1
+  PR_url: https://github.com/DouglasPrado/ushark/pull/1
+  PR_branch: feat/frontend-m01-m22
+  CI: pending_no_checks_reported
   merge_deploy_release: not_performed
   review_adjustments:
     - M01_onboarding_completion_marker_persisted_locally
