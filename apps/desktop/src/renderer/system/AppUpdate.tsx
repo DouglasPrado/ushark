@@ -82,8 +82,9 @@ export function AppUpdate({
         <h1>Sobre e atualização</h1>
       </header>
       <p>
-        Ushark · build local de desenvolvimento. Este painel simula instalação e
-        atualização; não baixa nem executa instaladores reais.
+        {service.runtime === "desktop"
+          ? "Ushark · update assinado e verificado localmente antes de ser entregue ao instalador da plataforma."
+          : "Ushark · build local de desenvolvimento. Este painel simula instalação e atualização; não baixa nem executa instaladores reais."}
       </p>
       {notice && <p role="status">{notice}</p>}
       {error && !candidate && !uninstall && <p role="alert">{error}</p>}
@@ -179,32 +180,34 @@ export function AppUpdate({
           </Button>
         </article>
       </section>
-      <details className="workspace-scenarios">
-        <summary>Cenários de atualização</summary>
-        <label>
-          Estado da atualização
-          <select
-            disabled={!!busy}
-            value={scenario}
-            onChange={(e) => setScenario(e.target.value as UpdateScenario)}
-          >
-            {Object.entries({
-              normal: "Disponível",
-              current: "Já atualizado",
-              signature: "Assinatura inválida",
-              hash: "Checksum divergente",
-              incompatible: "Incompatível",
-              "download-error": "Falha no download",
-              migration: "Migração falhou",
-              offline: "Offline",
-            }).map(([id, name]) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
-      </details>
+      {service.runtime !== "desktop" && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de atualização</summary>
+          <label>
+            Estado da atualização
+            <select
+              disabled={!!busy}
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value as UpdateScenario)}
+            >
+              {Object.entries({
+                normal: "Disponível",
+                current: "Já atualizado",
+                signature: "Assinatura inválida",
+                hash: "Checksum divergente",
+                incompatible: "Incompatível",
+                "download-error": "Falha no download",
+                migration: "Migração falhou",
+                offline: "Offline",
+              }).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </details>
+      )}
       <Dialog.Root
         open={!!candidate || uninstall}
         onOpenChange={(v) => {
@@ -273,7 +276,9 @@ export function AppUpdate({
                         setNotice(
                           uninstall
                             ? "Desinstalação simulada concluída. Dados preservados."
-                            : "Atualização simulada concluída. Biblioteca, progresso e downloads preservados.",
+                            : service.runtime === "desktop"
+                              ? "Candidato verificado e preparado; o instalador assinado da plataforma conclui no reinício."
+                              : "Atualização simulada concluída. Biblioteca, progresso e downloads preservados.",
                         );
                       }
                     },

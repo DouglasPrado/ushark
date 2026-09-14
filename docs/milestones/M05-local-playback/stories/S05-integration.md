@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M05
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14. Checkpoint funcional aguardando revisão humana.
 
 ## Objetivo
 
@@ -28,8 +28,13 @@ Reproduzir fixture local autorizada offline, trocar áudio/legenda sem reiniciar
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Integração e validação](../evidence/INTEGRATION_VALIDATION.md): resolução de
+source gerenciada, coordenador MPV, journal SQLite, tracks, IPC/preload,
+renderer desktop e jornada Electron real até o restart. O teste direto também
+cobre seek e a matriz S04 cobre legenda externa e crash isolado.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido para S05. Evidências locais estão prontas para aceite funcional
+humano; S06 permanece não autorizado. Composição visível da janela MPV,
+hardware decode e controle físico continuam para Windows/TV.

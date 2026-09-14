@@ -1,6 +1,6 @@
 # M10 — Controlar espaço e retenção com segurança
 
-Status: frontend S00–S02 implementado; UX READY_FOR_REVIEW/PENDING adiada por instrução explícita até fim M01–M22. S03–S08 DEFERRED; funcional NOT_STARTED/PENDING. [Experiência](EXPERIENCE.md), [validação](evidence/VALIDATION.md). Discos reais e garantias físicas abaixo permanecem objetivo futuro.
+Status: FUNCTIONAL_CHECKPOINT READY_FOR_REVIEW/PENDING — UX aprovada; S03–S05 concluídas.
 
 ## Objetivo
 

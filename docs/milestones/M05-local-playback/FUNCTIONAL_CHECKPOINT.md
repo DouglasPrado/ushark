@@ -2,7 +2,7 @@
 
 ## Status
 
-NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+READY_FOR_REVIEW. Decisão humana: PENDING.
 
 ## Pré-condições
 
@@ -26,7 +26,22 @@ Verificar ausência de mock no caminho principal, persistência pertinente após
 
 ## Evidências e decisão
 
-PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
+[Evidência S05](evidence/INTEGRATION_VALIDATION.md): o caminho Electron usa
+source gerenciada, processo MPV 0.41 separado, socket privado, primeiro frame
+observado, comandos reais, persistência SQLite e preload/IPC restritos. O smoke
+Electron reproduziu fixture H.264/AAC, pausou/retomou, encerrou e leu a posição
+após reiniciar. A matriz direta cobre seek, tracks, legenda externa, crash e
+limites sem expor path/PID ao renderer.
+
+Validação final: lint e typecheck passaram; testes focados S04–S05 **13/13**;
+smoke Electron real **1/1** e repetição concorrente **3/3**; regressão integral
+**222 passed, 6 skipped, 0 failed** em 2,3 min. Os skips são os casos opcionais
+condicionados ao runtime libtorrent da onda M06, já validados separadamente.
+
+Pendências explícitas: empacotar MPV para Windows x64; observar vídeo/janela,
+fullscreen e hardware decode reais; validar Windows/TV/Moonlight e controle
+físico; executar S06–S08 somente após autorização. O headless macOS comprova
+decode/IPC e não substitui esses gates. Aprovação humana continua `PENDING`.
 
 ## Mudanças solicitadas
 
@@ -34,4 +49,5 @@ Nenhuma registrada; isso não equivale a aprovação.
 
 ## Distinção da fase atual
 
-M05 frontend implementado com mocks; evidência em evidence/VALIDATION.md não executa este checkpoint. Integração S03–S08 DEFERRED.
+S03–S05 estão concluídas. M05 não está `DONE`: S06–S08, aceite funcional
+humano e validação física continuam pendentes.

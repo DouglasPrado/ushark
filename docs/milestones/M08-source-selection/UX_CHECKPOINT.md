@@ -2,7 +2,7 @@
 
 ## Status
 
-READY_FOR_REVIEW. Decisão: PENDING. Revisão humana adiada até fim M01–M22 por instrução explícita. Evidências em evidence/VALIDATION.md. Sem aceite novo.
+APPROVED. Aprovação consolidada do usuário em 2026-09-14: “O frontend foi aprovado ja”. Evidências em evidence/VALIDATION.md.
 
 ## Pré-condições
 
@@ -34,4 +34,4 @@ Nenhuma registrada; isso não equivale a aprovação.
 
 ## Revisão final consolidada
 
-READY_FOR_REVIEW / decisão PENDING. A revisão intermediária foi adiada por instrução explícita, não aprovada. Usar o [roteiro único](../../execution/FRONTEND_REVIEW.md); resultados automatizados e inspeções não substituem sua decisão.
+APPROVED na revisão consolidada de 2026-09-14; [roteiro e evidência do aceite](../../execution/FRONTEND_REVIEW.md). O aceite cobre UX mockada, não integração funcional ou hardware físico.

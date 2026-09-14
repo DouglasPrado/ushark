@@ -71,10 +71,14 @@ export function SourceChoices({
     if (!preferences.preflight && revision === 0) return;
     setBusy(true);
     service
-      .measure(candidates, scenario, abort.signal)
+      .measure(candidates, scenario, abort.signal, {
+        contentId,
+        preferences: { ...preferences, strategy, resolution },
+      })
       .then((h) => {
         if (!abort.signal.aborted) {
           setHealth(h);
+          setOverride(service.override(contentId));
           setBusy(false);
         }
       })
@@ -92,6 +96,9 @@ export function SourceChoices({
     revision,
     suspended,
     preferences.preflight,
+    contentId,
+    strategy,
+    resolution,
   ]);
   const effectiveHealth =
     scenario === "offline"
@@ -111,9 +118,18 @@ export function SourceChoices({
   const choice =
     ranked.find((s) => s.id === override) ??
     (consumerMode || auto ? ranked[0] : undefined);
-  function choose(id?: string) {
-    service.setOverride(contentId, id);
-    setOverride(id);
+  async function choose(id?: string) {
+    try {
+      await service.setOverride(contentId, id);
+      setOverride(id);
+      setError("");
+    } catch (cause) {
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "Não foi possível salvar a escolha.",
+      );
+    }
   }
   return (
     <section className="source-selection" aria-label="Escolha de fonte">
@@ -208,7 +224,7 @@ export function SourceChoices({
                   : ""}
                 .
               </p>
-              <Button variant="secondary" onClick={() => choose()}>
+              <Button variant="secondary" onClick={() => void choose()}>
                 Retirar escolha manual
               </Button>
             </>
@@ -272,7 +288,7 @@ export function SourceChoices({
                     variant="secondary"
                     aria-pressed={override === s.id}
                     disabled={!ranked.some((x) => x.id === s.id)}
-                    onClick={() => choose(s.id)}
+                    onClick={() => void choose(s.id)}
                   >
                     Escolher {s.name}
                   </Button>
@@ -285,7 +301,7 @@ export function SourceChoices({
             <select
               value={scenario}
               onChange={(e) => {
-                choose();
+                void choose();
                 setScenario(e.target.value as SelectionScenario);
               }}
             >

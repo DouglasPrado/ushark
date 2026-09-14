@@ -51,10 +51,10 @@ export function Downloads({
     else onBack();
   }
   useNavigation(back, !suspended);
-  function perform(action: () => void) {
+  async function perform(action: () => void | Promise<void>) {
     setError("");
     try {
-      action();
+      await action();
       setRows(service.list());
     } catch (e) {
       setError((e as Error).message);
@@ -80,7 +80,9 @@ export function Downloads({
         </Button>
       </header>
       <p>
-        Transferências simuladas em memória. Nada é baixado ou gravado no disco.
+        {service.runtime === "desktop"
+          ? "Transferências reais gerenciadas pelo Ushark."
+          : "Transferências simuladas em memória. Nada é baixado ou gravado no disco."}
       </p>
       {error && <p role="alert">{error}</p>}
       {notice && <p role="status">{notice}</p>}
@@ -88,7 +90,7 @@ export function Downloads({
         <section className="workspace-empty">
           <h2>Nenhum download na fila</h2>
           <p>
-            Abra um conteúdo e escolha Baixar para simular uma transferência.
+            Abra um conteúdo e escolha Baixar para iniciar uma transferência.
           </p>
           <Button onClick={onBack}>Explorar biblioteca</Button>
         </section>
@@ -119,7 +121,7 @@ export function Downloads({
                 {(row.bytes / 1024 ** 2).toFixed(1)} /{" "}
                 {(row.total / 1024 ** 2).toFixed(1)} MB ·{" "}
                 {(row.speed / 1024 ** 2).toFixed(1)} MB/s · {row.peers} peers
-                (simulados)
+                {service.runtime === "desktop" ? "" : " (simulados)"}
               </p>
               <p>
                 {
@@ -139,7 +141,7 @@ export function Downloads({
                   variant="secondary"
                   disabled={!["queued", "downloading"].includes(row.state)}
                   onClick={() =>
-                    perform(() => service.command(row.id, "pause"))
+                    void perform(() => service.command(row.id, "pause"))
                   }
                 >
                   Pausar
@@ -150,7 +152,7 @@ export function Downloads({
                     !["paused", "error", "cancelled"].includes(row.state)
                   }
                   onClick={() =>
-                    perform(() => service.command(row.id, "resume"))
+                    void perform(() => service.command(row.id, "resume"))
                   }
                 >
                   Retomar
@@ -161,7 +163,7 @@ export function Downloads({
                     row.state === "cancelled" || row.state === "complete"
                   }
                   onClick={() =>
-                    perform(() => service.command(row.id, "cancel"))
+                    void perform(() => service.command(row.id, "cancel"))
                   }
                 >
                   Cancelar download
@@ -180,7 +182,7 @@ export function Downloads({
                   <select
                     value={row.priority}
                     onChange={(e) =>
-                      perform(() =>
+                      void perform(() =>
                         service.priority(row.id, Number(e.target.value)),
                       )
                     }
@@ -191,64 +193,68 @@ export function Downloads({
                   </select>
                 </label>
               </div>
-              <details>
-                <summary>Fixture deste download</summary>
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    perform(() => service.command(row.id, "complete"))
-                  }
-                >
-                  Simular conclusão
-                </Button>
-              </details>
+              {service.runtime !== "desktop" && (
+                <details>
+                  <summary>Fixture deste download</summary>
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      void perform(() => service.command(row.id, "complete"))
+                    }
+                  >
+                    Simular conclusão
+                  </Button>
+                </details>
+              )}
             </article>
           ))}
         </section>
       )}
-      <details className="workspace-scenarios">
-        <summary>Cenários de download</summary>
-        <label>
-          Estado das transferências
-          <select
-            value={scenario}
-            onChange={(e) => {
-              const s = e.target.value as typeof scenario;
-              setScenario(s);
-              perform(() => service.configure(s));
-            }}
+      {service.runtime !== "desktop" && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de download</summary>
+          <label>
+            Estado das transferências
+            <select
+              value={scenario}
+              onChange={(e) => {
+                const s = e.target.value as typeof scenario;
+                setScenario(s);
+                void perform(() => service.configure(s));
+              }}
+            >
+              {Object.entries({
+                normal: "Normal",
+                offline: "Offline",
+                disk: "Sem espaço",
+                resume: "Resume inválido",
+                error: "Falha",
+              }).map(([v, l]) => (
+                <option key={v} value={v}>
+                  {l}
+                </option>
+              ))}
+            </select>
+          </label>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              void perform(async () => {
+                await service.restart();
+                setNotice(
+                  "Reinício simulado: snapshot em memória restaurado. Reload real descarta a sessão.",
+                );
+              })
+            }
           >
-            {Object.entries({
-              normal: "Normal",
-              offline: "Offline",
-              disk: "Sem espaço",
-              resume: "Resume inválido",
-              error: "Falha",
-            }).map(([v, l]) => (
-              <option key={v} value={v}>
-                {l}
-              </option>
-            ))}
-          </select>
-        </label>
-        <Button
-          variant="secondary"
-          onClick={() =>
-            perform(() => {
-              service.restart();
-              setNotice(
-                "Reinício simulado: snapshot em memória restaurado. Reload real descarta a sessão.",
-              );
-            })
-          }
-        >
-          Simular reinício
-        </Button>
-        <p>
-          Playback ativo recebe prioridade; fila de fundo reduz velocidade.
-          Health e resume reais permanecem adiados.
-        </p>
-      </details>
+            Simular reinício
+          </Button>
+          <p>
+            Playback ativo recebe prioridade; fila de fundo reduz velocidade.
+            Health e resume reais permanecem adiados.
+          </p>
+        </details>
+      )}
       <Dialog.Root
         open={modal && !suspended}
         onOpenChange={(v) => {
@@ -268,18 +274,24 @@ export function Downloads({
               {adding
                 ? "Baixar conteúdo"
                 : remove
-                  ? "Apagar dados simulados?"
+                  ? service.runtime === "desktop"
+                    ? "Apagar dados baixados?"
+                    : "Apagar dados simulados?"
                   : limits
                     ? "Limites de transferência"
                     : detail?.content.title}
             </Dialog.Title>
             <Dialog.Description>
               {adding
-                ? "Escolha um destino sintético. Confirmar adiciona à fila desta sessão."
+                ? service.runtime === "desktop"
+                  ? "Escolha um destino gerenciado. Confirmar adiciona à fila persistente."
+                  : "Escolha um destino sintético. Confirmar adiciona à fila desta sessão."
                 : remove
-                  ? "Esta ação remove somente dados simulados da fila; o catálogo permanece."
+                  ? "Esta ação remove os dados da transferência; o catálogo permanece."
                   : limits
-                    ? "Limites ilustrativos; nenhuma rede será configurada."
+                    ? service.runtime === "desktop"
+                      ? "Limites aplicados ao runtime de torrent."
+                      : "Limites ilustrativos; nenhuma rede será configurada."
                     : "Detalhes do conteúdo associado ao download."}
             </Dialog.Description>
             {adding && request && (
@@ -294,14 +306,22 @@ export function Downloads({
                     onChange={(e) => setDestination(e.target.value)}
                   >
                     <option value="">Escolher…</option>
-                    <option>Biblioteca simulada</option>
-                    <option>Cache simulado</option>
+                    <option>
+                      {service.runtime === "desktop"
+                        ? "Biblioteca"
+                        : "Biblioteca simulada"}
+                    </option>
+                    <option>
+                      {service.runtime === "desktop"
+                        ? "Cache"
+                        : "Cache simulado"}
+                    </option>
                   </select>
                 </label>
                 <Button
                   onClick={() =>
-                    perform(() => {
-                      service.enqueue(request, destination);
+                    void perform(async () => {
+                      await service.enqueue(request, destination);
                       setAdding(false);
                       setNotice("Download enfileirado nesta sessão.");
                     })
@@ -314,11 +334,11 @@ export function Downloads({
             {remove && (
               <Button
                 onClick={() =>
-                  perform(() => {
-                    service.command(remove, "remove");
+                  void perform(async () => {
+                    await service.command(remove, "remove");
                     setRemove(null);
                     setNotice(
-                      "Dados simulados removidos. Conteúdo preservado no catálogo.",
+                      "Dados removidos. Conteúdo preservado no catálogo.",
                     );
                   })
                 }
@@ -371,10 +391,10 @@ export function Downloads({
                 </div>
                 <Button
                   onClick={() =>
-                    perform(() => {
-                      service.setLimits(draft);
+                    void perform(async () => {
+                      await service.setLimits(draft);
                       setLimits(false);
-                      setNotice("Limites aplicados à simulação.");
+                      setNotice("Limites aplicados.");
                     })
                   }
                 >

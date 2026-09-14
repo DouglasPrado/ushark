@@ -1,6 +1,8 @@
 # M08 — Escolher a fonte adequada antes do Play
 
-Status: frontend S00–S02 implementado. UX READY_FOR_REVIEW/PENDING, revisão adiada por instrução explícita até fim M01–M22. S03–S08 DEFERRED; funcional NOT_STARTED/PENDING. [Experiência](EXPERIENCE.md), [evidências](evidence/VALIDATION.md). Medições reais e objetivos de integração abaixo permanecem futuros.
+Status: READY_FOR_REVIEW — UX aprovada; S03–S05 concluídas. Funcional PENDING;
+S06–S08 não iniciadas. [Contrato](evidence/DOMAIN_CONTRACT.md),
+[experiência](EXPERIENCE.md).
 
 ## Objetivo
 

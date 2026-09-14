@@ -2,7 +2,7 @@
 
 ## Status
 
-NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+READY_FOR_REVIEW. Decisão: PENDING. S03–S05 concluídas em 2026-09-14.
 
 ## Pré-condições
 
@@ -26,10 +26,14 @@ Verificar ausência de mock no caminho principal, persistência pertinente após
 
 ## Evidências e decisão
 
+[Integração](evidence/INTEGRATION_VALIDATION.md). Swarm/handoff percebido,
+decisão humana, hardware e S06–S08 permanecem pendentes.
+
 PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
 
 ## Mudanças solicitadas
 
 Nenhuma registrada; isso não equivale a aprovação.
 
-S03–S08 DEFERRED pela política atual. Validação frontend não comprova integração.
+S03–S05 concluídas. S06–S08 não autorizadas; validação local não substitui a
+decisão humana nem as validações externas pendentes.

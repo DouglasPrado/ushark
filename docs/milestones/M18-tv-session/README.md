@@ -1,6 +1,6 @@
 # M18 — Assistir pela TV via Sunshine e Moonlight
 
-Status: FRONTEND_IMPLEMENTED / READY_FOR_REVIEW. S00–S02 concluídas; UX PENDING adiada por instrução explícita até o fim de M01–M22. S03–S08 DEFERRED; não DONE.
+Status: FUNCTIONAL_READY_FOR_REVIEW_WITH_PHYSICAL_GATE. S00–S05 integradas localmente; checkpoint funcional e Windows/TV PENDING. S06–S08 não autorizadas; não DONE.
 
 ## Objetivo
 

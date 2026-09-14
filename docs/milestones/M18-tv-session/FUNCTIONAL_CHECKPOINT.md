@@ -2,7 +2,8 @@
 
 ## Status
 
-NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+READY_FOR_REVIEW. Decisão: PENDING. S03–S05 locais concluídas em 2026-09-14;
+aceite físico Windows/TV obrigatório permanece pendente.
 
 ## Pré-condições
 
@@ -26,10 +27,14 @@ Verificar ausência de mock no caminho principal, persistência pertinente após
 
 ## Evidências e decisão
 
+[Integração local](evidence/INTEGRATION_VALIDATION.md). Não interpretar macOS
+ou input sintético como validação Sunshine/Moonlight/controle físico.
+
 PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
 
 ## Mudanças solicitadas
 
 Nenhuma registrada; isso não equivale a aprovação.
 
-S03–S08 DEFERRED pela política atual. Validação frontend não comprova integração.
+S03–S05 concluídas localmente. S06–S08 não autorizadas; macOS e input sintético
+não substituem a decisão humana nem o gate físico Windows/TV.

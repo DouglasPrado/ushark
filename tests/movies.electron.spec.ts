@@ -9,18 +9,19 @@ const electronEnv = Object.fromEntries(
       entry[0] !== "ELECTRON_RUN_AS_NODE" && entry[1] !== undefined,
   ),
 );
-import { enterMovies, movieFixtures } from "./movies.helpers";
+import { enterMovies } from "./movies.helpers";
 
-test("M02 Electron empacotado: catálogo offline, assets locais, favorito e retorno à Home", async ({
+test("M02 Electron empacotado: filme manual persiste offline, favorito e retorno à Home", async ({
   browserName,
 }, testInfo) => {
+  const args = [
+    path.resolve("apps/desktop/src/main/index.cjs"),
+    `--user-data-dir=${testInfo.outputPath(`${browserName}-electron-user-data`)}`,
+  ];
   const app = await _electron.launch({
     executablePath: electron as unknown as string,
     env: electronEnv,
-    args: [
-      path.resolve("apps/desktop/src/main/index.cjs"),
-      `--user-data-dir=${testInfo.outputPath(`${browserName}-electron-user-data`)}`,
-    ],
+    args,
   });
   try {
     const page = await app.firstWindow();
@@ -28,72 +29,44 @@ test("M02 Electron empacotado: catálogo offline, assets locais, favorito e reto
     page.on("pageerror", (error) => errors.push(error.message));
     await page.context().setOffline(true);
     await enterMovies(page, false, true);
-    await expect(page.locator(".movie-card")).toHaveCount(8);
-    await expect
-      .poll(() =>
-        page
-          .locator(".movie-card img")
-          .evaluateAll((images) =>
-            images.every(
-              (image) =>
-                (image as HTMLImageElement).complete &&
-                (image as HTMLImageElement).naturalWidth > 0 &&
-                (image as HTMLImageElement).src.includes(
-                  "/movie-art/imdb/tt",
-                ) &&
-                (image as HTMLImageElement).src.endsWith("-poster.jpg"),
-            ),
-          ),
-      )
-      .toBe(true);
+    await expect(
+      page.getByRole("heading", {
+        name: "Sua próxima história começa aqui.",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.locator(".movie-preview-tools")).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "Importar torrent ou magnet" }),
+    ).toBeVisible();
     await page
-      .getByRole("button", { name: "Abrir Interestelar", exact: true })
+      .getByRole("button", { name: "Adicionar filme", exact: true })
       .click();
-    await expect
-      .poll(() =>
-        page
-          .locator(".discovery-detail-hero .discovery-art img")
-          .evaluate(
-            (image) =>
-              (image as HTMLImageElement).naturalWidth > 0 &&
-              (image as HTMLImageElement).src.endsWith(
-                "/movie-art/imdb/tt0816692-backdrop.jpg",
-              ),
-          ),
-      )
-      .toBe(true);
     await page
-      .getByRole("button", { name: "Todos os filmes", exact: true })
+      .getByLabel("Título do filme", { exact: true })
+      .fill("Cinema Persistente");
+    await page
+      .getByRole("button", { name: "Buscar filme", exact: true })
       .click();
-    await movieFixtures(page, "collection");
-    await expect(page.locator(".movie-card")).toHaveCount(4);
-    await expect
-      .poll(() =>
-        page
-          .locator(".movie-card img")
-          .evaluateAll((images) =>
-            images.every(
-              (img) =>
-                (img as HTMLImageElement).complete &&
-                (img as HTMLImageElement).naturalWidth > 0,
-            ),
-          ),
-      )
-      .toBe(true);
-    expect(page.url()).toMatch(/^file:/);
+    await expect(page.getByRole("alert")).toContainText("token TMDB");
     await page
-      .getByRole("button", { name: "Abrir Horizonte Azul", exact: true })
+      .getByRole("button", { name: "Criar manualmente", exact: true })
+      .click();
+    await page.getByLabel("Título", { exact: true }).fill("Cinema Persistente");
+    await page.getByLabel("Ano (opcional)").fill("2026");
+    await page
+      .getByLabel("Sinopse (opcional)")
+      .fill("Um filme salvo no catálogo local.");
+    await page
+      .getByRole("button", { name: "Revisar filme", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Confirmar filme", exact: true })
       .click();
     await expect(
-      page.locator(".discovery-detail-hero .discovery-art img"),
+      page.getByRole("heading", { name: "Cinema Persistente", exact: true }),
     ).toBeVisible();
-    await expect
-      .poll(() =>
-        page
-          .locator(".discovery-detail-hero .discovery-art img")
-          .evaluate((img) => (img as HTMLImageElement).naturalWidth),
-      )
-      .toBeGreaterThan(0);
+    expect(page.url()).toMatch(/^file:/);
     await page.getByRole("button", { name: "Favoritar", exact: true }).click();
     await expect(
       page.getByRole("button", { name: "Favoritado", exact: true }),
@@ -113,7 +86,7 @@ test("M02 Electron empacotado: catálogo offline, assets locais, favorito e reto
       .getByRole("button", { name: "Ver meus filmes", exact: true })
       .click();
     await page
-      .getByRole("button", { name: "Abrir Horizonte Azul", exact: true })
+      .getByRole("button", { name: "Abrir Cinema Persistente", exact: true })
       .click();
     await expect(
       page.getByRole("button", { name: "Favoritado", exact: true }),
@@ -129,5 +102,32 @@ test("M02 Electron empacotado: catálogo offline, assets locais, favorito e reto
     ).toHaveCount(0);
   } finally {
     await app.close();
+  }
+
+  const reopened = await _electron.launch({
+    executablePath: electron as unknown as string,
+    env: electronEnv,
+    args,
+  });
+  try {
+    const page = await reopened.firstWindow();
+    await page.getByRole("button", { name: "Filmes", exact: true }).click();
+    await expect(
+      page.getByRole("button", {
+        name: "Abrir Cinema Persistente",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Abrir Cinema Persistente", exact: true })
+      .click();
+    await expect(
+      page.getByRole("button", { name: "Favoritado", exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(
+      page.getByText("Um filme salvo no catálogo local."),
+    ).toBeVisible();
+  } finally {
+    await reopened.close();
   }
 });

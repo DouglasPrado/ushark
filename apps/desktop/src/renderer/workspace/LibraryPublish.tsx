@@ -39,6 +39,9 @@ export function LibraryPublish({
     origin = useRef<HTMLElement | null>(null),
     first = useRef<HTMLButtonElement>(null);
   useEffect(() => {
+    void Promise.resolve(service.refresh?.()).then(() =>
+      setRows(service.list()),
+    );
     first.current?.focus();
     return () => c.current?.abort();
   }, []);
@@ -101,11 +104,16 @@ export function LibraryPublish({
         <Button ref={first} variant="secondary" onClick={back}>
           Voltar às bibliotecas
         </Button>
-        <h1>Publicações simuladas</h1>
+        <h1>
+          {service.runtime === "desktop"
+            ? "Publicações"
+            : "Publicações simuladas"}
+        </h1>
       </header>
       <p>
-        Ensaio de publicação em memória. Nenhum upload, conta ou Registry real.
-        Links .invalid e códigos DEMO funcionam apenas nesta prévia.
+        {service.runtime === "desktop"
+          ? "Publicação explícita no Registry configurado; nenhuma versão é promovida sem confirmação."
+          : "Ensaio de publicação em memória. Nenhum upload, conta ou Registry real. Links .invalid e códigos DEMO funcionam apenas nesta prévia."}
       </p>
       <p>Autorização de editor é separada de assinatura de autoria.</p>
       {error && !review && !withdraw && <p role="alert">{error}</p>}
@@ -215,30 +223,32 @@ export function LibraryPublish({
           </article>
         ))}
       </section>
-      <details className="workspace-scenarios">
-        <summary>Cenários de publicação</summary>
-        <label>
-          Estado da publicação
-          <select
-            disabled={!!busy}
-            value={scenario}
-            onChange={(e) => setScenario(e.target.value as PublishScenario)}
-          >
-            {Object.entries({
-              normal: "Normal",
-              permission: "Sem permissão",
-              quota: "Quota excedida",
-              conflict: "Conflito de versão",
-              partial: "Falha parcial",
-              offline: "Offline",
-            }).map(([id, label]) => (
-              <option key={id} value={id}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </details>
+      {service.runtime !== "desktop" && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de publicação</summary>
+          <label>
+            Estado da publicação
+            <select
+              disabled={!!busy}
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value as PublishScenario)}
+            >
+              {Object.entries({
+                normal: "Normal",
+                permission: "Sem permissão",
+                quota: "Quota excedida",
+                conflict: "Conflito de versão",
+                partial: "Falha parcial",
+                offline: "Offline",
+              }).map(([id, label]) => (
+                <option key={id} value={id}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </details>
+      )}
       <Dialog.Root
         open={!!review || !!withdraw}
         onOpenChange={(v) => {

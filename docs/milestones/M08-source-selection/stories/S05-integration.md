@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M08
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE; integração real comprovada e checkpoint funcional preparado.
 
 ## Objetivo
 
@@ -28,8 +28,11 @@ Fixtures determinísticas de ranking incluindo menor tamanho, qualidade máxima 
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Validação de integração](../evidence/INTEGRATION_VALIDATION.md),
+`tests/source-selection.electron.spec.ts`, `tests/desktop-selection.spec.ts` e
+`tests/source-selection-ipc.spec.ts`.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido tecnicamente. A decisão humana permanece no checkpoint funcional;
+S06–S08 não foram iniciadas.

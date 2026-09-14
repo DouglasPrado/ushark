@@ -35,3 +35,7 @@ Movies.tsx, ContentDetails.tsx, discovery.css, movies.css, packages/types/src/mo
 UI mockada navegável, evidência visual registrada e boundary substituível identificado.
 
 Estado consolidado da fase: S00–S02 implementadas; aceite UX já existente de M02 preservado em ../UX_CHECKPOINT.md. Referências a revisão pendente acima registram o estágio histórico anterior ao aceite. S03–S08 adiadas.
+
+## Ajuste de revisão — catálogos por categorias
+
+Em 2026-09-14, a lista padrão passou a usar trilhos panorâmicos como a Home: `Em destaque` seguido por categorias editoriais derivadas dos gêneros. Busca, Favoritos e ordenações explícitas continuam em grade única. O componente estrutural `CatalogRail` e o `MediaCard` compartilhado mantêm o padrão visual sem criar integração nova. [Evidência](../../../execution/evidence/CATALOG_CATEGORY_RAILS.md).

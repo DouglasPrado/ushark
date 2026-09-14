@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M08
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE — S04.1, S04.2 e S04.3 comprovadas; próxima story S05.
 
 ## Objetivo
 
@@ -28,7 +28,10 @@ Testes de fronteira/domínio de cada incremento e ensaios reais controlados: Fix
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+- [S04.1](../evidence/BACKEND_S04_1.md): sampler limitado, TTL,
+  cancelamento e resumo real do torrentd, **3/3** próprios e **9/9** no recorte.
+- [S04.2](../evidence/BACKEND_S04_2.md): Health/confidence/ratio determinísticos.
+- [S04.3](../evidence/BACKEND_S04_3.md): ranking, persistência, override e deadline.
 
 ## Done When
 
@@ -41,7 +44,8 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Fixtures determinísticas de ranking incluindo menor tamanho, qualidade máxima inviável e fonte local; ranking <10ms sem probes; confirmar escolha com player e cancelar preflight ao sair sem flicker. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Medição passiva, limites, TTL, concorrência e
+cancelamento foram comprovados. [Evidência](../evidence/BACKEND_S04_1.md).
 
 ## S04.2 — Health/confidence/ratio determinísticos
 
@@ -50,7 +54,8 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Fixtures determinísticas de ranking incluindo menor tamanho, qualidade máxima inviável e fonte local; ranking <10ms sem probes; confirmar escolha com player e cancelar preflight ao sair sem flicker. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Health determinístico e suas fronteiras foram
+comprovados. [Evidência](../evidence/BACKEND_S04_2.md).
 
 ## S04.3 — ranking e override local persistido
 
@@ -59,4 +64,5 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Fixtures determinísticas de ranking incluindo menor tamanho, qualidade máxima inviável e fonte local; ranking <10ms sem probes; confirmar escolha com player e cancelar preflight ao sair sem flicker. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Ranking, override e persistência foram comprovados.
+[Evidência](../evidence/BACKEND_S04_3.md).

@@ -32,6 +32,12 @@ export function LibraryTrust({
     setError("");
     setConsent(false);
     callback.current(false);
+    if ("remember" in service)
+      (
+        service as LibraryTrustPreview & {
+          remember(value: LibraryPackageSnapshot): void;
+        }
+      ).remember(snapshot);
     service
       .verify(snapshot, scenario, c.signal)
       .then((r) => {
@@ -77,10 +83,7 @@ export function LibraryTrust({
   return (
     <section className="trust-panel">
       <h3>Autoria e confiança</h3>
-      <p>
-        Simulação: autenticidade não comprova direitos sobre a mídia. Nenhuma
-        chave privada é criada.
-      </p>
+      <p>Autenticidade não comprova direitos sobre a mídia.</p>
       {busy && <p role="status">Verificando autoria…</p>}
       {result && (
         <>
@@ -93,7 +96,7 @@ export function LibraryTrust({
           >
             {result.message}
           </p>
-          {result.key && <p>Chave pública demonstrativa: {result.key}</p>}
+          {result.key && <p>Identidade da chave: {result.key}</p>}
           {result.status === "changed" && (
             <>
               <p>Chave anterior: {result.previous}</p>
@@ -137,35 +140,37 @@ export function LibraryTrust({
           Cancelar verificação
         </Button>
       )}
-      <details>
-        <summary>Cenários de autoria</summary>
-        <label>
-          Estado da autoria
-          <select
-            value={scenario}
-            disabled={busy}
-            onChange={(e) => {
-              callback.current(false);
-              setScenario(e.target.value as TrustScenario);
-            }}
-          >
-            {Object.entries({
-              package: "Do pacote",
-              valid: "Assinatura válida",
-              invalid: "Assinatura inválida",
-              hash: "Hash divergente",
-              changed: "Chave alterada",
-              storage: "Storage indisponível",
-              error: "Erro de verificação",
-              offline: "Offline",
-            }).map(([id, label]) => (
-              <option key={id} value={id}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </details>
+      {service.runtime !== "desktop" && (
+        <details>
+          <summary>Cenários de autoria</summary>
+          <label>
+            Estado da autoria
+            <select
+              value={scenario}
+              disabled={busy}
+              onChange={(e) => {
+                callback.current(false);
+                setScenario(e.target.value as TrustScenario);
+              }}
+            >
+              {Object.entries({
+                package: "Do pacote",
+                valid: "Assinatura válida",
+                invalid: "Assinatura inválida",
+                hash: "Hash divergente",
+                changed: "Chave alterada",
+                storage: "Storage indisponível",
+                error: "Erro de verificação",
+                offline: "Offline",
+              }).map(([id, label]) => (
+                <option key={id} value={id}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </details>
+      )}
     </section>
   );
 }

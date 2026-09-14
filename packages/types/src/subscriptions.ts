@@ -22,6 +22,8 @@ export interface LibrarySubscription {
   hidden: string[];
 }
 export interface SubscriptionPreview {
+  runtime?: "mock" | "desktop";
+  refresh?(): Promise<void>;
   list(): LibrarySubscription[];
   resolve(
     reference: string,
@@ -53,4 +55,13 @@ export interface SubscriptionPreview {
   toggleFavorite(id: string): void;
   discoveryItems(): DiscoveryItem[];
   sources(id: string): LibraryContent["sources"];
+}
+export interface SubscriptionDesktopApi {
+  protocolVersion: 1;
+  call(input: {
+    operation: string;
+    args: unknown[];
+  }): Promise<
+    { ok: true; value: unknown } | { ok: false; error: { message: string } }
+  >;
 }

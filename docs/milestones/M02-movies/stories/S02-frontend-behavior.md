@@ -37,3 +37,11 @@ Ajuste posterior: a lista busca termos sem acento/caixa em título localizado, o
 Roteiro UX reproduzível e evidências registradas; parar no checkpoint UX, sem aprovação implícita.
 
 Estado consolidado da fase: S00–S02 implementadas; aceite UX já existente de M02 preservado em ../UX_CHECKPOINT.md. Referências a revisão pendente acima registram o estágio histórico anterior ao aceite. S03–S08 adiadas.
+
+## Ajuste de revisão — comportamento dos trilhos
+
+Cada categoria expõe navegação horizontal e rótulo acessível. Cards repetidos conservam a identidade do filme e a origem de foco; voltar restaura exatamente o card acionado. Itens fora da taxonomia aparecem em `Outros`, e filtros retornam à grade sem duplicação. Testes cobrem categorização, orientação, busca e restauração de foco.
+
+## Ajuste de revisão — busca recolhida
+
+A busca do catálogo começa como lupa no grupo à direita, ao lado de Todos e Favoritos, e só cria o campo após ativação explícita. O campo recebe foco ao abrir. Fechar ou usar Voltar/Escape limpa a consulta, recolhe o campo e devolve foco à lupa antes de sair da tela. [Evidência](../../../execution/evidence/COLLAPSED_CATALOG_SEARCH.md).

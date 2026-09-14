@@ -1,6 +1,9 @@
 # M03 — Importar e organizar séries e episódios
 
-Status: FRONTEND_UX_APPROVED — S00–S02 concluídas no checkout real em 2026-09-13. Aprovação humana em 2026-09-13: “aprovado”; S03–S08 adiadas. M03 não está DONE. Veja [experiência](EXPERIENCE.md) e [validação](evidence/VALIDATION.md).
+Status: READY_FOR_FUNCTIONAL_REVIEW — S00–S05 concluídas. UX aprovada; decisão
+funcional humana pendente. S06–S08 não autorizadas; M03 não está DONE. Veja
+[experiência](EXPERIENCE.md), [contrato](evidence/DOMAIN_CONTRACT.md) e
+[integração real](evidence/INTEGRATION_VALIDATION.md).
 
 ## Objetivo e resultado
 

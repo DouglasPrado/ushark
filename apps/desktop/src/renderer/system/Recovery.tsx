@@ -34,6 +34,9 @@ export function Recovery({
     origin = useRef<HTMLElement | null>(null),
     first = useRef<HTMLButtonElement>(null);
   useEffect(() => {
+    void Promise.resolve(service.refresh?.()).then(() =>
+      setRows(service.list()),
+    );
     first.current?.focus();
     return () => c.current?.abort();
   }, []);
@@ -81,8 +84,9 @@ export function Recovery({
         <h1>Backup e recuperação</h1>
       </header>
       <p>
-        Snapshots da sessão em memória. Não grava backup real; recarregar o
-        aplicativo descarta estes dados.
+        {service.runtime === "desktop"
+          ? "Backups locais consistentes e validados antes de qualquer restauração."
+          : "Snapshots da sessão em memória. Não grava backup real; recarregar o aplicativo descarta estes dados."}
       </p>
       {error && !review && !shutdown && <p role="alert">{error}</p>}
       {notice && <p role="status">{notice}</p>}
@@ -248,32 +252,34 @@ export function Recovery({
           Abrir biblioteca
         </Button>
       </div>
-      <details className="workspace-scenarios">
-        <summary>Cenários de recuperação</summary>
-        <label>
-          Estado do backup
-          <select
-            disabled={!!busy}
-            value={scenario}
-            onChange={(e) => setScenario(e.target.value as RecoveryScenario)}
-          >
-            {Object.entries({
-              normal: "Normal",
-              invalid: "Inválido",
-              incompatible: "Incompatível",
-              locked: "DB ocupado",
-              full: "Sem espaço",
-              migration: "Migração falhou",
-              partial: "Falha parcial",
-              offline: "Offline",
-            }).map(([id, v]) => (
-              <option key={id} value={id}>
-                {v}
-              </option>
-            ))}
-          </select>
-        </label>
-      </details>
+      {service.runtime !== "desktop" && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de recuperação</summary>
+          <label>
+            Estado do backup
+            <select
+              disabled={!!busy}
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value as RecoveryScenario)}
+            >
+              {Object.entries({
+                normal: "Normal",
+                invalid: "Inválido",
+                incompatible: "Incompatível",
+                locked: "DB ocupado",
+                full: "Sem espaço",
+                migration: "Migração falhou",
+                partial: "Falha parcial",
+                offline: "Offline",
+              }).map(([id, v]) => (
+                <option key={id} value={id}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </label>
+        </details>
+      )}
       <Dialog.Root
         open={!!review || shutdown}
         onOpenChange={(v) => {

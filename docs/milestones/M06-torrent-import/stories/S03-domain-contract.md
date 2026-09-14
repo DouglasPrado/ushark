@@ -1,6 +1,6 @@
 # S03 — Contrato de domínio — M06
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 
@@ -28,8 +28,12 @@ Revisão de contratos com fixtures UX e contra cenários reais planejados: Usar 
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Contrato e validação](../evidence/DOMAIN_CONTRACT.md) e
+[decisão D05/D08/D22](../../../decisions/M06-D05-D08-D22-torrent-inspection-contract.md).
+O contrato não comprova o adapter real nem o checkpoint funcional.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Concluído: ações da UX possuem sucesso/falha/cancelamento, snapshots e eventos;
+identidade, ownership, idempotência, limites e contenção estão fixados antes de
+S04. STATE/UPDATE sincronizados.

@@ -2,7 +2,7 @@
 
 ## Status
 
-READY_FOR_REVIEW. Decisão: PENDING. Revisão humana adiada por instrução explícita até o fim de M01–M22.
+APPROVED. Aprovação consolidada do usuário em 2026-09-14: “O frontend foi aprovado ja”.
 
 ## Pré-condições
 
@@ -34,4 +34,4 @@ Em 2026-09-13, o usuário solicitou que o modo TV se comporte como uma superfíc
 
 ## Revisão final consolidada
 
-READY_FOR_REVIEW / decisão PENDING. A revisão intermediária foi adiada por instrução explícita, não aprovada. Usar o [roteiro único](../../execution/FRONTEND_REVIEW.md); resultados automatizados e inspeções não substituem sua decisão.
+APPROVED na revisão consolidada de 2026-09-14; [roteiro e evidência do aceite](../../execution/FRONTEND_REVIEW.md). O aceite cobre UX mockada, não integração funcional ou hardware físico.

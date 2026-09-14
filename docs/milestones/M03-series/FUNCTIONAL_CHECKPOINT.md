@@ -1,6 +1,6 @@
 # Checkpoint funcional — M03
 
-Status: NOT_STARTED — integração adiada. Decisão: PENDING.
+Status: READY_FOR_REVIEW. Decisão humana: PENDING.
 
 ## Pré-condições e integrações reais
 
@@ -19,4 +19,12 @@ UX M01–M22 aprovada; M02 e M06 integrados; S03–S05 concluídas. Persistênci
 
 ## Evidências e decisão
 
-PENDENTES: versões/ambiente, corpus, arquivos de teste, comandos, banco após restart, falhas exercitadas e resultados. Critérios: persistência real, ausência de mock no caminho principal, identidade preservada, erros recuperáveis e escala medida. Aprovação humana PENDENTE; só após aceite iniciar S06.
+[Evidência S05](evidence/INTEGRATION_VALIDATION.md): caminho Electron real,
+pack de temporada/especial, source compartilhada, selectors e legenda
+independentes, arte persistida, restart, falha parcial recuperável e retry.
+Suíte afetada M02/M03/M06 com runtimes reais: **86/86 passou**. Corpus de 50.000
+episódios e índices constam em `evidence/BACKEND_S04_1.md`.
+
+Pendências explícitas: TMDB ao vivo sem token, runtime torrent empacotado e
+Windows/TV/controle/Moonlight físicos. Decisão humana continua `PENDING`; S06
+não foi iniciado.

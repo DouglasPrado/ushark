@@ -2,7 +2,8 @@
 
 ## Status
 
-NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+READY_FOR_REVIEW. Decisão: PENDING. S03–S05 concluídas; nenhuma aprovação
+funcional foi inferida.
 
 ## Pré-condições
 
@@ -26,10 +27,14 @@ Verificar ausência de mock no caminho principal, persistência pertinente após
 
 ## Evidências e decisão
 
-PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
+[Contrato](evidence/DOMAIN_CONTRACT.md),
+[fila](evidence/BACKEND_S04_1.md), [resume](evidence/BACKEND_S04_2.md),
+[recovery](evidence/BACKEND_S04_3.md) e
+[integração](evidence/INTEGRATION_VALIDATION.md). Decisão humana PENDING.
 
 ## Mudanças solicitadas
 
 Nenhuma registrada; isso não equivale a aprovação.
 
-Frontend entregue em simulação; este checkpoint e S03–S08 continuam adiados.
+Nenhuma registrada. Windows/TV/hardware, disco cheio físico e swarm com
+conclusão completa permanecem pendentes; isso não equivale a aprovação.

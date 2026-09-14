@@ -2,7 +2,8 @@
 
 ## Status
 
-NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+READY_FOR_REVIEW. Decisão: PENDING. S03–S05 foram executadas e a aprovação
+funcional humana não foi inferida.
 
 ## Pré-condições
 
@@ -26,10 +27,18 @@ Verificar ausência de mock no caminho principal, persistência pertinente após
 
 ## Evidências e decisão
 
-PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
+[Validação integrada](evidence/INTEGRATION_VALIDATION.md): **27/27** no recorte
+M07; primeiro frame MPV em 2.764 ms com 31/174 pieces, seek fora do cache em
+509 ms e somente a geração 4 após três seeks rápidos. Electron usa o serviço
+real por IPC restrito, sem path/pieces no renderer.
+
+Decisão humana continua PENDING. Alterações de UX exigidas na revisão voltam ao
+checkpoint correspondente; este estado não autoriza S06–S08 nem fecha M07.
 
 ## Mudanças solicitadas
 
 Nenhuma registrada; isso não equivale a aprovação.
 
-Frontend validado por simulação; este checkpoint e S03–S08 permanecem DEFERRED.
+Windows x64, TV/Moonlight, controle físico, empacotamento, rede pública e disco
+cheio real continuam pendentes. A validação local macOS não substitui esses
+gates.

@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M22
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE localmente em 2026-09-14; distribuição assinada externa pendente.
 
 ## Objetivo
 

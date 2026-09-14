@@ -1,6 +1,6 @@
 # S03 — Contrato de domínio — M07
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 
@@ -28,8 +28,10 @@ Revisão de contratos com fixtures UX e contra cenários reais planejados: Filme
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Contrato e validação](../evidence/DOMAIN_CONTRACT.md) e
+[decisões D09/D13/D18](../../../decisions/M07-D09-D13-D18-streaming-contract.md).
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido. S04.1 é a próxima sub-story; nenhuma capacidade runtime foi inferida
+do contrato.

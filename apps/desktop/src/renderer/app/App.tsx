@@ -1,26 +1,39 @@
 import { AppUpdate } from "../system/AppUpdate";
 import { MockAppUpdatePreview } from "@ushark/mocks/app-update";
+import { DesktopAppUpdatePreview } from "../system/desktop-app-update";
 import { Recovery } from "../system/Recovery";
 import { MockRecoveryPreview } from "@ushark/mocks/recovery";
+import { DesktopRecoveryPreview } from "../system/desktop-recovery";
 import { Diagnostics } from "../system/Diagnostics";
 import { MockDiagnosticPreview } from "@ushark/mocks/diagnostics";
+import { DesktopDiagnosticPreview } from "../system/desktop-diagnostics";
 import { MockFallbackPreview } from "@ushark/mocks/fallback";
+import { DesktopFallbackPreview } from "../playback/desktop-fallback";
 import { TvSessionProvider, TvSetup, useTv } from "../tv/TvSession";
 import { MockLibraryForkPreview } from "@ushark/mocks/library-fork";
+import { DesktopLibraryForkPreview } from "../workspace/desktop-library-fork";
 import { Subscriptions } from "../workspace/Subscriptions";
 import { MockSubscriptionPreview } from "@ushark/mocks/subscriptions";
+import { DesktopSubscriptionPreview } from "../workspace/desktop-subscriptions";
 import { LibraryPublish } from "../workspace/LibraryPublish";
 import { MockLibraryPublishPreview } from "@ushark/mocks/library-publish";
+import { DesktopLibraryPublishPreview } from "../workspace/desktop-library-publish";
 import { MockLibraryTrustPreview } from "@ushark/mocks/library-trust";
+import { DesktopLibraryTrustPreview } from "../workspace/desktop-library-trust";
 import { LibraryFiles } from "../workspace/LibraryFiles";
 import { MockLibraryPackagePreview } from "@ushark/mocks/library-package";
+import { DesktopLibraryPackagePreview } from "../workspace/desktop-library-package";
 import { Libraries } from "../workspace/Libraries";
 import { MockLibraryPreviewService } from "@ushark/mocks/libraries";
+import { DesktopLibraryPreviewService } from "../workspace/desktop-libraries";
 import { MockNextEpisodePreview } from "@ushark/mocks/next-episode";
+import { DesktopNextEpisodePreview } from "../playback/desktop-next-episode";
 import { Storage } from "../workspace/Storage";
 import { MockStoragePreview } from "@ushark/mocks/storage";
+import { DesktopStoragePreview } from "../storage/desktop-storage";
 import { Downloads } from "../workspace/Downloads";
 import { MockDownloadPreview } from "@ushark/mocks/downloads";
+import { DesktopDownloadPreview } from "../downloads/desktop-downloads";
 import type { DownloadRequest } from "@ushark/types/downloads";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -39,28 +52,38 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@ushark/ui";
-import {
-  defaults,
-  initial,
-  MockConfigurationService,
-  validate,
-} from "@ushark/mocks";
+import { initial, MockConfigurationService, validate } from "@ushark/mocks";
 import type { Configuration, Preferences, Scenario } from "@ushark/types";
 import { useNavigation } from "./navigation";
 import { MockTorrentPreview } from "@ushark/mocks/torrent";
+import { DesktopTorrentPreview } from "../torrent/desktop-torrent";
 import { MockStreamPreview } from "@ushark/mocks/stream";
 import { MockSelectionPreview } from "@ushark/mocks/selection";
+import { DesktopSelectionPreview } from "../catalog/desktop-selection";
 import { Player } from "../playback/Player";
 import { MockPlayerPreview } from "@ushark/mocks/player";
-import type { PlaybackContent } from "@ushark/types/player";
+import type { PlaybackContent, PlayerPreview } from "@ushark/types/player";
+import { DesktopPlayer } from "../playback/desktop-player";
+import { DesktopProgressivePlayer } from "../playback/desktop-progressive-player";
 import { Discovery } from "../catalog/Discovery";
+import { DesktopDiscoveryCatalog } from "../catalog/discovery-catalog";
 import { MockDiscoveryCatalog } from "@ushark/mocks/discovery";
-import { discoveryQuery, type DiscoverySession } from "@ushark/types/discovery";
+import {
+  discoveryQuery,
+  type DiscoveryCatalog,
+  type DiscoverySession,
+} from "@ushark/types/discovery";
 import { Movies } from "../catalog/Movies";
+import {
+  DesktopMetadataProvider,
+  DesktopMovieCatalog,
+} from "../catalog/movie-catalog";
 import { Series, type SeriesSession } from "../catalog/Series";
+import { DesktopSeriesCatalog } from "../catalog/series-catalog";
 import { MockSeriesCatalog } from "@ushark/mocks/series";
 import { MockMetadataProvider, MockMovieCatalog } from "@ushark/mocks/movies";
 import { hasCompletedOnboarding, markOnboardingCompleted } from "./onboarding";
+import { DesktopConfigurationService } from "./configuration";
 
 const steps = [
   "Boas-vindas",
@@ -138,14 +161,34 @@ export function App() {
 function AppContent() {
   const tv = useTv()!;
   const tvMode = tv.mode;
-  const service = useRef(new MockConfigurationService()).current;
-  const [movieProvider] = useState(() => new MockMetadataProvider());
+  const previewConfigurationService = useRef(
+    new MockConfigurationService(),
+  ).current;
+  const [service] = useState(() =>
+    window.ushark?.configuration
+      ? new DesktopConfigurationService(window.ushark.configuration)
+      : previewConfigurationService,
+  );
+  const desktopConfiguration = service instanceof DesktopConfigurationService;
+  const movieApi = window.ushark?.movieCatalog;
+  const [movieProvider] = useState(() =>
+    movieApi
+      ? new DesktopMetadataProvider(movieApi, () => configRef.current.libraryId)
+      : new MockMetadataProvider(),
+  );
   const [movieCatalog] = useState(() => {
+    if (movieApi) return new DesktopMovieCatalog(movieApi);
     const catalog = new MockMovieCatalog(movieProvider);
     catalog.seedDefault(initial.libraryId);
     return catalog;
   });
+  const desktopMovieCatalog = movieCatalog instanceof DesktopMovieCatalog;
   const [seriesCatalog] = useState(() => {
+    if (window.ushark?.seriesCatalog)
+      return new DesktopSeriesCatalog(
+        window.ushark.seriesCatalog,
+        () => configRef.current.libraryId,
+      );
     const catalog = new MockSeriesCatalog();
     catalog.seedDefault();
     return catalog;
@@ -159,75 +202,121 @@ function AppContent() {
   const [config, setConfig] = useState<Configuration>(structuredClone(initial));
   const configRef = useRef(config);
   configRef.current = config;
-  const [discoveryCatalog] = useState(
-    () =>
-      new MockDiscoveryCatalog(movieCatalog, seriesCatalog, () => ({
-        id: configRef.current.libraryId,
-        name: configRef.current.name,
-      })),
-  );
+  const [discoveryCatalog] = useState<DiscoveryCatalog>(() => {
+    if (window.ushark?.discovery)
+      return new DesktopDiscoveryCatalog(
+        window.ushark.discovery,
+        () => configRef.current.libraryId,
+      );
+    return new MockDiscoveryCatalog(movieCatalog, seriesCatalog, () => ({
+      id: configRef.current.libraryId,
+      name: configRef.current.name,
+    }));
+  });
+  const desktopDiscoveryCatalog =
+    discoveryCatalog instanceof DesktopDiscoveryCatalog;
   const [discoverySession] = useState<DiscoverySession>(() => ({
     query: discoveryQuery(),
     searching: false,
     scenario: "current",
   }));
-  const [publishService] = useState(() => new MockLibraryPublishPreview());
-  const [subscriptionService] = useState(
-    () => new MockSubscriptionPreview(publishService),
+  const [publishService] = useState(() =>
+    window.ushark?.libraryPublish
+      ? new DesktopLibraryPublishPreview(window.ushark.libraryPublish)
+      : new MockLibraryPublishPreview(),
   );
-  discoveryCatalog.externalItems = () => subscriptionService.discoveryItems();
-  const [trustService] = useState(() => new MockLibraryTrustPreview());
-  const [packageService] = useState(() => new MockLibraryPackagePreview());
-  const [libraryService] = useState(
-    () =>
-      new MockLibraryPreviewService(async () =>
-        (await discoveryCatalog.read()).map((item) => ({
-          id: item.id,
-          title: item.title,
-          synopsis: item.synopsis,
-          poster: item.poster,
-          sources: item.sources.map((source) => ({
-            id: source.id,
-            name: source.quality,
-            local: source.fileAvailable !== false,
-            origin: item.memberships.map((m) => m.name).join(", "),
+  const [subscriptionService] = useState(() =>
+    window.ushark?.subscriptions
+      ? new DesktopSubscriptionPreview(window.ushark.subscriptions)
+      : new MockSubscriptionPreview(publishService),
+  );
+  if (discoveryCatalog instanceof MockDiscoveryCatalog)
+    discoveryCatalog.externalItems = () => subscriptionService.discoveryItems();
+  const [trustService] = useState(() =>
+    window.ushark?.libraryTrust
+      ? new DesktopLibraryTrustPreview(window.ushark.libraryTrust)
+      : new MockLibraryTrustPreview(),
+  );
+  const [packageService] = useState(() =>
+    window.ushark?.libraryPackage
+      ? new DesktopLibraryPackagePreview(window.ushark.libraryPackage)
+      : new MockLibraryPackagePreview(),
+  );
+  const [libraryService] = useState(() =>
+    window.ushark?.libraryDrafts
+      ? new DesktopLibraryPreviewService(window.ushark.libraryDrafts)
+      : new MockLibraryPreviewService(async () =>
+          (await discoveryCatalog.read()).map((item) => ({
+            id: item.id,
+            title: item.title,
+            synopsis: item.synopsis,
+            poster: item.poster,
+            sources: item.sources.map((source) => ({
+              id: source.id,
+              name: source.quality,
+              local:
+                source.fileAvailable === true ||
+                (!source.id.startsWith("source:torrent:") &&
+                  !source.id.startsWith("torrent:")),
+              origin: item.memberships.map((m) => m.name).join(", "),
+            })),
           })),
-        })),
-      ),
+        ),
   );
-  const [fallbackService] = useState(
-    () =>
-      new MockFallbackPreview(
-        async (id) =>
-          (await libraryService.catalog()).find((c) => c.id === id)?.sources ??
-          [],
-      ),
+  const [fallbackService] = useState(() =>
+    window.ushark?.fallback
+      ? new DesktopFallbackPreview(window.ushark.fallback)
+      : new MockFallbackPreview(
+          async (id) =>
+            (await libraryService.catalog()).find((c) => c.id === id)
+              ?.sources ?? [],
+        ),
   );
-  const [forkService] = useState(
-    () => new MockLibraryForkPreview(libraryService),
+  const [forkService] = useState(() =>
+    window.ushark?.libraryFork
+      ? new DesktopLibraryForkPreview(window.ushark.libraryFork)
+      : new MockLibraryForkPreview(libraryService),
   );
   const [libraryEditSession] = useState<{ id?: string }>({});
-  const [torrentService] = useState(() => new MockTorrentPreview());
-  const [downloadService] = useState(() => new MockDownloadPreview());
-  const [storageService] = useState(
-    () =>
-      new MockStoragePreview(
-        () =>
-          downloadService.list().map((row) => ({
-            id: `download:${row.id}`,
-            name: row.content.title,
-            gb: row.bytes / 1024 ** 3,
-            keep: row.destination === "Biblioteca simulada",
-            active: ["queued", "downloading"].includes(row.state),
-            favorite: false,
-            partial: row.state !== "complete",
-            corrupt: false,
-            lastUsed: 10,
-            volume: row.destination,
-            external: true,
-          })),
-        (id) => downloadService.command(id.slice("download:".length), "remove"),
-      ),
+  const [previewTorrentService] = useState(() => new MockTorrentPreview());
+  const [torrentService] = useState(() =>
+    window.ushark?.torrentInspection
+      ? new DesktopTorrentPreview(window.ushark.torrentInspection)
+      : previewTorrentService,
+  );
+  useEffect(
+    () => () => {
+      if (torrentService instanceof DesktopTorrentPreview)
+        torrentService.dispose();
+    },
+    [torrentService],
+  );
+  const [downloadService] = useState(() =>
+    window.ushark?.downloads
+      ? new DesktopDownloadPreview(window.ushark.downloads)
+      : new MockDownloadPreview(),
+  );
+  const [storageService] = useState(() =>
+    window.ushark?.storage
+      ? new DesktopStoragePreview(window.ushark.storage)
+      : new MockStoragePreview(
+          () =>
+            downloadService.list().map((row) => ({
+              id: `download:${row.id}`,
+              name: row.content.title,
+              gb: row.bytes / 1024 ** 3,
+              keep: row.destination === "Biblioteca simulada",
+              active: ["queued", "downloading"].includes(row.state),
+              favorite: false,
+              partial: row.state !== "complete",
+              corrupt: false,
+              lastUsed: 10,
+              volume: row.destination,
+              external: true,
+            })),
+          (id) =>
+            downloadService.command(id.slice("download:".length), "remove"),
+        ),
   );
   const [showDownloads, setShowDownloads] = useState(false);
   const [downloadRequest, setDownloadRequest] =
@@ -239,23 +328,51 @@ function AppContent() {
     setDownloadRequest(request);
     setShowDownloads(true);
   }
-  const [selectionService] = useState(() => new MockSelectionPreview());
-  selectionService.historyPenalty = (id) => fallbackService.penalty(id);
+  const [selectionService] = useState(() =>
+    window.ushark?.sourceSelection
+      ? new DesktopSelectionPreview(window.ushark.sourceSelection)
+      : new MockSelectionPreview(),
+  );
+  if (selectionService instanceof MockSelectionPreview)
+    selectionService.historyPenalty = (id) => fallbackService.penalty(id);
   selectionService.isLocal = (id) =>
     downloadService
       .list()
       .some((row) => row.source.id === id && row.state === "complete");
-  const [nextService] = useState(
-    () =>
-      new MockNextEpisodePreview(
-        seriesCatalog,
-        selectionService,
-        () => configRef.current.preferences,
-      ),
+  const [nextService] = useState(() =>
+    window.ushark?.nextEpisode
+      ? new DesktopNextEpisodePreview(window.ushark.nextEpisode)
+      : new MockNextEpisodePreview(
+          seriesCatalog,
+          selectionService,
+          () => configRef.current.preferences,
+        ),
   );
   const [streamService] = useState(() => new MockStreamPreview());
-  const [playerService] = useState(() => new MockPlayerPreview());
-  discoveryCatalog.playbackProgress = (id) => playerService.progress(id);
+  const [playerService] = useState<PlayerPreview>(() =>
+    window.ushark?.playback
+      ? new DesktopPlayer(window.ushark.playback)
+      : new MockPlayerPreview(),
+  );
+  const [progressivePlayer] = useState<PlayerPreview>(() =>
+    window.ushark?.stream
+      ? new DesktopProgressivePlayer(window.ushark.stream)
+      : playerService,
+  );
+  if (discoveryCatalog instanceof MockDiscoveryCatalog)
+    discoveryCatalog.playbackProgress = (id) =>
+      playerService.progress(id) ?? progressivePlayer.progress(id);
+  useEffect(
+    () => () => {
+      discoveryCatalog.dispose?.();
+      if (playerService instanceof DesktopPlayer) playerService.dispose();
+      if (progressivePlayer instanceof DesktopProgressivePlayer)
+        progressivePlayer.dispose();
+      if (downloadService instanceof DesktopDownloadPreview)
+        downloadService.dispose();
+    },
+    [discoveryCatalog, playerService, progressivePlayer, downloadService],
+  );
   const [playing, setPlaying] = useState<PlaybackContent | null>(null);
   useEffect(() => {
     const timer = setInterval(() => {
@@ -267,107 +384,144 @@ function AppContent() {
   const [showDiagnostics, setShowDiagnostics] = useState(false);
   const playingRef = useRef(playing);
   playingRef.current = playing;
-  const [diagnosticService] = useState(
-    () =>
-      new MockDiagnosticPreview(
-        () => ({
-          session: playingRef.current
-            ? "Sessão de player simulada ativa"
-            : "Sem sessão de player",
-          metrics: [
-            {
-              label: "Throughput",
-              value: downloadService.list().reduce((n, d) => n + d.speed, 0),
-              unit: "bytes/s simulados",
-            },
-            {
-              label: "Downloads na fila",
-              value: downloadService.list().length,
-            },
-            { label: "Buffer", value: null },
-            { label: "Streaming Ratio", value: null },
-            { label: "Histórico de reprodução", value: playerService.count() },
-            {
-              label: "Amostras de Health",
-              value: fallbackService.history().length,
-            },
-            {
-              label: "Cache contabilizado",
-              value: storageService.list().reduce((n, e) => n + e.gb, 0),
-              unit: "GB simulados",
-            },
-            {
-              label: "Razão de escolha",
-              value: playingRef.current?.sourceId
-                ? selectionService.override(playingRef.current.id)
-                  ? "Override local"
-                  : "Seleção por preferências"
-                : "Sem seleção ativa",
-            },
-          ],
-        }),
-        async (category, signal) => {
-          if (category === "health") {
-            fallbackService.clear();
-            return "Histórico Health removido; escolhas e biblioteca preservadas.";
-          }
-          if (category === "playback") {
-            playerService.clear(playingRef.current?.id);
-            return "Histórico de reprodução removido; sessão ativa preservada.";
-          }
-          const removed = await storageService.clean(
-            storageService.estimate().map((e) => e.id),
-            signal,
-          );
-          return `${removed} GB de cache elegível removidos na simulação; protegidos preservados.`;
-        },
-      ),
+  const [diagnosticService] = useState(() =>
+    window.ushark?.diagnostics
+      ? new DesktopDiagnosticPreview(window.ushark.diagnostics)
+      : new MockDiagnosticPreview(
+          () => ({
+            session: playingRef.current
+              ? "Sessão de player simulada ativa"
+              : "Sem sessão de player",
+            metrics: [
+              {
+                label: "Throughput",
+                value: downloadService.list().reduce((n, d) => n + d.speed, 0),
+                unit: "bytes/s simulados",
+              },
+              {
+                label: "Downloads na fila",
+                value: downloadService.list().length,
+              },
+              { label: "Buffer", value: null },
+              { label: "Streaming Ratio", value: null },
+              {
+                label: "Histórico de reprodução",
+                value:
+                  playerService instanceof MockPlayerPreview
+                    ? playerService.count()
+                    : playerService.progress(playingRef.current?.id ?? "")
+                      ? 1
+                      : 0,
+              },
+              {
+                label: "Amostras de Health",
+                value: fallbackService.history().length,
+              },
+              {
+                label: "Cache contabilizado",
+                value: storageService.list().reduce((n, e) => n + e.gb, 0),
+                unit: "GB simulados",
+              },
+              {
+                label: "Razão de escolha",
+                value: playingRef.current?.sourceId
+                  ? selectionService.override(playingRef.current.id)
+                    ? "Override local"
+                    : "Seleção por preferências"
+                  : "Sem seleção ativa",
+              },
+            ],
+          }),
+          async (category, signal) => {
+            if (category === "health") {
+              fallbackService.clear();
+              return "Histórico Health removido; escolhas e biblioteca preservadas.";
+            }
+            if (category === "playback") {
+              if (playerService instanceof MockPlayerPreview) {
+                playerService.clear(playingRef.current?.id);
+                return "Histórico de reprodução removido; sessão ativa preservada.";
+              }
+              return "A limpeza do histórico real será disponibilizada no milestone de Diagnóstico.";
+            }
+            const removed = await storageService.clean(
+              storageService.estimate().map((e) => e.id),
+              signal,
+            );
+            return `${removed} GB de cache elegível removidos na simulação; protegidos preservados.`;
+          },
+        ),
   );
-  const [recoveryService] = useState(
-    () =>
-      new MockRecoveryPreview(
-        () => ({
-          config: structuredClone(configRef.current),
-          service: service.capturePreview(),
-          movieCatalog: movieCatalog.capturePreview(),
-          seriesCatalog: seriesCatalog.capturePreview(),
-          downloadService: downloadService.capturePreview(),
-          storageService: storageService.capturePreview(),
-          libraryService: libraryService.capturePreview(),
-          subscriptionService: subscriptionService.capturePreview(),
-          selectionService: selectionService.capturePreview(),
-          torrentService: torrentService.capturePreview(),
-          playerService: playerService.capturePreview(),
-          trustService: trustService.capturePreview(),
-          packageService: packageService.capturePreview(),
-        }),
-        (snapshot) => {
-          service.restorePreview(snapshot.service);
-          movieCatalog.restorePreview(snapshot.movieCatalog);
-          seriesCatalog.restorePreview(snapshot.seriesCatalog);
-          downloadService.restorePreview(snapshot.downloadService);
-          storageService.restorePreview(snapshot.storageService);
-          libraryService.restorePreview(snapshot.libraryService);
-          subscriptionService.restorePreview(snapshot.subscriptionService);
-          selectionService.restorePreview(snapshot.selectionService);
-          torrentService.restorePreview(snapshot.torrentService);
-          playerService.restorePreview(snapshot.playerService);
-          trustService.restorePreview(snapshot.trustService);
-          packageService.restorePreview(snapshot.packageService);
-          setConfig(structuredClone(snapshot.config));
-          discoveryCatalog.configure("current");
-          discoverySession.query = discoveryQuery();
-          discoverySession.scenario = "current";
-          seriesSession.draft = null;
-          seriesSession.pending = null;
-          setPlaying(null);
-          setShowDownloads(false);
-          setShowDiagnostics(false);
-        },
-      ),
+  const [recoveryService] = useState(() =>
+    window.ushark?.recovery
+      ? new DesktopRecoveryPreview(window.ushark.recovery)
+      : new MockRecoveryPreview(
+          () => ({
+            config: structuredClone(configRef.current),
+            service: previewConfigurationService.capturePreview(),
+            movieCatalog:
+              movieCatalog instanceof MockMovieCatalog
+                ? movieCatalog.capturePreview()
+                : null,
+            seriesCatalog:
+              seriesCatalog instanceof MockSeriesCatalog
+                ? seriesCatalog.capturePreview()
+                : null,
+            downloadService: downloadService.capturePreview(),
+            storageService: storageService.capturePreview(),
+            libraryService: libraryService.capturePreview(),
+            subscriptionService: subscriptionService.capturePreview(),
+            selectionService: selectionService.capturePreview(),
+            torrentService: previewTorrentService.capturePreview(),
+            playerService:
+              playerService instanceof MockPlayerPreview
+                ? playerService.capturePreview()
+                : null,
+            trustService: trustService.capturePreview(),
+            packageService: packageService.capturePreview(),
+          }),
+          (snapshot) => {
+            previewConfigurationService.restorePreview(snapshot.service);
+            if (
+              movieCatalog instanceof MockMovieCatalog &&
+              snapshot.movieCatalog
+            )
+              movieCatalog.restorePreview(snapshot.movieCatalog);
+            if (
+              seriesCatalog instanceof MockSeriesCatalog &&
+              snapshot.seriesCatalog
+            )
+              seriesCatalog.restorePreview(snapshot.seriesCatalog);
+            downloadService.restorePreview(snapshot.downloadService);
+            storageService.restorePreview(snapshot.storageService as never);
+            libraryService.restorePreview(snapshot.libraryService as never);
+            subscriptionService.restorePreview(snapshot.subscriptionService);
+            selectionService.restorePreview(snapshot.selectionService);
+            previewTorrentService.restorePreview(snapshot.torrentService);
+            if (
+              playerService instanceof MockPlayerPreview &&
+              snapshot.playerService
+            )
+              playerService.restorePreview(snapshot.playerService);
+            trustService.restorePreview(snapshot.trustService);
+            packageService.restorePreview(snapshot.packageService as never);
+            setConfig(structuredClone(snapshot.config));
+            if (discoveryCatalog instanceof MockDiscoveryCatalog)
+              discoveryCatalog.configure("current");
+            discoverySession.query = discoveryQuery();
+            discoverySession.scenario = "current";
+            seriesSession.draft = null;
+            seriesSession.pending = null;
+            setPlaying(null);
+            setShowDownloads(false);
+            setShowDiagnostics(false);
+          },
+        ),
   );
-  const [updateService] = useState(
-    () => new MockAppUpdatePreview(recoveryService),
+  const [updateService] = useState(() =>
+    window.ushark?.appUpdate
+      ? new DesktopAppUpdatePreview(window.ushark.appUpdate)
+      : new MockAppUpdatePreview(recoveryService),
   );
   const playOrigin = useRef<HTMLElement | null>(null);
   function play(content: PlaybackContent) {
@@ -378,6 +532,8 @@ function AppContent() {
     hasCompletedOnboarding() ? "home" : "onboarding",
   );
   const initialRoute = useRef(route).current;
+  const [configurationReady, setConfigurationReady] =
+    useState(!desktopConfiguration);
   const [step, setStep] = useState(0);
   const [modal, setModal] = useState<Modal>(null);
   const [scenario, setScenario] = useState<Scenario>("normal");
@@ -426,8 +582,40 @@ function AppContent() {
       route !== "home",
   );
   useEffect(() => {
-    window.location.hash = "/" + initialRoute;
-  }, [initialRoute]);
+    if (!desktopConfiguration) window.location.hash = "/" + initialRoute;
+  }, [desktopConfiguration, initialRoute]);
+  useEffect(() => {
+    if (!desktopConfiguration) return;
+    let active = true;
+    void (async () => {
+      try {
+        let snapshot = await service.read();
+        if (!snapshot.completed && hasCompletedOnboarding())
+          snapshot = await service.save(snapshot.configuration, {
+            completeOnboarding: true,
+          });
+        if (!active) return;
+        setConfig(structuredClone(snapshot.configuration));
+        if (movieCatalog instanceof MockMovieCatalog)
+          movieCatalog.seedDefault(snapshot.configuration.libraryId);
+        else await movieCatalog.list(snapshot.configuration.libraryId);
+        const destination = snapshot.completed ? "home" : "onboarding";
+        setRoute(destination);
+        window.location.hash = "/" + destination;
+        if (snapshot.recovery) setNotice(snapshot.recovery.message);
+      } catch (cause) {
+        if (!active) return;
+        setRoute("onboarding");
+        window.location.hash = "/onboarding";
+        setError((cause as Error).message);
+      } finally {
+        if (active) setConfigurationReady(true);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [desktopConfiguration, movieCatalog, service]);
   useEffect(() => {
     primary.current?.focus();
   }, [route, step]);
@@ -458,11 +646,19 @@ function AppContent() {
     setBusy(true);
     setError("");
     try {
-      await service.save(config);
+      const snapshot = await service.save(config, {
+        completeOnboarding: route === "onboarding",
+      });
+      setConfig(structuredClone(snapshot.configuration));
       if (route === "onboarding") {
-        markOnboardingCompleted();
+        if (!desktopConfiguration) markOnboardingCompleted();
         navigate("home");
-      } else setNotice("Preferências atualizadas nesta sessão.");
+      } else
+        setNotice(
+          desktopConfiguration
+            ? "Preferências salvas neste dispositivo."
+            : "Preferências atualizadas nesta sessão.",
+        );
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -473,8 +669,8 @@ function AppContent() {
     setBusy(true);
     setError("");
     try {
-      await service.save({ ...config, preferences: { ...defaults } });
-      setConfig((c) => ({ ...c, preferences: { ...defaults } }));
+      const snapshot = await service.resetPlayback();
+      setConfig(structuredClone(snapshot.configuration));
       setModal(null);
       setNotice(
         "Preferências de reprodução restauradas. Biblioteca e cache mantidos.",
@@ -506,6 +702,22 @@ function AppContent() {
     setError("");
     setModal(kind);
   };
+  async function chooseFolder(kind: "libraryPath" | "cachePath") {
+    actionOrigin.current = document.activeElement as HTMLElement;
+    setBusy(true);
+    setError("");
+    try {
+      const selected = await service.chooseDirectory(
+        kind === "libraryPath" ? "library" : "cache",
+      );
+      if (selected) update(kind, selected);
+    } catch (cause) {
+      setError((cause as Error).message);
+    } finally {
+      setBusy(false);
+      requestAnimationFrame(() => actionOrigin.current?.focus());
+    }
+  }
   const folders = (kind: "libraryPath" | "cachePath") => (
     <div className="folder-field">
       <span>
@@ -517,11 +729,23 @@ function AppContent() {
           <small>{config[kind]}</small>
         </span>
       </span>
-      <Button variant="secondary" onClick={() => open(kind)}>
+      <Button
+        variant="secondary"
+        disabled={busy}
+        onClick={() =>
+          desktopConfiguration ? void chooseFolder(kind) : open(kind)
+        }
+      >
         Escolher pasta
       </Button>
     </div>
   );
+  if (!configurationReady)
+    return (
+      <div className="app configuration-loading">
+        <div role="status">Carregando configuração local…</div>
+      </div>
+    );
   const playback = (
     <>
       <Options
@@ -625,7 +849,7 @@ function AppContent() {
           }}
           content={playing}
           stream={streamService}
-          service={playerService}
+          service={playing.progressive ? progressivePlayer : playerService}
           onExit={() => {
             setPlaying(null);
             requestAnimationFrame(() => playOrigin.current?.focus());
@@ -777,11 +1001,12 @@ function AppContent() {
             cacheGB: policy.limitGB,
             cleanup: policy.autoCleanup,
             retainPartial: policy.retainPartial,
-            cachePath: !folderChanged
-              ? c.cachePath
-              : policy.folder === "Cache SSD simulado"
-                ? "/Volumes/SSD/Ushark/cache"
-                : "/Volumes/HDD/Ushark/cache",
+            cachePath:
+              storageService.runtime === "desktop" || !folderChanged
+                ? c.cachePath
+                : policy.folder === "Cache SSD simulado"
+                  ? "/Volumes/SSD/Ushark/cache"
+                  : "/Volumes/HDD/Ushark/cache",
           }))
         }
       />
@@ -811,12 +1036,13 @@ function AppContent() {
           <Button
             variant="secondary"
             onClick={() => {
-              storageService.policy = {
-                ...storageService.policy,
-                limitGB: config.cacheGB,
-                autoCleanup: config.cleanup,
-                retainPartial: config.retainPartial,
-              };
+              if (storageService.runtime !== "desktop")
+                storageService.policy = {
+                  ...storageService.policy,
+                  limitGB: config.cacheGB,
+                  autoCleanup: config.cleanup,
+                  retainPartial: config.retainPartial,
+                };
               navigate("storage");
             }}
           >
@@ -987,12 +1213,18 @@ function AppContent() {
             onMovies={() => navigate("movies")}
             onSeries={() => navigate("series")}
             onSettings={() => navigate("settings")}
-            configure={(s) => discoveryCatalog.configure(s)}
+            configure={(s) => {
+              if (discoveryCatalog instanceof MockDiscoveryCatalog)
+                discoveryCatalog.configure(s);
+            }}
             simulate={(action, id) => {
+              if (!(discoveryCatalog instanceof MockDiscoveryCatalog)) return;
               if (action === "page-error") discoveryCatalog.failNextPage = true;
               else if (id && action === "remove") discoveryCatalog.remove(id);
               else if (id) discoveryCatalog.rename(id);
             }}
+            previewTools={!desktopDiscoveryCatalog}
+            healthAvailable={!desktopDiscoveryCatalog}
           />
         </div>
       </>
@@ -1016,9 +1248,13 @@ function AppContent() {
             catalog={seriesCatalog}
             session={seriesSession}
             configure={(s) => {
-              seriesCatalog.scenario = s;
+              if (seriesCatalog instanceof MockSeriesCatalog)
+                seriesCatalog.scenario = s;
             }}
-            seed={(s) => seriesCatalog.seed(s)}
+            seed={(s) => {
+              if (seriesCatalog instanceof MockSeriesCatalog)
+                seriesCatalog.seed(s);
+            }}
             onHome={() => navigate("home")}
             onMovies={() => navigate("movies")}
             libraryName={config.name}
@@ -1050,10 +1286,16 @@ function AppContent() {
             onHome={() => navigate("home")}
             onCount={setMovieCount}
             configure={(value) => {
-              movieCatalog.scenario = value;
-              movieProvider.scenario = value;
+              if (movieCatalog instanceof MockMovieCatalog)
+                movieCatalog.scenario = value;
+              if (movieProvider instanceof MockMetadataProvider)
+                movieProvider.scenario = value;
             }}
-            seed={(kind) => movieCatalog.seed(kind, config.libraryId)}
+            seed={(kind) => {
+              if (movieCatalog instanceof MockMovieCatalog)
+                movieCatalog.seed(kind, config.libraryId);
+            }}
+            previewTools={!desktopMovieCatalog}
           />
         </div>
       </>
@@ -1143,7 +1385,9 @@ function AppContent() {
                 : "Tab navegar · Enter selecionar · Esc voltar"}
         </span>
         <span>
-          Prévia em memória · conclusão do onboarding salva neste dispositivo
+          {desktopConfiguration
+            ? "Configuração e biblioteca local salvas neste dispositivo"
+            : "Prévia em memória · conclusão do onboarding salva neste dispositivo"}
         </span>
         <label className="scenario">
           Cenário
@@ -1195,9 +1439,11 @@ function AppContent() {
             <Dialog.Description>
               {modal === "reset"
                 ? "Somente preferências de reprodução serão restauradas. Sua biblioteca, cache, histórico e downloads permanecem."
-                : "Seletor simulado. Nenhuma pasta será criada ou acessada nesta prévia."}
+                : desktopConfiguration
+                  ? "O seletor do sistema permite escolher uma pasta acessível neste dispositivo."
+                  : "Seletor simulado. Nenhuma pasta será criada ou acessada nesta prévia."}
             </Dialog.Description>
-            {modal !== "reset" && (
+            {modal !== "reset" && !desktopConfiguration && (
               <div className="folder-options">
                 {["C:\\Ushark\\", "D:\\Cinema\\", "E:\\Media\\"].map((base) => {
                   const path =

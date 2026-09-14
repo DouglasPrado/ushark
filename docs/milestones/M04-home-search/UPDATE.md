@@ -1,4 +1,30 @@
-# M04 — Frontend pronto para revisão UX
+# M04 — Checkpoint funcional pronto para revisão
+
+## Reparo pós-checkpoint — disponibilidade não implica arquivo local
+
+Em 2026-09-14, o snapshot de source ganhou o sinal separado
+`localFileAvailable`. Assim, uma source torrent disponível continua elegível
+para stream M07 sem ser encaminhada ao player local M05. O adapter mantém
+compatibilidade com snapshots anteriores e ganhou teste específico. Evidência:
+[M07 — importação até exibição](../M07-progressive-playback/evidence/POST_CHECKPOINT_DISPLAY_REPAIR.md).
+M04 continua `READY_FOR_REVIEW/PENDING`.
+
+## S05 — integração local real
+
+S05 foi concluída em 2026-09-14. O renderer usa `DesktopDiscoveryCatalog` no
+Electron, por uma API congelada no preload e uma allowlist IPC v1; Home, busca,
+filtros, cursores e eventos consomem SQLite/FTS5 reais. Mutações confirmadas de
+M02/M03 agendam sincronização e invalidam a UI sem expor banco ou paths ao
+renderer. O teste Electron offline criou um filme real, observou Home/busca,
+abriu o detalhe sem Health simulado e reabriu o mesmo catálogo após restart.
+
+Validação: integração afetada M01–M06 **71/71**, comportamento/layout M02/M04
+**34/34**, lint, typecheck e build passaram; o build mantém apenas o warning já
+conhecido de chunk acima de 500 kB. [Evidência](evidence/INTEGRATION_VALIDATION.md)
+e [checkpoint funcional](FUNCTIONAL_CHECKPOINT.md). Estado:
+`READY_FOR_REVIEW/PENDING`; S06 não foi iniciado.
+
+# Histórico — frontend pronto para revisão UX
 
 S00–S02 concluídas no checkout real. Home, busca/filtros, origens/coleções, detalhe comum por Content, teclado TV, retorno de foco e cenários de erro/offline/hydration implementados com mocks em memória. Catálogo extenso usa janela de 24 cards; não há FTS, watcher, persistência ou playback reais.
 
@@ -87,3 +113,47 @@ As duas colunas do Hero agora compartilham o mesmo centro vertical, mantendo tí
 ## Ajuste durante a revisão — recomendações logo após o Hero
 
 Na página canônica de Filme, a faixa que repetia título original, avaliação, disponibilidade, IMDb e memberships foi removida. Título e sinopse subiram discretamente dentro do Hero, e o trilho compartilhado Recomendados agora começa imediatamente abaixo dele; os cenários de revisão vêm depois. O modal de Série mantém seus fatos. O teste rico e os layouts M02/M04 em 1920 passaram **3/3**; a geometria adicional passou em 1920/2560/3840/480 sem overflow. Lint, typecheck, build e hashes passaram. A regressão integral anterior permanece **141/141** e M04 continua READY_FOR_REVIEW/PENDING.
+
+# Integração funcional M04
+
+## S04.3 — watcher e hydration em background
+
+O watcher v9 foi concluído em 2026-09-14. Ele observa somente a raiz autorizada,
+coalesce eventos, faz fingerprint/probe em worker thread, preserva identidade
+em rename/restart e envia apply delimitado após hydration. Add/change/rename/
+delete reais, symlink/escape, arquivo incompleto, rajada e cache antes do scan
+passaram. Suíte conjunta S04: **9/9**; regressão afetada: **61/61**.
+[Evidência](evidence/BACKEND_S04_3.md). Próxima story: S05, integração
+IPC/Electron e troca do mock pelo adapter real.
+
+## S04.2 — busca FTS5 incremental
+
+O índice FTS5 v8 foi concluído em 2026-09-14. Busca textual independente dos
+cards cobre título/original/sinopse/série/episódio e nomes de origem, com
+normalização de acentos/case, tokens prefixados seguros, filtros combinados,
+cursor e cancelamento. Apply/rename/delete atualizam apenas IDs delimitados e
+fazem rollback junto do FTS. Upgrade v7, restart intacto e recovery explícito
+foram comprovados; a suíte conjunta passou **6/6**.
+[Evidência](evidence/BACKEND_S04_2.md). Próxima sub-story: S04.3, watcher e
+hydration em background.
+
+## S04.1 — projeção local e leitura em lote
+
+A projeção SQLite v7 de Home/escopos foi concluída em 2026-09-14. Ela consome
+o catálogo real M02/M03 em cinco queries fixas, preserva identidade, progresso,
+favorito, memberships e sources permitidas, filtra pela biblioteca selecionada
+e persiste o último snapshot íntegro. Cursor preso à revisão, acesso negado,
+rollback, restart e planos de índice foram comprovados. O corpus de 10.000
+Contents passou junto da regressão afetada **55/55**.
+[Evidência](evidence/BACKEND_S04_1.md). Próxima sub-story: S04.2, busca FTS5
+incremental.
+
+## S03 — contrato de leitura e indexação
+
+Contrato real v1 fechado em 2026-09-14. Home, busca, escopos, facets, progresso,
+origens e sources usam um item por `contentId`; homônimos não se fundem e
+origem indisponível não apaga o Content. FTS5 incremental, leitura local
+primeiro, paginação presa à revisão, acesso, cancelamento, invalidação
+delimitada, watcher coalescido e ownership dos produtores futuros foram
+formalizados. [Evidência](evidence/DOMAIN_CONTRACT.md). Próxima sub-story:
+S04.1, projeção SQLite e leitura em lote.

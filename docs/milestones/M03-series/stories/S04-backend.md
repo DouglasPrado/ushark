@@ -1,6 +1,6 @@
 # S04 — Persistência e resolução de episódios
 
-Status: DEFERRED. Preparar este arquivo não executa a story.
+Status: DONE em 2026-09-14 — S04.1, S04.2 e S04.3 concluídas.
 
 ## Objetivo
 
@@ -28,11 +28,18 @@ Checks de cada sub-story, lint/typecheck/build aplicáveis e testes de fronteira
 
 ## Evidências
 
-PENDENTES. Registrar arquivos, comandos/resultados, ambiente e integrações reais ao executar cada sub-story.
+- [S04.1 — hierarquia persistente e índices](../evidence/BACKEND_S04_1.md):
+  **3/3** focados e **26/26** na regressão dos stores afetados.
+- [S04.2 — inferência e selectors](../evidence/BACKEND_S04_2.md): padrões,
+  correções, conflitos, source compartilhada, legenda, restart e retry.
+- [S04.3 — metadata hierárquica](../evidence/BACKEND_S04_3.md): provider TMDB,
+  cache/offline, cancelamento e preservação de identidade. Suíte conjunta S04:
+  **16/16**.
 
 ## Done When
 
-Todos os adapters exigidos pelo contrato estão validados e prontos para S05.
+Cumprido. Os adapters de hierarquia, mapping/selectors e metadata estão
+validados e prontos para S05.
 
 ## S04.1 — Hierarquia persistente e índices
 
@@ -41,7 +48,8 @@ Todos os adapters exigidos pelo contrato estão validados e prontos para S05.
 **Fora de escopo:** inspeção de source, metadata provider e schema antecipado de playback.
 **Aceite:** restart preserva hierarquia e identidade; unique constraints impedem duplicata lógica sem fundir providers incompatíveis; coleção extensa não exige carregar todos os episódios.
 **Validação:** fresh/upgrade histórico, rollback de migração, transações concorrentes e corpus sintético de dezenas de milhares de episódios com baseline documentado.
-**Done when:** persistência e índices comprovados antes de S04.2.
+**Done when:** cumprido. Persistência, upgrade, rollback, restart, paginação,
+índice e corpus de 50.000 episódios foram comprovados antes de S04.2.
 
 ## S04.2 — Inferência e selectors por episódio
 
@@ -50,7 +58,8 @@ Todos os adapters exigidos pelo contrato estão validados e prontos para S05.
 **Fora de escopo:** download/prioridade de pieces, probe completo, prefetch e decisão automática de episódios duplos.
 **Aceite:** episode pack compartilha source sem compartilhar selector; ambiguidade/não identificado permanece revisável; correção sobrevive restart; sample e arquivo irrelevante não viram episódio por engano.
 **Validação:** corpus de nomes, casing, paths, especiais, multitemporada, colisões, renomeação, arquivos ausentes e retries; propriedades que garantam ausência de merge entre episódios distintos.
-**Done when:** resolução e persistência comprovadas antes de S04.3.
+**Done when:** cumprido. Resolução e persistência foram comprovadas antes de
+S04.3.
 
 ## S04.3 — Metadata hierárquica e recuperação
 
@@ -59,4 +68,5 @@ Todos os adapters exigidos pelo contrato estão validados e prontos para S05.
 **Fora de escopo:** curadoria compartilhada, busca/Home global e alteração silenciosa de identidade por refresh.
 **Aceite:** catálogo abre offline; falha/timeout não perde mapeamentos; refresh preserva identidade, selectors e correções; série local sem provider continua utilizável.
 **Validação:** responses controladas, cancelamento/resposta antiga, provider indisponível e smoke real quando configurado, distinguindo stub de rede real.
-**Done when:** metadata e recuperação comprovadas, permitindo S05.
+**Done when:** cumprido. Metadata e recuperação foram comprovadas; o smoke real
+de rede continua explicitamente pendente por ausência de token.

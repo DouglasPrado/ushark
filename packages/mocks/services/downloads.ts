@@ -5,6 +5,7 @@ import type {
   DownloadRequest,
 } from "@ushark/types/downloads";
 export class MockDownloadPreview implements DownloadPreview {
+  readonly runtime = "mock" as const;
   capturePreview() {
     return structuredClone({ items: this.items, limits: this.limits });
   }

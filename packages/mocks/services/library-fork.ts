@@ -3,6 +3,7 @@ import type { LibraryPreviewService } from "@ushark/types/libraries";
 import type { LibraryPackageSnapshot } from "@ushark/types/library-package";
 import { previewWork } from "./library-package";
 export class MockLibraryForkPreview implements LibraryForkPreview {
+  readonly runtime = "mock" as const;
   constructor(private libraries: LibraryPreviewService) {}
   copy(
     snapshot: LibraryPackageSnapshot,

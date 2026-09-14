@@ -29,7 +29,6 @@ import {
 import {
   Button,
   FilterGroup,
-  FilterSearch,
   FilterSelect,
   FilterToolbar,
   MediaCard,
@@ -55,6 +54,8 @@ import {
   contentRecommendations,
   trailerDuration,
 } from "./ContentDetails";
+import { CatalogRail, groupCatalogItems } from "./CatalogRail";
+import { CatalogSearch } from "./CatalogSearch";
 import "./movies.css";
 import "./discovery.css";
 
@@ -123,6 +124,7 @@ interface Props {
   onCount: (count: number) => void;
   configure: (scenario: MovieScenario) => void;
   seed: (kind: "empty" | "collection" | "conflict") => void;
+  previewTools?: boolean;
 }
 function Poster({
   metadata,
@@ -218,6 +220,7 @@ export function Movies({
   onCount,
   configure,
   seed,
+  previewTools = true,
 }: Props) {
   const [torrentOpen, setTorrentOpen] = useState(false);
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -246,10 +249,12 @@ export function Movies({
   const [removal, setRemoval] = useState<Removal>({ kind: "membership" });
   const [favoriteOnly, setFavoriteOnly] = useState(false);
   const [catalogQuery, setCatalogQuery] = useState("");
+  const [catalogSearchOpen, setCatalogSearchOpen] = useState(false);
   const [catalogSort, setCatalogSort] = useState<CatalogSort>("featured");
   const [fixtureKind, setFixtureKind] = useState("current");
   const origin = useRef<HTMLElement | null>(null);
   const lastCard = useRef<string | null>(null);
+  const lastCardElement = useRef<string | null>(null);
   const detail = useRef<HTMLDivElement>(null);
   const listScroll = useRef(0);
   const focusRecommendation = useRef(false);
@@ -304,6 +309,12 @@ export function Movies({
         );
       return 0;
     });
+  const categorizedCatalog =
+    !normalizedCatalogQuery && !favoriteOnly && catalogSort === "featured";
+  const movieCategories = groupCatalogItems(
+    visible,
+    (movie) => movie.metadata.genres,
+  );
   const signalFor = (movie: Movie) => {
     const quality = bestQuality(
       movie.sources.map((source) => source.resolution),
@@ -367,8 +378,9 @@ export function Movies({
       ? detail.current?.querySelector<HTMLButtonElement>(
           "[data-detail-primary-action]",
         )
-      : (document.getElementById(`card-${lastCard.current}`) ??
-        document.querySelector<HTMLElement>("[data-movie-add]"));
+      : (document.getElementById(
+          lastCardElement.current ?? `card-${lastCard.current}`,
+        ) ?? document.querySelector<HTMLElement>("[data-movie-add]"));
     target?.focus();
   }, [selectedId, loading]);
   useEffect(() => {
@@ -422,8 +434,9 @@ export function Movies({
     });
     return () => cancelAnimationFrame(frame);
   }, [panel]);
-  function openDetails(id: string) {
+  function openDetails(id: string, cardId = `card-${id}`) {
     lastCard.current = id;
+    lastCardElement.current = cardId;
     listScroll.current = window.scrollY;
     setNotice("");
     setError("");
@@ -462,6 +475,9 @@ export function Movies({
     else if (selectedId) {
       setSelectedId(null);
       setNotice("");
+    } else if (catalogSearchOpen) {
+      setCatalogQuery("");
+      setCatalogSearchOpen(false);
     } else onHome();
   }
   function dismiss() {
@@ -615,6 +631,7 @@ export function Movies({
           libraryId,
         );
         lastCard.current = movie.id;
+        lastCardElement.current = `card-${movie.id}`;
         setSelectedId(movie.id);
       },
       "Filme atualizado na sua biblioteca.",
@@ -649,6 +666,9 @@ export function Movies({
         if (kind === "membership") {
           lastCard.current =
             visible.find((m) => m.id !== selected.id)?.id ?? null;
+          lastCardElement.current = lastCard.current
+            ? `card-${lastCard.current}`
+            : null;
           setSelectedId(null);
         }
       },
@@ -663,10 +683,43 @@ export function Movies({
   const importTorrent = async (value: Inspection, ids: string[]) => {
     const files = value.files.filter((file) => ids.includes(file.id));
     for (const file of files) {
+      let contentId = selectedId;
+      if (torrentService.confirmForContent) {
+        if (!contentId) {
+          const movie = await catalog.save(
+            {
+              metadata: {
+                id: `import:${value.hash}:${file.id}`,
+                title: value.name.replace(/\./g, " "),
+                genres: [],
+                cast: [],
+              },
+            },
+            libraryId,
+          );
+          contentId = movie.id;
+        }
+        const linked = await torrentService.confirmForContent(
+          contentId,
+          value,
+          file.id,
+        );
+        await catalog.addSource(contentId, {
+          id: linked.sourceId,
+          name: file.name,
+          size: file.size,
+          availability: "declared",
+          fileAvailable: false,
+          resolution: /1080p/i.test(file.name) ? "1080p" : undefined,
+          videoCodec: /H264/i.test(file.name) ? "H264" : undefined,
+        });
+        continue;
+      }
       const source = {
         id: `torrent:${value.hash}:${file.id}`,
         name: file.name,
         size: file.size,
+        availability: "declared" as const,
         fileAvailable: false,
         resolution: /1080p/i.test(file.name) ? "1080p" : undefined,
         videoCodec: /H264/i.test(file.name) ? "H264" : undefined,
@@ -775,69 +828,71 @@ export function Movies({
             >
               <Plus size={22} />
             </button>
-            <details className="movie-preview-tools">
-              <summary aria-label="Opções de visualização" title="Opções">
-                <SlidersHorizontal size={20} />
-              </summary>
-              <div>
-                <label>
-                  Catálogo
-                  <select
-                    aria-label="Conteúdo da biblioteca"
-                    value={fixtureKind}
-                    disabled={busy || !!panel}
-                    onChange={(e) => {
-                      const kind = e.target.value as
-                        "empty" | "collection" | "conflict";
-                      seed(kind);
-                      setFixtureKind(kind);
-                      setSelectedId(null);
-                      setFavoriteOnly(false);
-                      setNotice("");
-                      setError("");
-                      void refreshList(true);
-                    }}
-                  >
-                    <option value="current" disabled>
-                      Atual
-                    </option>
-                    <option value="empty">Vazio</option>
-                    <option value="collection">Preenchido</option>
-                    <option value="conflict">Identidades duplicadas</option>
-                  </select>
-                </label>
-                <label>
-                  Estado
-                  <select
-                    aria-label="Estado da interface"
-                    value={scenario}
-                    disabled={busy || !!panel}
-                    onChange={(e) => {
-                      const next = e.target.value as MovieScenario;
-                      configure(next);
-                      setScenario(next);
-                      setError("");
-                      void refreshList(true);
-                    }}
-                  >
-                    {Object.entries({
-                      normal: "Normal",
-                      offline: "Offline",
-                      "search-empty": "Busca vazia",
-                      "provider-error": "Busca indisponível",
-                      slow: "Resposta lenta",
-                      "save-error": "Erro ao salvar",
-                      "list-error": "Erro ao carregar",
-                      "image-error": "Imagem indisponível",
-                    }).map(([id, name]) => (
-                      <option key={id} value={id}>
-                        {name}
+            {previewTools && (
+              <details className="movie-preview-tools">
+                <summary aria-label="Opções de visualização" title="Opções">
+                  <SlidersHorizontal size={20} />
+                </summary>
+                <div>
+                  <label>
+                    Catálogo
+                    <select
+                      aria-label="Conteúdo da biblioteca"
+                      value={fixtureKind}
+                      disabled={busy || !!panel}
+                      onChange={(e) => {
+                        const kind = e.target.value as
+                          "empty" | "collection" | "conflict";
+                        seed(kind);
+                        setFixtureKind(kind);
+                        setSelectedId(null);
+                        setFavoriteOnly(false);
+                        setNotice("");
+                        setError("");
+                        void refreshList(true);
+                      }}
+                    >
+                      <option value="current" disabled>
+                        Atual
                       </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-            </details>
+                      <option value="empty">Vazio</option>
+                      <option value="collection">Preenchido</option>
+                      <option value="conflict">Identidades duplicadas</option>
+                    </select>
+                  </label>
+                  <label>
+                    Estado
+                    <select
+                      aria-label="Estado da interface"
+                      value={scenario}
+                      disabled={busy || !!panel}
+                      onChange={(e) => {
+                        const next = e.target.value as MovieScenario;
+                        configure(next);
+                        setScenario(next);
+                        setError("");
+                        void refreshList(true);
+                      }}
+                    >
+                      {Object.entries({
+                        normal: "Normal",
+                        offline: "Offline",
+                        "search-empty": "Busca vazia",
+                        "provider-error": "Busca indisponível",
+                        slow: "Resposta lenta",
+                        "save-error": "Erro ao salvar",
+                        "list-error": "Erro ao carregar",
+                        "image-error": "Imagem indisponível",
+                      }).map(([id, name]) => (
+                        <option key={id} value={id}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </details>
+            )}
           </div>
         )}
       </header>
@@ -866,14 +921,6 @@ export function Movies({
                     : `${visible.length} de ${movies.length} filmes`
                 }
               >
-                <FilterSearch
-                  className="catalog-list-search"
-                  label="Buscar na lista de filmes"
-                  placeholder="Buscar filmes"
-                  value={catalogQuery}
-                  icon={<Search size={18} aria-hidden="true" />}
-                  onChange={(event) => setCatalogQuery(event.target.value)}
-                />
                 <FilterSelect
                   className="catalog-list-sort"
                   label="Ordenar por"
@@ -904,6 +951,16 @@ export function Movies({
                   >
                     <Heart size={18} />
                   </button>
+                  <CatalogSearch
+                    open={catalogSearchOpen}
+                    label="Buscar na lista de filmes"
+                    placeholder="Buscar filmes"
+                    openLabel="Buscar filmes"
+                    closeLabel="Fechar busca de filmes"
+                    value={catalogQuery}
+                    onValueChange={setCatalogQuery}
+                    onOpenChange={setCatalogSearchOpen}
+                  />
                 </FilterGroup>
               </FilterToolbar>
               {loading ? (
@@ -973,6 +1030,145 @@ export function Movies({
                           ? "Voltar ao início"
                           : "Adicionar meu primeiro filme"}
                   </Button>
+                </div>
+              ) : categorizedCatalog ? (
+                <div className="catalog-rails" data-catalog-view="categories">
+                  <CatalogRail title="Em destaque">
+                    {visible.map((movie) => {
+                      const { quality, health } = signalFor(movie);
+                      const healthId = health
+                        ? `torrent-health-featured-${movie.id}`
+                        : undefined;
+                      return (
+                        <MediaCard
+                          className="movie-card catalog-rail-card"
+                          orientation="landscape"
+                          image={
+                            scenario === "image-error"
+                              ? "./movie-art/missing.svg"
+                              : (movie.metadata.backdrop ??
+                                movie.metadata.poster)
+                          }
+                          fallback={
+                            <span className="poster-fallback">
+                              <ImageOff size={30} />
+                              <span>{movie.metadata.title}</span>
+                              <small>Imagem indisponível</small>
+                            </span>
+                          }
+                          overlays={
+                            <>
+                              {health && (
+                                <TorrentHealthBadge
+                                  id={healthId}
+                                  health={health}
+                                />
+                              )}
+                              {movie.personal.favorite && (
+                                <span className="favorite-badge">
+                                  <Heart size={14} fill="currentColor" />
+                                  <span className="sr-only">Favorito</span>
+                                </span>
+                              )}
+                            </>
+                          }
+                          title={movieTitle(movie, libraryId)}
+                          mediaClassName="movie-card-media"
+                          artClassName="movie-poster"
+                          copyClassName="movie-card-copy"
+                          id={`card-${movie.id}`}
+                          key={movie.id}
+                          data-content-id={movie.id}
+                          onClick={() => openDetails(movie.id)}
+                          aria-label={`Abrir ${movieTitle(movie, libraryId)}`}
+                          aria-describedby={healthId}
+                        >
+                          <small className="movie-card-year">
+                            {movie.metadata.year ?? "Ano não informado"}
+                            {movie.metadata.duration && (
+                              <>
+                                <span> · </span>
+                                {movie.metadata.duration} min
+                              </>
+                            )}
+                            {quality ? ` · ${quality}` : ""}
+                          </small>
+                          <ImdbFacts metadata={movie.metadata} />
+                          {!!movie.metadata.genres.length && (
+                            <small className="movie-card-genres">
+                              {movie.metadata.genres.join(" / ")}
+                            </small>
+                          )}
+                        </MediaCard>
+                      );
+                    })}
+                  </CatalogRail>
+                  {movieCategories.map((category, categoryIndex) => (
+                    <CatalogRail title={category.title} key={category.title}>
+                      {category.items.map((movie) => {
+                        const { quality, health } = signalFor(movie);
+                        const healthId = health
+                          ? `torrent-health-category-${categoryIndex}-${movie.id}`
+                          : undefined;
+                        return (
+                          <MediaCard
+                            className="movie-category-card catalog-rail-card"
+                            orientation="landscape"
+                            image={
+                              scenario === "image-error"
+                                ? "./movie-art/missing.svg"
+                                : (movie.metadata.backdrop ??
+                                  movie.metadata.poster)
+                            }
+                            fallback={
+                              <span className="poster-fallback">
+                                <ImageOff size={30} />
+                                <span>{movie.metadata.title}</span>
+                                <small>Imagem indisponível</small>
+                              </span>
+                            }
+                            overlays={
+                              <>
+                                {health && (
+                                  <TorrentHealthBadge
+                                    id={healthId}
+                                    health={health}
+                                  />
+                                )}
+                                {movie.personal.favorite && (
+                                  <span className="favorite-badge">
+                                    <Heart size={14} fill="currentColor" />
+                                    <span className="sr-only">Favorito</span>
+                                  </span>
+                                )}
+                              </>
+                            }
+                            title={movieTitle(movie, libraryId)}
+                            mediaClassName="movie-card-media"
+                            artClassName="movie-poster"
+                            copyClassName="movie-card-copy"
+                            id={`card-${movie.id}-category-${categoryIndex}`}
+                            key={movie.id}
+                            data-content-id={movie.id}
+                            onClick={() =>
+                              openDetails(
+                                movie.id,
+                                `card-${movie.id}-category-${categoryIndex}`,
+                              )
+                            }
+                            aria-label={`Na categoria ${category.title}: abrir ${movieTitle(movie, libraryId)}`}
+                            aria-describedby={healthId}
+                          >
+                            <small className="movie-card-year">
+                              {movie.metadata.year ?? "Ano não informado"}
+                              {quality ? ` · ${quality}` : ""}
+                            </small>
+                            <ImdbFacts metadata={movie.metadata} />
+                          </MediaCard>
+                        );
+                      })}
+                    </CatalogRail>
+                  ))}
                 </div>
               ) : (
                 <div className="movie-grid">
@@ -1108,7 +1304,9 @@ export function Movies({
               requestAnimationFrame(() => {
                 window.scrollTo(0, listScroll.current);
                 document
-                  .getElementById(`card-${lastCard.current}`)
+                  .getElementById(
+                    lastCardElement.current ?? `card-${lastCard.current}`,
+                  )
                   ?.focus({ preventScroll: true });
               });
             }}
@@ -1252,7 +1450,9 @@ export function Movies({
               requestAnimationFrame(() => {
                 const fallback = selectedId
                   ? document.querySelector<HTMLElement>("[data-movie-back]")
-                  : (document.getElementById(`card-${lastCard.current}`) ??
+                  : (document.getElementById(
+                      lastCardElement.current ?? `card-${lastCard.current}`,
+                    ) ??
                     document.querySelector<HTMLElement>("[data-movie-add]"));
                 if (
                   origin.current?.isConnected &&
@@ -1355,7 +1555,7 @@ export function Movies({
                     )}
                   </div>
                 )}
-                {!editingId && (
+                {!editingId && previewTools && (
                   <label className="source-entry">
                     Fonte inicial (opcional)
                     <select
@@ -1593,50 +1793,54 @@ export function Movies({
                     </article>
                   ))}
                 </div>
-                <label>
-                  Adicionar fonte
-                  <select
-                    value={sourceId}
-                    onChange={(e) => setSourceId(e.target.value)}
-                    disabled={busy}
-                  >
-                    <option value="">Escolher fonte</option>
-                    {sourceFixtures.map((s) => (
-                      <option
-                        key={s.id}
-                        value={s.id}
-                        disabled={selected.sources.some((x) => x.id === s.id)}
-                      >
-                        {s.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                {previewTools && (
+                  <label>
+                    Adicionar fonte
+                    <select
+                      value={sourceId}
+                      onChange={(e) => setSourceId(e.target.value)}
+                      disabled={busy}
+                    >
+                      <option value="">Escolher fonte</option>
+                      {sourceFixtures.map((s) => (
+                        <option
+                          key={s.id}
+                          value={s.id}
+                          disabled={selected.sources.some((x) => x.id === s.id)}
+                        >
+                          {s.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
                 <div className="footer-actions">
                   <Button variant="secondary" onClick={close} disabled={busy}>
                     Fechar fontes
                   </Button>
-                  <Button
-                    disabled={
-                      busy ||
-                      !sourceId ||
-                      selected.sources.some((s) => s.id === sourceId)
-                    }
-                    onClick={() =>
-                      void mutate(
-                        () =>
-                          catalog.addSource(
-                            selected.id,
-                            sourceFixtures.find((s) => s.id === sourceId)!,
-                          ),
-                        "Fonte adicionada.",
-                        () => setSourceId(""),
-                      )
-                    }
-                  >
-                    <Plus size={17} />
-                    {busy ? "Salvando…" : "Adicionar fonte"}
-                  </Button>
+                  {previewTools && (
+                    <Button
+                      disabled={
+                        busy ||
+                        !sourceId ||
+                        selected.sources.some((s) => s.id === sourceId)
+                      }
+                      onClick={() =>
+                        void mutate(
+                          () =>
+                            catalog.addSource(
+                              selected.id,
+                              sourceFixtures.find((s) => s.id === sourceId)!,
+                            ),
+                          "Fonte adicionada.",
+                          () => setSourceId(""),
+                        )
+                      }
+                    >
+                      <Plus size={17} />
+                      {busy ? "Salvando…" : "Adicionar fonte"}
+                    </Button>
+                  )}
                 </div>
               </>
             )}

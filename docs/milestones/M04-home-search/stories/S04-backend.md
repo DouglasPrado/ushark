@@ -1,6 +1,6 @@
 # S04 — Queries e indexação incremental
 
-Status: DEFERRED. Preparar este arquivo não executa a story.
+Status: DONE em 2026-09-14 — S04.1, S04.2 e S04.3 concluídas.
 
 ## Objetivo
 
@@ -28,11 +28,20 @@ Testes de cada sub-story, lint/typecheck/build aplicáveis e inspeção de queri
 
 ## Evidências
 
-PENDENTES. Registrar arquivos, comandos/resultados e ambiente por sub-story.
+- [S04.1 — projeção local e leitura em lote](../evidence/BACKEND_S04_1.md):
+  **3/3** focados; corpus de 10.000 Contents com cinco queries fixas; regressão
+  afetada **55/55**.
+- [S04.2 — busca FTS5 incremental](../evidence/BACKEND_S04_2.md): busca/cursor,
+  filtros, apply delimitado, rollback, migração/restart/recovery; suíte conjunta
+  **6/6**.
+- [S04.3 — watcher e hydration em background](../evidence/BACKEND_S04_3.md):
+  filesystem real, worker, coalescência, segurança, restart e cache-first;
+  suíte conjunta **9/9** e regressão afetada **61/61**.
 
 ## Done When
 
-Três sub-stories comprovadas e adapters prontos para S05.
+Cumprido. As três sub-stories estão comprovadas e os adapters estão prontos
+para S05.
 
 ## S04.1 — Leitura em lote, paginação e estado local
 
@@ -41,7 +50,8 @@ Três sub-stories comprovadas e adapters prontos para S05.
 **Fora de escopo:** FTS/watcher, produzir histórico de playback ou assinar bibliotecas.
 **Aceite:** sem N+1, um resultado por Content, sem fundir episódios; cursor não duplica nem omite itens em snapshot estável; offline preserva dados; payloads limitados.
 **Validação:** corpus pequeno/grande, planos e contagem de queries, múltiplas origens/sources, acesso negado, migração fresh/upgrade e rollback.
-**Done when:** adapters de leitura comprovados para S04.2.
+**Done when:** cumprido. Projeção, leitura em lote, escopo, cursor, rollback,
+restart, índices e corpus de 10.000 Contents foram comprovados antes de S04.2.
 
 ## S04.2 — Busca FTS5 incremental
 
@@ -50,7 +60,9 @@ Três sub-stories comprovadas e adapters prontos para S05.
 **Fora de escopo:** busca remota, watcher, seleção de source e rebuild periódico sem necessidade.
 **Aceite:** títulos iguais com IDs diferentes permanecem distintos; memberships não multiplicam resultados; item alterado atualiza apenas entradas afetadas, incluindo renomeação de origem; restart não reconstrói FTS intacto.
 **Validação:** termos vazios/acentos/pontuação/expressões hostis conforme contrato; rollback, indexação interrompida, rename/delete e busca de Content fora da janela virtual.
-**Done when:** consistência e incrementalidade comprovadas para S04.3.
+**Done when:** cumprido. Consistência, incrementalidade por ID, filtros,
+paginação, rollback, upgrade/restart e recovery explícito foram comprovados
+antes de S04.3.
 
 ## S04.3 — Watcher, background e hydration
 
@@ -59,4 +71,6 @@ Três sub-stories comprovadas e adapters prontos para S05.
 **Fora de escopo:** varrer todo disco, seguir paths fora da raiz autorizada, scheduler torrent e serviços globais.
 **Aceite:** um arquivo alterado não força rebuild global; rajada/retry não duplica Content; arquivo incompleto retorna pendência recuperável; erro mantém último estado consistente. Home mostra cache antes de scan/metadata/health e hydration não troca identidade/foco.
 **Validação:** pasta temporária, arquivo real add/change/rename/delete, symlink/path fora da raiz, eventos repetidos, reinício durante indexação e threads/processos; registrar itens reprocessados e tempos.
-**Done when:** watcher e recuperação demonstrados com disco real, permitindo S05.
+**Done when:** cumprido. Watcher, coalescência, worker, segurança, mapping,
+restart, erro recuperável e hydration cache-first foram demonstrados com disco
+real, permitindo S05.

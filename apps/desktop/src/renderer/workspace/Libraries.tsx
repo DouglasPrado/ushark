@@ -73,10 +73,11 @@ export function Libraries({
     first = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     let active = true;
-    service
-      .catalog()
+    Promise.resolve(service.refresh?.())
+      .then(() => service.catalog())
       .then((items) => {
         if (active) {
+          setSaved(service.list());
           setCatalog(items);
           setLoading(false);
         }
@@ -142,14 +143,17 @@ export function Libraries({
     setError("");
     const abort = new AbortController();
     controller.current = abort;
-    service.failSave = scenario === "error";
+    service.failSave =
+      service.runtime === "desktop" ? false : scenario === "error";
     try {
       const value = await service.save(draft, abort.signal);
       if (!abort.signal.aborted) {
         setDraft(value);
         setBaseline(JSON.stringify(value));
         setSaved(service.list());
-        setNotice("Rascunho salvo nesta sessão. Nenhuma publicação foi feita.");
+        setNotice(
+          `Rascunho salvo${service.runtime === "desktop" ? " localmente" : " nesta sessão"}. Nenhuma publicação foi feita.`,
+        );
       }
     } catch (e) {
       if (!abort.signal.aborted) setError((e as Error).message);
@@ -195,7 +199,11 @@ export function Libraries({
           </Button>
         )}
       </header>
-      <p>Curadoria privada em memória. Não publica nem inicia processos.</p>
+      <p>
+        {service.runtime === "desktop"
+          ? "Curadoria privada persistida neste dispositivo. Não publica nem inicia processos."
+          : "Curadoria privada em memória. Não publica nem inicia processos."}
+      </p>
       {draft?.provenance && (
         <p>
           Cópia independente da versão {draft.provenance.version} da origem. Não
@@ -304,15 +312,17 @@ export function Libraries({
             )}
             {tab === 1 && (
               <>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    service.examples();
-                    void service.catalog().then(setCatalog);
-                  }}
-                >
-                  Usar catálogo sintético
-                </Button>
+                {service.runtime !== "desktop" && (
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      service.examples();
+                      void service.catalog().then(setCatalog);
+                    }}
+                  >
+                    Usar catálogo sintético
+                  </Button>
+                )}
                 {!catalog.length && (
                   <p>
                     Catálogo vazio. Cadastre filmes/séries ou carregue exemplos
@@ -696,21 +706,23 @@ export function Libraries({
           </fieldset>
         </>
       )}
-      <details className="workspace-scenarios">
-        <summary>Cenários de curadoria</summary>
-        <label>
-          Estado da curadoria
-          <select
-            disabled={busy}
-            value={scenario}
-            onChange={(e) => setScenario(e.target.value as typeof scenario)}
-          >
-            <option value="normal">Normal</option>
-            <option value="error">Erro ao salvar</option>
-            <option value="offline">Offline</option>
-          </select>
-        </label>
-      </details>
+      {service.runtime !== "desktop" && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de curadoria</summary>
+          <label>
+            Estado da curadoria
+            <select
+              disabled={busy}
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value as typeof scenario)}
+            >
+              <option value="normal">Normal</option>
+              <option value="error">Erro ao salvar</option>
+              <option value="offline">Offline</option>
+            </select>
+          </label>
+        </details>
+      )}
       <Dialog.Root
         open={(discard || !!detail) && !suspended}
         onOpenChange={(v) => {

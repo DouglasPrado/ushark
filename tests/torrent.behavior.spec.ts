@@ -67,7 +67,9 @@ test("M06 pendência, cancelamento, path hostil e revisão de série", async ({
   });
   await page.getByRole("button", { name: "Confirmar arquivos" }).click();
   await expect(page.getByRole("status")).toContainText("Importação concluída");
-  await expect(page.getByText("Entre Órbitas", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Abrir Entre Órbitas", exact: true }),
+  ).toBeVisible();
   await page
     .getByRole("button", { name: "Importar torrent ou magnet" })
     .click();

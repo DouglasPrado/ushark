@@ -1,6 +1,6 @@
 # S07 — Consolidar segurança e uso na TV
 
-Status: PLANNED. Preparação documental; não executada.
+Status: DONE. Executada e validada localmente em 2026-09-14.
 
 ## Objetivo
 
@@ -34,8 +34,11 @@ Revisão de segurança do boundary e evidências visuais/performance; repetir so
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+- [SECURITY_REVIEW](../evidence/SECURITY_REVIEW.md).
+- Schema futuro, payload extra, path raiz/sobreposto, protocolo/sender/opção inválidos e diretório inacessível possuem testes negativos.
+- Electron comprova sandbox/context isolation/web security, DevTools fechado em release, CSP, `window.open` negado e ausência de requests externos no percurso testado.
+- Typecheck, lint afetado, build e 27/27 testes M01 passaram após o hardening.
 
 ## Conclusão
 
-Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+Riscos locais de M01 foram tratados proporcionalmente. Hardware Windows/TV, checkpoint funcional humano e gates externos permanecem explicitamente pendentes para S08.

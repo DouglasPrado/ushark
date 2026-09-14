@@ -81,6 +81,7 @@ function delay(signal: AbortSignal) {
   });
 }
 export class MockStoragePreview implements StoragePreview {
+  readonly runtime = "mock" as const;
   capturePreview() {
     return structuredClone({
       rows: this.rows,

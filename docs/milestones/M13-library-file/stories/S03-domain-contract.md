@@ -1,6 +1,6 @@
 # S03 — Contrato de domínio — M13
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; contrato e decisões registrados em `../evidence/DOMAIN_CONTRACT.md`.
 
 ## Objetivo
 

@@ -1,10 +1,10 @@
 # M01 — Entrar no app e configurar a biblioteca
 
-Status: FRONTEND_UX_APPROVED — S00–S02 implementadas com mocks; UX aprovada explicitamente pelo usuário: “a ux esta aprovado”. Validação Windows/TV física e controle físico pendentes. Integração e fechamento continuam adiados.
+Status: LOCAL_VALIDATED / READY_FOR_FUNCTIONAL_REVIEW — S00–S07 concluídas; S08 executada com gates pendentes. UX consolidada aprovada em 2026-09-14. Configuração e biblioteca vazia agora persistem em SQLite pelo adapter Electron real; navegador mantém mock independente. Aceite funcional humano, Windows/TV/controle físicos e gates externos permanecem pendentes, portanto M01 não está DONE.
 
 ## Objetivo e resultado
 
-Primeiro acesso → boas-vindas → pasta de biblioteca → pasta/limite de cache → preferências → Home vazia. Usuário navega por controle e pode rever configurações. A conclusão do onboarding já fica marcada localmente para que os próximos acessos abram direto na Home; biblioteca e preferências completas continuam aguardando a integração posterior para sobreviver ao restart.
+Primeiro acesso → boas-vindas → pasta de biblioteca → pasta/limite de cache → preferências → Home vazia. Usuário navega por controle e pode rever configurações. No Electron, conclusão, identidade/nome/pasta da biblioteca, cache e preferências sobrevivem ao restart em armazenamento local versionado e atômico. No navegador, a experiência isolada continua usando mocks.
 
 ## Requisitos
 

@@ -320,10 +320,12 @@ test("M02 e M04 abrem filmes na mesma página canônica de detalhes", async ({
     .getByRole("navigation", { name: "Navegação principal" })
     .getByRole("button", { name: "Filmes", exact: true })
     .click();
-  const moviesCard = page.locator(".movie-grid").getByRole("button", {
-    name: "Abrir Interestelar",
-    exact: true,
-  });
+  const moviesCard = page
+    .getByRole("region", { name: "Em destaque", exact: true })
+    .getByRole("button", {
+      name: "Abrir Interestelar",
+      exact: true,
+    });
   await moviesCard.click();
 
   const moviesDetail = page.getByRole("main", { name: "Interestelar" });
@@ -364,9 +366,9 @@ test("M04 busca global consolida identidade, filtra e restaura foco", async ({
   const detailPage = page.getByRole("main", { name: "Horizonte Azul" });
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(detailPage).toContainText("4K");
-  await expect(
-    detailPage.getByRole("button", { name: /Cinema em casa/ }),
-  ).toHaveCount(2);
+  await expect(detailPage.locator(".discovery-detail-memberships")).toHaveCount(
+    0,
+  );
   await detailPage.getByRole("button", { name: /Continuar de/ }).click();
   await expect(page.getByLabel("Posição", { exact: true })).toHaveValue("3737");
   await page.keyboard.press("Escape");

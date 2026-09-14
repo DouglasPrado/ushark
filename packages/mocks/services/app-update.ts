@@ -7,6 +7,7 @@ import type {
 import type { RecoveryPreview } from "@ushark/types/recovery";
 import { previewWork } from "./library-package";
 export class MockAppUpdatePreview implements AppUpdatePreview {
+  readonly runtime = "mock" as const;
   version = "0.1.0-demo";
   installed = true;
   constructor(private recovery: RecoveryPreview) {}

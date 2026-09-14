@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M22
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE localmente em 2026-09-14; Windows/installer/code signing pendentes.
 
 ## Objetivo
 

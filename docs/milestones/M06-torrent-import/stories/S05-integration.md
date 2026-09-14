@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M06
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; checkpoint funcional preparado sem aprovação humana.
 
 ## Objetivo
 
@@ -28,8 +28,13 @@ Usar torrent e magnet autorizados com metadata e sem peers; cancelar/repetir/rea
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Validação de integração](../evidence/INTEGRATION_VALIDATION.md). Jornada Electron
+real, magnet público autorizado, persistência/restart, IPC e regressão afetada
+foram executados. Windows/TV físico e empacotamento permanecem gates posteriores.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Concluído no escopo S05: Movies consome o adapter real no Electron e browser
+mantém mock explícito; `.torrent` e magnet reais, cancelamento/timeout/pendência,
+dedup, falha isolada e restart possuem evidência. O checkpoint funcional está
+READY_FOR_REVIEW/PENDING e S06–S08 não foram iniciadas.

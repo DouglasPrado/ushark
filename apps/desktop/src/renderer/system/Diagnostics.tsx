@@ -97,8 +97,9 @@ export function Diagnostics({
         </Button>
       </header>
       <p>
-        Painel opcional de simulações em memória. Nenhuma telemetria é enviada.
-        Desconhecido não significa zero.
+        {service.runtime === "desktop"
+          ? "Painel local sanitizado. Nenhuma telemetria é enviada; desconhecido não significa zero."
+          : "Painel opcional de simulações em memória. Nenhuma telemetria é enviada. Desconhecido não significa zero."}
       </p>
       {busy && !category && !review && (
         <p role="status">
@@ -231,31 +232,35 @@ export function Diagnostics({
           <pre className="package-payload">{exported}</pre>
         </details>
       )}
-      <details className="workspace-scenarios">
-        <summary>Cenários de diagnóstico</summary>
-        <label>
-          Estado do diagnóstico
-          <select
-            disabled={!!busy}
-            value={scenario}
-            onChange={(e) => setScenario(e.target.value as DiagnosticScenario)}
-          >
-            {Object.entries({
-              current: "Estado atual mockado",
-              sample: "Métricas sintéticas",
-              unknown: "Métricas desconhecidas",
-              zero: "Zero medido na fixture",
-              offline: "Offline",
-              error: "Falha",
-              partial: "Limpeza parcial",
-            }).map(([id, name]) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </label>
-      </details>
+      {service.runtime !== "desktop" && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de diagnóstico</summary>
+          <label>
+            Estado do diagnóstico
+            <select
+              disabled={!!busy}
+              value={scenario}
+              onChange={(e) =>
+                setScenario(e.target.value as DiagnosticScenario)
+              }
+            >
+              {Object.entries({
+                current: "Estado atual mockado",
+                sample: "Métricas sintéticas",
+                unknown: "Métricas desconhecidas",
+                zero: "Zero medido na fixture",
+                offline: "Offline",
+                error: "Falha",
+                partial: "Limpeza parcial",
+              }).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </details>
+      )}
       <Dialog.Root
         open={!!review || !!category}
         onOpenChange={(v) => {

@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import {
   Button,
-  FilterSearch,
+  FilterGroup,
   FilterSelect,
   FilterToolbar,
   MediaCard,
@@ -43,6 +43,8 @@ import {
   healthPresentation,
   TorrentHealthBadge,
 } from "./MediaSignals";
+import { CatalogRail, groupCatalogItems } from "./CatalogRail";
+import { CatalogSearch } from "./CatalogSearch";
 import "./movies.css";
 import "./series.css";
 export interface SeriesSession {
@@ -221,6 +223,7 @@ export function Series({
   onMovies: () => void;
   libraryName: string;
 }) {
+  const realCatalog = catalog.real === true;
   const [torrentOpen, setTorrentOpen] = useState(false);
   const [records, setRecords] = useState<SeriesRecord[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
@@ -242,17 +245,20 @@ export function Series({
   const [artworkError, setArtworkError] = useState("");
   const [artworkNotice, setArtworkNotice] = useState("");
   const [catalogQuery, setCatalogQuery] = useState("");
+  const [catalogSearchOpen, setCatalogSearchOpen] = useState(false);
   const [catalogSort, setCatalogSort] = useState<CatalogSort>("featured");
   const version = useRef(0);
   const locked = useRef(false);
   const origin = useRef<HTMLElement | null>(null);
   const returnTarget = useRef("series-add");
+  const selectedOrigin = useRef("series-add");
   useEffect(() => {
     if (!suspended && session.playbackId) {
       const record = records.find((r) =>
         r.episodes.some((e) => e.id === session.playbackId),
       );
       if (record) {
+        selectedOrigin.current = `series-${record.id}`;
         setSelected(record.id);
         setEpisode(
           record.episodes.find((e) => e.id === session.playbackId) ?? null,
@@ -287,6 +293,12 @@ export function Series({
         );
       return 0;
     });
+  const categorizedCatalog =
+    !normalizedCatalogQuery && catalogSort === "featured";
+  const seriesCategories = groupCatalogItems(
+    visibleRecords,
+    (record) => record.genres ?? [],
+  );
   const signalForLinks = (links: EpisodeLink[], id: string) => {
     const uniqueLinks = Array.from(
       new Map(links.map((link) => [link.sourceId, link])).values(),
@@ -313,6 +325,74 @@ export function Series({
     );
   const signalForEpisode = (entry: Episode) =>
     signalForLinks(entry.links, `episode-average:${entry.id}`);
+  const seriesCard = (
+    record: SeriesRecord,
+    variant: "grid" | "featured" | "category",
+    categoryTitle = "",
+    categoryIndex = 0,
+  ) => {
+    const { quality, health } = signalFor(record);
+    const rail = variant !== "grid";
+    const cardId =
+      variant === "category"
+        ? `series-${record.id}-category-${categoryIndex}`
+        : `series-${record.id}`;
+    const healthId = health
+      ? `torrent-health-${variant}-${categoryIndex}-${record.id}`
+      : undefined;
+
+    return (
+      <MediaCard
+        className={`${variant === "category" ? "series-category-card" : "series-card"}${rail ? " catalog-rail-card" : ""}`}
+        orientation={rail ? "landscape" : "portrait"}
+        image={rail ? (record.backdrop ?? record.poster) : record.poster}
+        fallback={
+          <>
+            <ImageOff size={30} />
+            <small>Imagem indisponível</small>
+          </>
+        }
+        overlays={
+          health ? (
+            <TorrentHealthBadge id={healthId} health={health} prefix="Média" />
+          ) : undefined
+        }
+        title={record.title}
+        mediaClassName="series-card-media"
+        artClassName="series-poster"
+        copyClassName="series-card-copy"
+        id={cardId}
+        key={`${variant}-${categoryIndex}-${record.id}`}
+        data-content-id={record.id}
+        onClick={() => {
+          selectedOrigin.current = cardId;
+          setSelected(record.id);
+          setSeasonPage(0);
+          returnTarget.current = "series-back";
+        }}
+        aria-label={
+          variant === "category"
+            ? `Na categoria ${categoryTitle}: abrir ${record.title}`
+            : `Abrir ${record.title}`
+        }
+        aria-describedby={healthId}
+      >
+        <small className="series-card-meta">
+          {seriesYears(record)} ·{" "}
+          {new Set(record.episodes.map((entry) => entry.season)).size}{" "}
+          temporadas · {record.episodes.length.toLocaleString("pt-BR")}{" "}
+          episódios
+          {quality ? ` · ${quality}` : ""}
+        </small>
+        <SeriesImdbFacts record={record} />
+        {!!record.genres?.length && (
+          <small className="series-card-genres">
+            {record.genres.join(" / ")}
+          </small>
+        )}
+      </MediaCard>
+    );
+  };
   const itemSignal = item ? signalFor(item) : undefined;
   const input = useNavigation(back, !torrentOpen && !suspended);
   async function refresh() {
@@ -331,7 +411,7 @@ export function Series({
     }
   }
   useEffect(() => {
-    configure("normal");
+    if (!realCatalog) configure("normal");
     void refresh();
     return () => {
       version.current++;
@@ -376,8 +456,13 @@ export function Series({
       return;
     }
     if (selected) {
-      returnTarget.current = `series-${selected}`;
+      returnTarget.current = selectedOrigin.current;
       setSelected(null);
+      return;
+    }
+    if (catalogSearchOpen) {
+      setCatalogQuery("");
+      setCatalogSearchOpen(false);
       return;
     }
     onHome();
@@ -416,6 +501,7 @@ export function Series({
     try {
       const id = await catalog.save(draft);
       await refresh();
+      selectedOrigin.current = `series-${id}`;
       setSelected(id);
       setSeason(null);
       setReview(false);
@@ -423,7 +509,11 @@ export function Series({
       setPending(null);
       setCollapsed([]);
       returnTarget.current = "series-back";
-      setNotice("Série atualizada nesta sessão.");
+      setNotice(
+        realCatalog
+          ? "Série persistida e pronta para reabrir offline."
+          : "Série atualizada nesta sessão.",
+      );
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -469,8 +559,12 @@ export function Series({
       applyEpisodeArtwork(updated);
       setArtworkNotice(
         file.type === "image/gif"
-          ? "GIF aplicado ao episódio nesta sessão."
-          : "Imagem aplicada ao episódio nesta sessão.",
+          ? realCatalog
+            ? "GIF validado e persistido no episódio."
+            : "GIF aplicado ao episódio nesta sessão."
+          : realCatalog
+            ? "Imagem validada e persistida no episódio."
+            : "Imagem aplicada ao episódio nesta sessão.",
       );
     } catch (cause) {
       setArtworkError((cause as Error).message);
@@ -569,6 +663,21 @@ export function Series({
               service={torrentService}
               onActive={setTorrentOpen}
               onConfirm={async (value, ids) => {
+                if (catalog.beginInspectionReview) {
+                  setDraft(
+                    await catalog.beginInspectionReview(
+                      value,
+                      ids,
+                      selected ?? undefined,
+                      item?.title ?? value.name,
+                    ),
+                  );
+                  setPending(null);
+                  setCollapsed([]);
+                  setError("");
+                  setReview(true);
+                  return;
+                }
                 const files = value.files.filter((f) => ids.includes(f.id));
                 if (files.some((f) => !/[Ss](\d+)[Ee](\d+)/.test(f.name)))
                   throw new Error(
@@ -607,16 +716,18 @@ export function Series({
             >
               <Download size={21} />
             </button>
-            <button
-              id="series-add"
-              className="movie-icon-button movie-add-button"
-              aria-label="Adicionar série"
-              title="Adicionar série"
-              onClick={openReview}
-              disabled={busy}
-            >
-              <Plus size={22} />
-            </button>
+            {!realCatalog && (
+              <button
+                id="series-add"
+                className="movie-icon-button movie-add-button"
+                aria-label="Adicionar série"
+                title="Adicionar série"
+                onClick={openReview}
+                disabled={busy}
+              >
+                <Plus size={22} />
+              </button>
+            )}
           </div>
         )}
       </header>
@@ -645,14 +756,6 @@ export function Series({
                     : `${visibleRecords.length} de ${records.length} séries`
                 }
               >
-                <FilterSearch
-                  className="catalog-list-search"
-                  label="Buscar na lista de séries"
-                  placeholder="Buscar séries"
-                  value={catalogQuery}
-                  icon={<Search size={18} aria-hidden="true" />}
-                  onChange={(event) => setCatalogQuery(event.target.value)}
-                />
                 <FilterSelect
                   className="catalog-list-sort"
                   label="Ordenar por"
@@ -666,10 +769,22 @@ export function Series({
                   <option value="votes">Mais votados</option>
                   <option value="title">A–Z</option>
                 </FilterSelect>
+                <FilterGroup className="movie-tabs">
+                  <CatalogSearch
+                    open={catalogSearchOpen}
+                    label="Buscar na lista de séries"
+                    placeholder="Buscar séries"
+                    openLabel="Buscar séries"
+                    closeLabel="Fechar busca de séries"
+                    value={catalogQuery}
+                    onValueChange={setCatalogQuery}
+                    onOpenChange={setCatalogSearchOpen}
+                  />
+                </FilterGroup>
               </FilterToolbar>
             </>
           )}
-          {scenario === "offline" && (
+          {!realCatalog && scenario === "offline" && (
             <p className="banner">
               Offline simulado. Sua coleção em memória continua disponível.
             </p>
@@ -686,8 +801,10 @@ export function Series({
               {listError}
               <Button
                 onClick={() => {
-                  configure("normal");
-                  setScenario("normal");
+                  if (!realCatalog) {
+                    configure("normal");
+                    setScenario("normal");
+                  }
                   void refresh();
                 }}
               >
@@ -695,62 +812,29 @@ export function Series({
               </Button>
             </div>
           ) : !selected ? (
-            visibleRecords.length ? (
+            visibleRecords.length && categorizedCatalog ? (
+              <div className="catalog-rails" data-catalog-view="categories">
+                <CatalogRail title="Em destaque">
+                  {visibleRecords.map((record) =>
+                    seriesCard(record, "featured"),
+                  )}
+                </CatalogRail>
+                {seriesCategories.map((category, categoryIndex) => (
+                  <CatalogRail title={category.title} key={category.title}>
+                    {category.items.map((record) =>
+                      seriesCard(
+                        record,
+                        "category",
+                        category.title,
+                        categoryIndex,
+                      ),
+                    )}
+                  </CatalogRail>
+                ))}
+              </div>
+            ) : visibleRecords.length ? (
               <div className="series-grid">
-                {visibleRecords.map((r) => {
-                  const { quality, health } = signalFor(r);
-                  const healthId = health
-                    ? `torrent-health-${r.id}`
-                    : undefined;
-                  return (
-                    <MediaCard
-                      className="series-card"
-                      orientation="portrait"
-                      image={r.poster}
-                      fallback={
-                        <>
-                          <ImageOff size={30} />
-                          <small>Poster indisponível</small>
-                        </>
-                      }
-                      overlays={
-                        health ? (
-                          <TorrentHealthBadge
-                            id={healthId}
-                            health={health}
-                            prefix="Média"
-                          />
-                        ) : undefined
-                      }
-                      title={r.title}
-                      mediaClassName="series-card-media"
-                      artClassName="series-poster"
-                      copyClassName="series-card-copy"
-                      id={`series-${r.id}`}
-                      key={r.id}
-                      onClick={() => {
-                        setSelected(r.id);
-                        setSeasonPage(0);
-                        returnTarget.current = "series-back";
-                      }}
-                      aria-label={`Abrir ${r.title}`}
-                      aria-describedby={healthId}
-                    >
-                      <small className="series-card-meta">
-                        {seriesYears(r)} ·{" "}
-                        {new Set(r.episodes.map((e) => e.season)).size}{" "}
-                        temporadas · {r.episodes.length.toLocaleString("pt-BR")}{" "}
-                        episódios{quality ? ` · ${quality}` : ""}
-                      </small>
-                      <SeriesImdbFacts record={r} />
-                      {!!r.genres?.length && (
-                        <small className="series-card-genres">
-                          {r.genres.join(" / ")}
-                        </small>
-                      )}
-                    </MediaCard>
-                  );
-                })}
+                {visibleRecords.map((record) => seriesCard(record, "grid"))}
               </div>
             ) : (
               <div className="series-empty">
@@ -777,10 +861,15 @@ export function Series({
                   </Button>
                 ) : tvMode ? (
                   <Button onClick={onHome}>Voltar ao início</Button>
-                ) : (
+                ) : !realCatalog ? (
                   <Button onClick={openReview}>
                     Explorar fontes de exemplo
                   </Button>
+                ) : (
+                  <small>
+                    Use “Importar torrent ou magnet” no cabeçalho para adicionar
+                    sua primeira série.
+                  </small>
                 )}
               </div>
             )
@@ -848,7 +937,7 @@ export function Series({
                             ),
                           ).size
                         }{" "}
-                        fontes de exemplo
+                        {realCatalog ? "fontes" : "fontes de exemplo"}
                       </span>
                       {itemSignal?.quality && (
                         <span>Melhor resolução: {itemSignal.quality}</span>
@@ -861,7 +950,9 @@ export function Series({
                       )}
                       <span>
                         {item.externalIds?.imdb
-                          ? "Hierarquia de episódios mockada"
+                          ? realCatalog
+                            ? "Metadata local persistida"
+                            : "Hierarquia de episódios mockada"
                           : "Metadata de episódios indisponível"}
                       </span>
                     </>
@@ -956,7 +1047,7 @@ export function Series({
               </>
             )
           )}
-          {!tvMode && (
+          {!tvMode && !realCatalog && (
             <details className="series-tools">
               <summary>Inspecionar prévia</summary>
               <div className="series-tool-fields">
@@ -1020,8 +1111,9 @@ export function Series({
                   : "Tab navegar · Enter selecionar · Esc voltar"}
           </span>
           <span>
-            Prévia em memória · metadata empacotada · reiniciar descarta
-            alterações
+            {realCatalog
+              ? "Catálogo local persistido · revisão e selectors por episódio"
+              : "Prévia em memória · metadata empacotada · reiniciar descarta alterações"}
           </span>
         </footer>
       )}
@@ -1052,34 +1144,38 @@ export function Series({
             </Dialog.Title>
             <Dialog.Description>
               {review
-                ? "Escolha uma fonte fictícia e confira o destino de cada arquivo. Nada será lido ou baixado."
+                ? realCatalog
+                  ? "Confira o destino de cada arquivo inspecionado antes de persistir a série."
+                  : "Escolha uma fonte fictícia e confira o destino de cada arquivo. Nada será lido ou baixado."
                 : tvMode
                   ? "Escolha assistir para continuar."
                   : "Arquivos associados a este episódio. Reprodução simulada disponível nesta prévia."}
             </Dialog.Description>
             {review ? (
               <>
-                <fieldset disabled={busy}>
-                  <legend>Fonte de exemplo</legend>
-                  <div className="series-pack-options">
-                    {(Object.keys(packLabels) as PackKind[]).map((kind) => (
+                {!realCatalog && (
+                  <fieldset disabled={busy}>
+                    <legend>Fonte de exemplo</legend>
+                    <div className="series-pack-options">
+                      {(Object.keys(packLabels) as PackKind[]).map((kind) => (
+                        <Button
+                          key={kind}
+                          variant="secondary"
+                          aria-pressed={draft?.sourceId === `source:${kind}`}
+                          onClick={() => choose(kind)}
+                        >
+                          {packLabels[kind]}
+                        </Button>
+                      ))}
                       <Button
-                        key={kind}
                         variant="secondary"
-                        aria-pressed={draft?.sourceId === `source:${kind}`}
-                        onClick={() => choose(kind)}
+                        onClick={() => choose("multi", true)}
                       >
-                        {packLabels[kind]}
+                        Sem metadata
                       </Button>
-                    ))}
-                    <Button
-                      variant="secondary"
-                      onClick={() => choose("multi", true)}
-                    >
-                      Sem metadata
-                    </Button>
-                  </div>
-                </fieldset>
+                    </div>
+                  </fieldset>
+                )}
                 {draft && (
                   <>
                     <label>
@@ -1270,19 +1366,21 @@ export function Series({
                   </p>
                 )}
                 <div className="series-save">
-                  <label className="series-failure">
-                    <input
-                      type="checkbox"
-                      disabled={busy}
-                      checked={scenario === "save-error"}
-                      onChange={(e) => {
-                        const s = e.target.checked ? "save-error" : "normal";
-                        setScenario(s);
-                        configure(s);
-                      }}
-                    />{" "}
-                    Simular falha ao salvar
-                  </label>
+                  {!realCatalog && (
+                    <label className="series-failure">
+                      <input
+                        type="checkbox"
+                        disabled={busy}
+                        checked={scenario === "save-error"}
+                        onChange={(e) => {
+                          const s = e.target.checked ? "save-error" : "normal";
+                          setScenario(s);
+                          configure(s);
+                        }}
+                      />{" "}
+                      Simular falha ao salvar
+                    </label>
+                  )}
                   <Button variant="secondary" disabled={busy} onClick={back}>
                     Cancelar e guardar rascunho
                   </Button>
@@ -1345,8 +1443,10 @@ export function Series({
                             </Button>
                           )}
                           <small>
-                            JPEG, PNG, WebP ou GIF · até 12 MB. Nesta prévia, o
-                            arquivo fica somente na sessão mock.
+                            JPEG, PNG, WebP ou GIF · até 12 MB.{" "}
+                            {realCatalog
+                              ? "O conteúdo é validado antes de entrar no cache local."
+                              : "Nesta prévia, o arquivo fica somente na sessão mock."}
                           </small>
                         </>
                       )}

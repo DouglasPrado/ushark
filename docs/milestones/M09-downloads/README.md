@@ -1,6 +1,7 @@
 # M09 — Baixar, pausar e retomar conteúdo
 
-Status: frontend S00–S02 implementado; UX READY_FOR_REVIEW/PENDING, revisão final adiada por instrução explícita. S03–S08 DEFERRED; funcional NOT_STARTED/PENDING. [Experiência](EXPERIENCE.md), [evidências](evidence/VALIDATION.md). Sobrevivência a restart real é objetivo de integração futura; atual somente simulação.
+Status: READY_FOR_REVIEW — UX aprovada; S03–S05 concluídas. Funcional PENDING;
+S06–S08 não iniciadas.
 
 ## Objetivo
 

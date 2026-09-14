@@ -1,6 +1,6 @@
 # S03 — Contrato de domínio — M09
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE; contrato v1 e decisões fechados. Próxima: S04.1.
 
 ## Objetivo
 
@@ -28,8 +28,10 @@ Revisão de contratos com fixtures UX e contra cenários reais planejados: Pausa
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Contrato](../evidence/DOMAIN_CONTRACT.md) e
+[decisão](../../../decisions/M09-D01-download-manager-contract.md).
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido. S04.1 é o próximo incremento; nenhuma capacidade runtime foi inferida
+do contrato.

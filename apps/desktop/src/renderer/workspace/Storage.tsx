@@ -31,17 +31,30 @@ export function Storage({
     lock = useRef(false),
     origin = useRef<HTMLElement | null>(null),
     backButton = useRef<HTMLButtonElement>(null);
+  const desktop = service.runtime === "desktop";
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setRows(service.list());
-      setLoading(false);
-    }, 250);
+    let disposed = false;
+    const load = async () => {
+      try {
+        await service.refresh?.();
+        if (!disposed) {
+          setRows(service.list());
+          setDraft({ ...service.policy });
+        }
+      } catch (cause) {
+        if (!disposed) setError((cause as Error).message);
+      } finally {
+        if (!disposed) setLoading(false);
+      }
+    };
+    const timer = setTimeout(() => void load(), desktop ? 0 : 250);
     backButton.current?.focus();
     return () => {
+      disposed = true;
       clearTimeout(timer);
       control.current?.abort();
     };
-  }, [service]);
+  }, [desktop, service]);
   function cancel() {
     control.current?.abort();
     lock.current = false;
@@ -92,10 +105,9 @@ export function Storage({
         ids.push(e.id);
         remaining -= e.gb;
       }
-      if (!ids.length)
-        return "Limpeza automática simulada: nenhum elegível necessário ou disponível.";
+      if (!ids.length) return "Nenhum item elegível precisa ser removido.";
       const freed = await service.clean(ids, signal);
-      return `Limpeza automática: ${freed.toFixed(2)} GB liberados na simulação. Protegidos preservados.`;
+      return `Limpeza automática: ${freed.toFixed(2)} GB liberados. Protegidos preservados.`;
     });
   }
   const used = rows.reduce((n, e) => n + e.gb, 0),
@@ -116,7 +128,9 @@ export function Storage({
         <h1>Espaço e retenção</h1>
       </header>
       <p>
-        Uso ilustrativo em memória. Não inspeciona nem modifica seus discos.
+        {desktop
+          ? "Uso físico dos diretórios gerenciados, com proteção para reprodução, favoritos, parciais e Keep."
+          : "Uso ilustrativo em memória. Não inspeciona nem modifica seus discos."}
       </p>
       {error && <p role="alert">{error}</p>}
       {notice && <p role="status">{notice}</p>}
@@ -125,7 +139,9 @@ export function Storage({
       ) : (
         <>
           <section className="workspace-empty">
-            <h2>{used.toFixed(2)} GB em uso simulado</h2>
+            <h2>
+              {used.toFixed(2)} GB em uso{desktop ? "" : " simulado"}
+            </h2>
             <p>
               Limite de cache: {service.policy.limitGB} GB · elegível estimado:{" "}
               {estimate.toFixed(2)} GB
@@ -153,20 +169,29 @@ export function Storage({
             <article>
               <h2>Política de cache</h2>
               <p>
-                Conforme o projeto, cache ativo deve preferir SSD/NVMe. Volumes
-                abaixo são somente fixtures.
+                {desktop
+                  ? "O cache ativo usa a pasta configurada; conteúdo Keep permanece na biblioteca."
+                  : "Conforme o projeto, cache ativo deve preferir SSD/NVMe. Volumes abaixo são somente fixtures."}
               </p>
               <div className="workspace-fields">
                 <label>
-                  Pasta de cache simulada
+                  {desktop
+                    ? "Pasta de cache gerenciada"
+                    : "Pasta de cache simulada"}
                   <select
                     value={draft.folder}
                     onChange={(e) =>
                       setDraft({ ...draft, folder: e.target.value })
                     }
                   >
-                    <option>Cache SSD simulado</option>
-                    <option>Cache HDD simulado</option>
+                    {desktop ? (
+                      <option>Cache</option>
+                    ) : (
+                      <>
+                        <option>Cache SSD simulado</option>
+                        <option>Cache HDD simulado</option>
+                      </>
+                    )}
                   </select>
                 </label>
                 <label>
@@ -203,20 +228,31 @@ export function Storage({
               <div className="workspace-actions">
                 <Button
                   disabled={busy}
-                  onClick={() => {
-                    try {
+                  onClick={() =>
+                    void run(async (signal) => {
                       const folderChanged =
                         draft.folder !== service.policy.folder;
-                      service.apply(draft);
+                      await service.apply(draft);
                       onPolicy(draft, folderChanged);
-                      setRows(service.list());
-                      setError("");
-                      setNotice("Política aplicada à sessão simulada.");
-                      if (draft.autoCleanup) void autoClean();
-                    } catch (e) {
-                      setError((e as Error).message);
-                    }
-                  }}
+                      if (!draft.autoCleanup)
+                        return "Política de armazenamento aplicada.";
+                      const cacheUsed = service
+                        .list()
+                        .filter((entry) => !entry.keep)
+                        .reduce((sum, entry) => sum + entry.gb, 0);
+                      let remaining = Math.max(0, cacheUsed - draft.limitGB);
+                      const ids: string[] = [];
+                      for (const entry of service.estimate()) {
+                        if (remaining <= 0) break;
+                        ids.push(entry.id);
+                        remaining -= entry.gb;
+                      }
+                      const freed = ids.length
+                        ? await service.clean(ids, signal)
+                        : 0;
+                      return `Política aplicada; ${freed.toFixed(2)} GB liberados automaticamente. Protegidos preservados.`;
+                    })
+                  }
                 >
                   Aplicar política
                 </Button>
@@ -234,7 +270,7 @@ export function Storage({
                   disabled={busy || !service.policy.autoCleanup}
                   onClick={() => void autoClean()}
                 >
-                  Simular limpeza automática
+                  Executar limpeza automática
                 </Button>
               </div>
             </article>
@@ -265,7 +301,7 @@ export function Storage({
                         else
                           void run(async (signal) => {
                             await service.retain(e.id, true, signal);
-                            return "Promovido para Keep; bytes simulados reaproveitados, sem redownload.";
+                            return "Promovido para Keep; bytes reaproveitados, sem redownload.";
                           });
                       }}
                     >
@@ -275,13 +311,13 @@ export function Storage({
                     </Button>
                     {e.corrupt && (
                       <>
-                        <p role="alert">Cache corrompido simulado.</p>
+                        <p role="alert">Cache corrompido.</p>
                         <Button
                           disabled={busy || e.active}
                           onClick={() =>
                             void run(async (signal) => {
                               await service.repair(e.id, signal);
-                              return "Cache inválido removido da simulação. Metadata e progresso preservados.";
+                              return "Cache inválido removido. Metadata e progresso preservados.";
                             })
                           }
                         >
@@ -298,44 +334,46 @@ export function Storage({
       )}
       {busy && (
         <p role="status">
-          Aplicando operação simulada…{" "}
+          Aplicando operação{desktop ? "" : " simulada"}…{" "}
           <Button variant="secondary" onClick={cancel}>
             Cancelar operação
           </Button>
         </p>
       )}
-      <details className="workspace-scenarios">
-        <summary>Cenários de armazenamento</summary>
-        <label>
-          Estado do armazenamento
-          <select
-            disabled={busy}
-            value={scenario}
-            onChange={(e) => {
-              const next = e.target.value as StorageScenario;
-              setScenario(next);
-              service.configure(next);
-              setRows(service.list());
-              setError("");
-              setNotice("");
-            }}
-          >
-            {Object.entries({
-              normal: "Normal",
-              empty: "Vazio",
-              protected: "Todos protegidos",
-              full: "Disco cheio",
-              corrupt: "Cache corrompido",
-              permission: "Permissão negada",
-              offline: "Offline",
-            }).map(([v, l]) => (
-              <option key={v} value={v}>
-                {l}
-              </option>
-            ))}
-          </select>
-        </label>
-      </details>
+      {!desktop && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de armazenamento</summary>
+          <label>
+            Estado do armazenamento
+            <select
+              disabled={busy}
+              value={scenario}
+              onChange={(e) => {
+                const next = e.target.value as StorageScenario;
+                setScenario(next);
+                service.configure(next);
+                setRows(service.list());
+                setError("");
+                setNotice("");
+              }}
+            >
+              {Object.entries({
+                normal: "Normal",
+                empty: "Vazio",
+                protected: "Todos protegidos",
+                full: "Disco cheio",
+                corrupt: "Cache corrompido",
+                permission: "Permissão negada",
+                offline: "Offline",
+              }).map(([v, l]) => (
+                <option key={v} value={v}>
+                  {l}
+                </option>
+              ))}
+            </select>
+          </label>
+        </details>
+      )}
       <Dialog.Root
         open={!!plan || !!demote}
         onOpenChange={(v) => {
@@ -356,7 +394,7 @@ export function Storage({
             </Dialog.Title>
             <Dialog.Description>
               {plan
-                ? "Somente elegíveis serão removidos da simulação; proteções serão conferidas novamente ao confirmar."
+                ? `Somente elegíveis serão removidos${desktop ? "" : " da simulação"}; proteções serão conferidas novamente ao confirmar.`
                 : "O conteúdo volta a ser elegível conforme política. Nenhum dado será apagado agora."}
             </Dialog.Description>
             {plan && (
@@ -379,22 +417,24 @@ export function Storage({
                         plan.map((e) => e.id),
                         signal,
                       );
-                      return `${freed.toFixed(2)} GB liberados na simulação; estimativa revalidada.`;
+                      return `${freed.toFixed(2)} GB liberados${desktop ? "" : " na simulação"}; estimativa revalidada.`;
                     })
                   }
                 >
                   Confirmar limpeza
                 </Button>
-                <Button
-                  variant="secondary"
-                  disabled={busy || !plan[0]}
-                  onClick={() => {
-                    service.activate(plan[0].id);
-                    setRows(service.list());
-                  }}
-                >
-                  Simular uso durante revisão
-                </Button>
+                {!desktop && (
+                  <Button
+                    variant="secondary"
+                    disabled={busy || !plan[0]}
+                    onClick={() => {
+                      service.activate(plan[0].id);
+                      setRows(service.list());
+                    }}
+                  >
+                    Simular uso durante revisão
+                  </Button>
+                )}
               </>
             )}
             {demote && (

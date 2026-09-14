@@ -1,5 +1,13 @@
 # Atualização — M01
 
+## Integração S03–S08 — 2026-09-14
+
+UX consolidada M01–M22 aprovada pelo usuário. M01 recebeu autorização explícita para S03–S08. Foram implementados contrato/schema/protocolo v1, SQLite local com biblioteca vazia e transação atômica, preload/IPC restritos, adapter Electron, seletor nativo, hydration/startup, migração do marcador legado, persistência de nome/pastas/cache/preferências, reset seletivo e recovery. O navegador preserva o mock.
+
+Typecheck, lint, build e 27/27 testes focados passaram. Gates estáticos completos passaram. A regressão integral serial passou **150/150 em 9,3 min**. Uma execução anterior com quatro workers teve seis falhas de espera/contenção fora de M01; todos os casos e depois a suíte integral passaram com um worker. Ver [contrato](evidence/CONFIGURATION_CONTRACT.md), [validação](evidence/INTEGRATION_VALIDATION.md), [segurança](evidence/SECURITY_REVIEW.md) e [closure](evidence/CLOSURE_AUDIT.md).
+
+S08 foi executada, mas M01 permanece `LOCAL_VALIDATED / READY_FOR_FUNCTIONAL_REVIEW`: checkpoint funcional humano, Windows/TV/controle físicos e CI/review/merge continuam pendentes. A ordem para avançar até S08 não foi convertida em aprovação funcional.
+
 Barra superior removida a pedido do usuário. Conteúdo ocupa o espaço liberado; acesso às preferências na Home e botão Voltar nas configurações preservados.
 
 Ajuste solicitado: removidos os textos LOCAL FIRST e PRÉVIA · DADOS SIMULADOS do cabeçalho, junto com seus estilos exclusivos.

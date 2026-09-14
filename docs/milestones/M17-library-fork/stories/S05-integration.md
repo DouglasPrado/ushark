@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M17
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 

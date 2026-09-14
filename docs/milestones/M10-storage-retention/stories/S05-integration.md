@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M10
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; jornada integrada no Electron e encaminhada ao checkpoint funcional.
 
 ## Objetivo
 
@@ -28,7 +28,9 @@ Limpeza concorrente com playback/download nunca remove ativos/Keep; promoção r
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Integração funcional](../evidence/INTEGRATION_VALIDATION.md): IPC/preload,
+adapter desktop, UI sem controles sintéticos no runtime real e ensaio Electron
+com promoção e limpeza física. O checkpoint humano permanece pendente.
 
 ## Done When
 

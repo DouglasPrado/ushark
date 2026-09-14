@@ -1,6 +1,6 @@
 # M19 — Recuperar reprodução com outra fonte e aprender do histórico
 
-Status: FRONTEND_IMPLEMENTED / READY_FOR_REVIEW. S00–S02 concluídas; UX PENDING adiada por instrução explícita até o fim de M01–M22. S03–S08 DEFERRED; não DONE.
+Status: FUNCTIONAL_READY_FOR_REVIEW. S00–S05 concluídas; checkpoint funcional PENDING. S06–S08 não autorizadas; não DONE.
 
 ## Objetivo
 

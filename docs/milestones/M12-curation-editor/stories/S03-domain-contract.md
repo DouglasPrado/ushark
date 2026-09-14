@@ -1,6 +1,6 @@
 # S03 — Contrato de domínio — M12
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 
@@ -28,7 +28,8 @@ Revisão de contratos com fixtures UX e contra cenários reais planejados: Reabr
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Contrato](../evidence/DOMAIN_CONTRACT.md) e
+[D19](../../../decisions/M12-D19-presentation-precedence.md).
 
 ## Done When
 

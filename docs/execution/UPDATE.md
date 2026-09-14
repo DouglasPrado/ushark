@@ -1,4 +1,150 @@
-# Fase frontend M01–M22 pronta para revisão
+# Integração M02–M22 até o checkpoint funcional
+
+## Fechamento técnico da onda
+
+M02–M22 estão em `READY_FOR_REVIEW/PENDING`, com S03–S05 concluídas dentro do
+escopo autorizado. A regressão final passou **316/316 em 10,2 min** com um
+worker, cobrindo browser, Electron, MPV real, libtorrent e persistência. Também
+passaram formatação, lint, typecheck, build e geração local de
+SBOM/checksums/proveniência. S06–S08 não foram iniciadas.
+
+Permanecem gates externos: credenciais/provider/Registry quando aplicáveis,
+runtime empacotado, Windows/TV/Sunshine/Moonlight/controle físico, installer,
+code signing, CI e promoção. Nenhum milestone foi marcado `DONE`.
+
+## M22 no checkpoint funcional local
+
+M22 integrou feed assinado, verificação Ed25519/SHA-256/plataforma, backup e
+staging de update; gerou SBOM/checksums/provenance local. 21/21 M13–M22 passaram.
+Installer Windows, assinatura de código, CI e promoção continuam pendentes.
+
+## M21 no checkpoint funcional
+
+M21 integrou backup consistente, hash, restore atômico com original preservado
+e supervisor limitado; 2/2 passaram. Checkpoint READY_FOR_REVIEW/PENDING.
+
+## M20 no checkpoint funcional
+
+M20 integrou métricas locais, logs limitados, redaction e limpeza seletiva; 2/2
+passaram. Checkpoint READY_FOR_REVIEW/PENDING.
+
+## M19 no checkpoint funcional
+
+M19 integrou histórico/TTL/cooldown e preflight de fallback compatível; 2/2
+passaram. Checkpoint READY_FOR_REVIEW/PENDING.
+
+## M18 no checkpoint funcional
+
+M18 integrou `--tv`, fullscreen, hotplug e shutdown limitado; 2/2 passaram.
+Windows/Sunshine/Moonlight/controle físico seguem como gate obrigatório.
+
+## M17 no checkpoint funcional
+
+M17 integrou fork atômico/idempotente, identidade nova, referências e edição
+independente; 4/4 com regressão M12 passaram.
+
+## M16 no checkpoint funcional
+
+M16 integrou sync persistente, trust, swap/rollback atômico e preservação de
+dados pessoais; 2/2 passaram. Checkpoint READY_FOR_REVIEW/PENDING.
+
+## M15 no checkpoint funcional
+
+M15 integrou Registry HTTP, auth isolada, stage/commit otimista e retirada;
+falha parcial não ativa versão. 2/2 passaram. Produção não foi publicada.
+
+## M14 no checkpoint funcional
+
+M14 concluiu S03–S05 com Ed25519, secure storage, TOFU persistente e detecção
+de troca de chave. Tamper bloqueia, o secret não entra no DB e assinatura
+persiste no `.tslib`; 3/3 passaram. Checkpoint READY_FOR_REVIEW/PENDING.
+
+## M13 no checkpoint funcional
+
+M13 concluiu S03–S05 com `.tslib` canônico, SHA-256, limites, staging seguro,
+export atômico e import transacional/deduplicado. O roundtrip offline isolado
+preservou IDs/ordem/layout e payloads maliciosos não alteraram o catálogo; 4/4
+casos passaram. Checkpoint READY_FOR_REVIEW/PENDING; assinatura é M14 e S06–S08
+permanecem pendentes.
+
+## M12 no checkpoint funcional
+
+M12 concluiu S03–S05 com drafts privados SQLite, revisão otimista, catálogo
+M02/M03, sources escopadas, collections/sections e preview fiel. O ensaio
+Electron salvou e reabriu a composição após restart; 5/5 passaram. Checkpoint
+READY_FOR_REVIEW/PENDING; S06–S08 e hardware permanecem pendentes.
+
+## M11 no checkpoint funcional
+
+M11 concluiu S03–S05: sequência estrita, lacunas/especiais, countdown de 5 s,
+preflight único, sessão/generation e claim idempotente estão integrados ao
+Electron. O ensaio isolado resolveu e preparou o próximo arquivo Keep sem abrir
+outro stream e rejeitou início duplicado; 6/6 passaram. Checkpoint
+READY_FOR_REVIEW/PENDING; S06–S08 e hardware físico continuam pendentes.
+
+## M09 no checkpoint funcional
+
+M09 concluiu S03–S05 e está `READY_FOR_REVIEW/PENDING`. Fila/download manager,
+limites de banda/concorrência, prioridade de playback, resume data libtorrent,
+recovery, cancelamento e remoção confirmada estão integrados ao Electron. O
+ensaio real fez enqueue, pause, restart, resume e cancel mantendo catálogo;
+14/14 passaram. Windows/TV/hardware, disco cheio físico, swarm completo e
+S06–S08 permanecem pendentes. A onda segue em M10/S03.
+
+## M08 no checkpoint funcional
+
+M08 concluiu S03–S05 e está `READY_FOR_REVIEW/PENDING`. Health v1 usa p25,
+ratio, wanted-piece availability, peers úteis, estabilidade, startup,
+confidence, caps críticos e histerese. Ranking, histórico limitado, decisões e
+override são persistidos em SQLite. Electron usa IPC/preload restritos; recorte
+M08 16/16, Electron 1/1 e torrentd/libtorrent 6/6 passaram. Windows/TV,
+Moonlight, controle físico, sessão remota externa e S06–S08 continuam
+pendentes. A onda segue em M09/S03.
+
+## M07 no checkpoint funcional
+
+M07 concluiu S03–S05 e está `READY_FOR_REVIEW/PENDING`. Mapping com offset,
+HEAD/TAIL, scheduler 7/5/3, cache limitado, torrentd/libtorrent, delivery sparse,
+MPV e Electron IPC estão integrados. O swarm sintético controlado mediu stream
+ready em **2.660 ms**, primeiro frame em **2.764 ms** com **31/174 pieces**, seek
+fora do cache em **509 ms** e somente a geração 4 após três seeks rápidos. O
+recorte M07 passou **27/27**. Windows/TV/Moonlight, controle físico e packaging
+continuam pendentes; S06–S08 não foram iniciadas. A onda segue em M08/S03.
+
+## M05 no checkpoint funcional
+
+M05 concluiu S03–S05 e está `READY_FOR_REVIEW/PENDING`. O caminho Electron
+resolve somente arquivos registrados na biblioteca gerenciada, abre MPV 0.41
+em processo separado, observa primeiro frame, executa controles/tracks reais e
+persiste progresso/saída em SQLite. Preload/IPC v1 não expõem paths, PID, SQL ou
+JSON bruto. O smoke H.264/AAC real passou do detalhe ao restart; testes focados
+S04–S05 passaram **13/13**, repetição Electron concorrente **3/3** e regressão
+integral **222 passed, 6 skipped, 0 failed**. Windows x64/TV/Moonlight,
+composição visível, hardware decode e controle físico continuam pendentes;
+S06–S08 não foram iniciados. A onda segue em M07/S03.
+
+Em 2026-09-14 o usuário autorizou: “Vamos para o m02 ate o m22 deixando para o proximo checkpoint de cada um”. A execução seguirá M02 → M22, uma story por vez, cobrindo S03–S05 e deixando cada milestone em `FUNCTIONAL_CHECKPOINT / READY_FOR_REVIEW / PENDING`. S06–S08, aprovação funcional, hardware/serviços externos, CI, review, merge e publicação não são inferidos. O trabalho começou em M02/S03.
+
+## M06 no checkpoint funcional
+
+M06 concluiu S03–S05 e está `READY_FOR_REVIEW/PENDING`. O caminho Electron usa
+um daemon Python/libtorrent real isolado por stdio, parser e staging seguro,
+persistência SQLite de sessões, sources, selectors e pendências, IPC restrito e
+rehydration após restart. A suíte afetada passou **47/47** e um magnet derivado
+do torrent oficial Ubuntu 26.04.1 resolveu metadata pública em **6,6 s** sem
+baixar o conteúdo. Empacotamento do runtime, Windows/TV/controle/Moonlight e
+decisão funcional humana continuam pendentes; S06–S08 não foram iniciadas. A
+onda segue em M03/S03.
+
+## Integração M01 S03–S08 concluída tecnicamente
+
+Em 2026-09-14 o usuário confirmou “O frontend foi aprovado ja” e em seguida autorizou: “Registre a aprovação e execute M01 S03–S08”. A UX consolidada M01–M22 está aprovada. M01 retomou em S03; integrações dos demais milestones continuam sem autorização.
+
+A execução pode atravessar tecnicamente o checkpoint funcional de M01 para cumprir S03–S08, mas isso não registra aprovação funcional humana. Windows/TV/controle físicos permanecem um gate separado até existir evidência nesse ambiente. Nenhum merge, deploy ou publicação foi autorizado.
+
+S03–S08 foram executadas: contrato/schema/protocolo v1, SQLite local atômico, biblioteca vazia persistente, preload/IPC restritos, integração Electron, seletor nativo, restart, reset seletivo, recovery, testes e hardening. Os gates estáticos passaram, a suíte focada M01 passou 27/27 e a regressão integral serial passou **150/150 em 9,3 min**. M01 está `LOCAL_VALIDATED / READY_FOR_FUNCTIONAL_REVIEW`; não está `DONE` porque o aceite funcional humano, Windows/TV/controle físicos e CI/review/merge permanecem pendentes.
+
+## Histórico da fase frontend
 
 S00–S02 dos 22 milestones implementadas no checkout real, com mocks em memória e journeys conectadas. Trabalho anterior e aceites M01–M03 preservados; M04–M22 READY_FOR_REVIEW/PENDING. Revisão intermediária foi adiada pelo usuário, sem aprovação por inferência.
 
@@ -79,3 +225,19 @@ No ajuste visual seguinte, o fundo do card de sinopse do detalhe canônico de Fi
 No refinamento seguinte de `content/movie`, as colunas do Hero deixaram de alinhar apenas pela base e passaram a compartilhar o mesmo centro vertical. Título/badges/ações continuam juntos à esquerda e sinopse/gêneros/elenco à direita. Fatos, cenários e Recomendados também passaram a usar exatamente a mesma guia lateral e largura máxima. A geometria mediu diferença de centro de 0–0,01 px em 1920/2560/3840, guias idênticas e nenhum overflow; em 480 px, os blocos empilham na ordem correta. Os layouts M02/M04 em 1920 passaram **2/2**, assim como lint, typecheck, build e hashes. A tentativa inicial mais ampla parou apenas ao gravar capturas por `ENOSPC`; a regressão integral anterior permanece **141/141**, sem ser reapresentada como uma nova execução. M04 continua PENDING e o aceite histórico de M02 foi preservado.
 
 No ajuste seguinte da página canônica de Filme, a faixa abaixo do Hero com título original, avaliação, disponibilidade, IMDb e memberships foi removida por repetir informação já apresentada na composição principal. O conjunto do Hero foi elevado discretamente e Recomendados passou a ser o bloco imediatamente seguinte, antes dos cenários exclusivos de revisão. O modal de Série preserva seus fatos. O teste rico e os layouts M02/M04 em 1920 passaram **3/3**; uma medição adicional confirmou a ligação Hero → Recomendados, ausência de overflow e remoção da faixa em 1920/2560/3840/480, além da preservação dos fatos de Série. Lint, typecheck, build e hashes passaram. A regressão integral anterior permanece **141/141**; M04 continua PENDING e o aceite histórico de M02 foi preservado.
+
+## Ajuste posterior — Filmes e Séries por categorias
+
+As listas padrão M02/M03 agora seguem a composição da Home: `Em destaque` e trilhos panorâmicos por categorias editoriais amplas. Busca, Favoritos e ordenações explícitas preservam a grade vertical; conteúdo sem correspondência entra em `Outros`. O detalhe restaura foco, scroll e origem exata mesmo quando um título se repete em vários trilhos. O boundary continua mockado e substituível, sem nova integração de rede ou provider. Typecheck, lint e build passaram; a regressão browser isolada passou **142/142 em 2,1 min**, e os fluxos Electron de Filmes e Séries passaram **2/2**. [Evidência](evidence/CATALOG_CATEGORY_RAILS.md). O estado concorrente da integração M01 foi preservado e nenhum novo aceite humano foi inferido.
+
+## Ajuste posterior — busca recolhida nos catálogos
+
+Filmes e Séries agora iniciam somente com uma lupa no grupo de ações à direita; o input de busca é criado e focado apenas após ativação. Fechar ou usar Voltar/Escape limpa a consulta, recolhe o campo e restaura o foco na lupa, evitando que um controle textual permanente interrompa a navegação pelos trilhos. A suíte direcionada passou **3/3**, a regressão browser isolada passou **144/144 em 2,2 min**, e Electron M02/M03 passou **2/2**. [Evidência](evidence/COLLAPSED_CATALOG_SEARCH.md). A integração M01 concorrente e os checkpoints humanos foram preservados.
+## M10 — checkpoint funcional pronto
+
+M10 concluiu S03–S05 em 2026-09-14. Armazenamento real usa índice/policy
+SQLite, capacidade física, leases, limpeza revalidada e promoção Keep com
+preservação da origem em falha. IPC/preload e adapter Electron substituem o
+mock no runtime desktop. Suíte focada M09/M10 passou 13/13 e o ensaio Electron
+removeu/moveu arquivos físicos. Checkpoint funcional READY_FOR_REVIEW/PENDING;
+S06–S08 e Windows/TV/hardware permanecem pendentes.

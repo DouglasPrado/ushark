@@ -1,6 +1,32 @@
-# Validação final da fase frontend M01–M22
+# Validação final M01–M22
 
-Revisão humana PENDING para M04–M22; aceites M01–M03 preservados. Evidência técnica não é aceite UX nem fechamento S08.
+## Integração até o checkpoint funcional — 2026-09-14
+
+Após a aprovação consolidada do frontend, M02–M22 avançaram por S03–S05 até
+`READY_FOR_REVIEW/PENDING`. A regressão completa final passou **316/316 em 10,2
+min**, serialmente, com browser, Electron 44.3.0, MPV 0.41.0, CPython 3.12.14,
+libtorrent 2.1.1.0, SQLite/WAL e o swarm local controlado. Formatação, ESLint,
+`tsc --noEmit`, build Turbo/Vite e `release:evidence` passaram. O build mantém o
+aviso conhecido de chunk JS acima de 500 kB.
+
+O ensaio de swarm desta rodada registrou stream ready em 2.699 ms, primeiro
+frame em 3.053 ms, seek fora do cache em 510 ms e 47/174 pieces concluídas no
+primeiro frame. A fila vazia de downloads também foi corrigida para não iniciar
+o torrentd durante playback estritamente local.
+
+Essa evidência não aprova o checkpoint humano, não fecha S06–S08 e não substitui
+os gates externos: credenciais/provider/Registry, packaging do runtime,
+Windows/TV/Sunshine/Moonlight/controle físico, installer, code signing, CI e
+promoção. Nenhum milestone M02–M22 está `DONE`.
+
+## Registro histórico da fase frontend
+
+A seção abaixo preserva a evidência da fase mock-first anterior à integração;
+afirmações sobre ausência de backend referem-se somente àquele recorte e foram
+superadas pela integração S03–S05 documentada acima.
+
+Revisão humana frontend aprovada de forma consolidada; aceites anteriores de
+M01–M03 foram preservados. Evidência técnica não é fechamento S08.
 
 ## Ambiente e escopo
 
@@ -105,3 +131,11 @@ No ajuste de transparência do detalhe, o fundo de `discovery-detail-hero-overvi
 ## Filme sem faixa duplicada e com recomendações após o Hero
 
 `ContentDetails` não renderiza mais `discovery-detail-facts` na página canônica de Filme: título original, nota/votos, disponibilidade e IMDb deixaram de ser repetidos abaixo do Hero. O modal de Série conserva a faixa, seus episódios e demais fatos. Recomendados é agora o irmão DOM imediato do Hero no filme e os cenários de revisão aparecem somente depois do trilho. O padding assimétrico do grid eleva discretamente título/sinopse, preservando centro vertical idêntico nas larguras de TV. O teste rico M04 e os layouts M02/M04 em 1920 passaram **3/3**. A medição sem capturas confirmou zero fatos de Filme, gap estrutural de 0 px até Recomendados, ausência de overflow em 1920/2560/3840/480 e um bloco de fatos preservado no modal de Série. Lint, typecheck, build Vite e hashes passaram; o aviso conhecido do chunk acima de 500 kB permanece. A [captura 1920](../../milestones/M04-home-search/evidence/rich-detail-1920.png) foi regenerada e inspecionada. A regressão integral anterior continua **141/141**.
+
+## Catálogos de Filmes e Séries por categorias
+
+As superfícies padrão M02/M03 agora reutilizam o padrão editorial da Home: um trilho `Em destaque` e trilhos panorâmicos por categorias amplas, mantendo Health, metadata, imagens locais e boundaries mockados. Busca, Favoritos e ordenações explícitas continuam em grade vertical. O retorno do detalhe restaura o card exato mesmo quando o mesmo conteúdo aparece em mais de um trilho. Typecheck, lint e build passaram; a regressão browser isolada do servidor de desenvolvimento passou **142/142 em 2,1 min**, e os dois fluxos Electron M02/M03 passaram **2/2**. A execução contra o servidor Vite ativo foi descartada porque alterações concorrentes do M01 provocaram recargas durante os testes. [Relatório detalhado](CATALOG_CATEGORY_RAILS.md).
+
+## Busca recolhida em Filmes e Séries
+
+O campo permanente foi substituído por uma lupa no grupo direito de ações dos catálogos M02/M03. O input só existe após ativação, recebe foco imediatamente e é recolhido com limpeza da consulta por fechamento ou Voltar/Escape; o foco retorna à lupa antes de uma eventual saída da tela. A suíte direcionada passou **3/3**, a regressão browser contra build estático passou **144/144 em 2,2 min**, e os fluxos Electron M02/M03 passaram **2/2**. Typecheck, lint, build e inspeção visual dos estados recolhido/expandido passaram; o aviso conhecido do chunk acima de 500 kB permanece. [Relatório detalhado](COLLAPSED_CATALOG_SEARCH.md).

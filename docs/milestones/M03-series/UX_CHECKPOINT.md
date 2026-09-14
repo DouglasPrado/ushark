@@ -1,5 +1,7 @@
 # Checkpoint UX — M03
 
+Aprovação consolidada registrada em 2026-09-14: “O frontend foi aprovado ja”. Ela reafirma o aceite anterior e cobre os ajustes frontend posteriores descritos neste arquivo; integração, runtime e hardware físico permanecem fora desse aceite.
+
 Status: APPROVED. Decisão: APPROVED. Aceite do usuário em 2026-09-13: “aprovado”, após correção do ícone de Séries no menu não selecionado. S00–S02 concluídas em 2026-09-13.
 
 ## Pré-condições
@@ -37,3 +39,7 @@ Resolvida: ícone de Séries ausente no menu não selecionado. Adicionado `Tv` e
 ## Ajuste posterior ao aceite
 
 Em 2026-09-13, a lista recebeu busca por título/original/gênero e ordenação por `Mais votados` ou `A–Z`, mantendo `Em destaque` como ordem inicial. [Captura](evidence/catalog-search-sort-1920.png). A regressão completa passou 132/132. O aceite histórico acima permanece registrado, mas não é reutilizado como aprovação automática desta ampliação.
+
+Em 2026-09-14, a solicitação de categorizar Filmes e Séries como a Home foi aplicada. Séries agora apresenta `Em destaque` e trilhos panorâmicos por categorias de gênero; busca e ordenações continuam em grade única. Abrir por qualquer trilho e voltar restaura o card exato. [Evidência conjunta M02/M03](../../execution/evidence/CATALOG_CATEGORY_RAILS.md). O aceite anterior permanece preservado; este refinamento foi implementado sem inferir nova aprovação.
+
+Novo refinamento em 2026-09-14: a busca do catálogo fica recolhida como lupa à direita e o campo só aparece mediante ativação. Abrir, fechar e Voltar/Escape preservam uma sequência de foco previsível. [Evidência](../../execution/evidence/COLLAPSED_CATALOG_SEARCH.md). O aceite anterior permanece preservado, sem aprovação automática desta alteração.

@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M10
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; S04.1–S04.3 executadas sequencialmente.
 
 ## Objetivo
 
@@ -28,7 +28,10 @@ Testes de fronteira/domínio de cada incremento e ensaios reais controlados: Lim
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+- [S04.1 — índice, leases e reconciliação](../evidence/BACKEND_S04_1.md)
+- [S04.2 — limpeza revalidada](../evidence/BACKEND_S04_2.md)
+- [S04.3 — Keep e falha recuperável](../evidence/BACKEND_S04_3.md)
+- `tests/storage-policy-service.spec.ts`: 4/4 casos passaram.
 
 ## Done When
 

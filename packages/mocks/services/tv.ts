@@ -1,6 +1,7 @@
 import type { TvSessionPreview, TvSessionState } from "@ushark/types/tv";
 import { previewWork } from "./library-package";
 export class MockTvSessionPreview implements TvSessionPreview {
+  readonly runtime = "mock" as const;
   state: TvSessionState = {
     active: false,
     connected: false,

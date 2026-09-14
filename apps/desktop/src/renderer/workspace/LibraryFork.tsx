@@ -139,24 +139,26 @@ export function LibraryFork({
                 {busy ? "Cancelar cópia" : "Voltar sem copiar"}
               </Button>
             </div>
-            <details>
-              <summary>Cenários de cópia</summary>
-              <label>
-                Estado da cópia
-                <select
-                  disabled={busy}
-                  value={scenario}
-                  onChange={(e) =>
-                    setScenario(e.target.value as typeof scenario)
-                  }
-                >
-                  <option value="normal">Normal</option>
-                  <option value="error">Falha ao copiar</option>
-                  <option value="offline">Origem remota offline</option>
-                  <option value="missing">Snapshot local indisponível</option>
-                </select>
-              </label>
-            </details>
+            {service.runtime !== "desktop" && (
+              <details>
+                <summary>Cenários de cópia</summary>
+                <label>
+                  Estado da cópia
+                  <select
+                    disabled={busy}
+                    value={scenario}
+                    onChange={(e) =>
+                      setScenario(e.target.value as typeof scenario)
+                    }
+                  >
+                    <option value="normal">Normal</option>
+                    <option value="error">Falha ao copiar</option>
+                    <option value="offline">Origem remota offline</option>
+                    <option value="missing">Snapshot local indisponível</option>
+                  </select>
+                </label>
+              </details>
+            )}
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>

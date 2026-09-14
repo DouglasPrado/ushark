@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M12
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; S04.1–S04.3 executadas sequencialmente.
 
 ## Objetivo
 
@@ -28,7 +28,8 @@ Testes de fronteira/domínio de cada incremento e ensaios reais controlados: Rea
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Integração](../evidence/INTEGRATION_VALIDATION.md); três testes de serviço
+cobrem persistência/revisão, ordem/IDs/metadata global e preview privado.
 
 ## Done When
 

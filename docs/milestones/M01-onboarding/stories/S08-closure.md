@@ -1,6 +1,6 @@
 # S08 — Fechar M01 com evidências
 
-Status: PLANNED. Preparação documental; não executada.
+Status: EXECUTED_PENDING_GATES. Auditoria executada em 2026-09-14; M01 não está DONE.
 
 ## Objetivo
 
@@ -34,8 +34,11 @@ Auditar evidências e matriz; não repetir testes sem mudança/falha. Se faltar 
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+- [CLOSURE_AUDIT](../evidence/CLOSURE_AUDIT.md).
+- [CONFIGURATION_CONTRACT](../evidence/CONFIGURATION_CONTRACT.md), [INTEGRATION_VALIDATION](../evidence/INTEGRATION_VALIDATION.md) e [SECURITY_REVIEW](../evidence/SECURITY_REVIEW.md).
+- UX consolidada M01–M22 registrada; checkpoint funcional M01 continua READY_FOR_REVIEW/PENDING.
+- Gates estáticos completos passaram. A regressão integral serial passou 150/150 em 9,3 min; as seis falhas de contenção vistas anteriormente sob quatro workers não se reproduziram em série.
 
 ## Conclusão
 
-Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+S08 foi executada, mas seus gates de entrega não estão todos satisfeitos. M01 permanece anterior a DONE por falta de aceite funcional humano, validação Windows/TV/controle físicos e confirmação de CI/review/merge.
