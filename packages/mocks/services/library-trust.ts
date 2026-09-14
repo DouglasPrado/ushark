@@ -6,6 +6,7 @@ import type {
 import type { LibraryPackageSnapshot } from "@ushark/types/library-package";
 import { previewWork } from "./library-package";
 export class MockLibraryTrustPreview implements LibraryTrustPreview {
+  readonly runtime = "mock" as const;
   capturePreview() {
     return structuredClone({ pins: this.pins });
   }
@@ -98,8 +99,10 @@ export class MockLibraryTrustPreview implements LibraryTrustPreview {
       return {
         ...structuredClone(snapshot),
         signature: {
+          algorithm: "Ed25519" as const,
           key: "DEMO-PUBLIC-A",
           integrity: snapshot.integrity,
+          value: "DEMO-SIGNATURE",
           valid: true,
         },
       };

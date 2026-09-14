@@ -1,6 +1,6 @@
 # S05 — Concluir onboarding com dados locais
 
-Status: PLANNED. Preparação documental; não executada.
+Status: DONE. Executada e validada localmente em 2026-09-14.
 
 ## Objetivo
 
@@ -34,8 +34,13 @@ E2E primeiro acesso → salvar → fechar → reabrir → configurações; cená
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+- `apps/desktop/src/main/configuration-ipc.cjs`: allowlist IPC v1, validação de sender/frame, protocolo, payload/opções e erros públicos.
+- `apps/desktop/src/preload/index.cjs`: somente `configuration.read/save/resetPlayback/chooseDirectory`, sem Node ou IPC genérico.
+- `apps/desktop/src/renderer/app/configuration.ts`: adapter real atrás de `ConfigurationService`; o navegador preserva o mock independente.
+- `App.tsx`: hydration no startup, migração do marcador legado, conclusão atômica, edição/reset persistentes, seletor nativo e mensagens honestas.
+- `tests/configuration-ipc.spec.ts`, `tests/configuration-store.spec.ts`, `tests/desktop.electron.spec.ts` e `tests/onboarding.spec.ts`: 17 casos focados passaram; o caso de trace que falhou no teardown passou isolado sem trace.
+- `pnpm typecheck`, lint afetado e `pnpm build` passaram; build preserva o aviso conhecido de chunk acima de 500 kB.
 
 ## Conclusão
 
-Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+Integração real comprovada localmente no Electron macOS e mock de navegador preservado. O checkpoint funcional está pronto para revisão; a autorização explícita para executar até S08 permite continuar tecnicamente, sem fabricar aprovação humana ou evidência Windows/TV.

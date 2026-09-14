@@ -1,6 +1,6 @@
 # Revisão final de frontend M01–M22
 
-Status: READY_FOR_REVIEW. Decisão humana: PENDING para M04–M22. M01–M03 conservam os aceites registrados. A autorização para continuar o frontend adiou esta revisão; não a aprovou. Nenhum milestone está DONE, e S03–S08 permanecem DEFERRED.
+Status: APPROVED. Decisão humana registrada em 2026-09-14: “O frontend foi aprovado ja”. O aceite consolidado cobre M01–M22 e preserva os aceites anteriores de M01–M03. Ele aprova a UX mockada, não comprova integrações, runtime ou hardware físico. M01 S03–S08 foi autorizado separadamente; nenhum outro milestone recebeu autorização de integração.
 
 ## Acesso e preparação
 
@@ -62,6 +62,10 @@ Inspecionar 1920×1080, 2560×1440 e 3840×2160. Capturas de Chromium estão nas
 Em páginas e painéis com overflow vertical, conferir o thumb azul `#87bbef`, trilho escuro e hover azul-claro. Os trilhos horizontais editoriais da Home e do player permanecem visualmente ocultos.
 
 Filmes, Séries e Busca usam a mesma barra de filtros. Os cards de Filmes e Séries também compartilham a mesma base visual: vertical nas grades e horizontal nos trilhos da Home. Botões de ação têm somente os tipos primário e secundário; navegação, tabs, teclado virtual e cards são superfícies interativas especializadas. Conferir consistência de espaçamento, foco e overlays ao alternar entre essas telas.
+
+Nas telas padrão de Filmes e Séries, conferir `Em destaque` seguido por trilhos panorâmicos de categorias como na Home. Busca, Favoritos e ordenações explícitas retornam à grade vertical. Abrir um item repetido em qualquer categoria e voltar deve restaurar o foco exatamente naquele card. [Evidência conjunta M02/M03](evidence/CATALOG_CATEGORY_RAILS.md).
+
+A busca de Filmes e Séries começa recolhida como lupa no grupo de ações à direita. Ela não deve entrar na sequência de foco como campo até a lupa ser ativada. Ao abrir, o input recebe foco; fechar ou usar Voltar/Escape limpa a consulta, recolhe o campo e restaura o foco à lupa. [Evidência](evidence/COLLAPSED_CATALOG_SEARCH.md).
 
 ## Evidências e limites
 

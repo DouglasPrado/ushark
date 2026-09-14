@@ -63,6 +63,8 @@ interface Props {
   onSettings: () => void;
   configure: (scenario: DiscoveryScenario) => void;
   simulate: (action: "remove" | "rename" | "page-error", id?: string) => void;
+  previewTools?: boolean;
+  healthAvailable?: boolean;
 }
 export function Discovery({
   tvMode = false,
@@ -81,6 +83,8 @@ export function Discovery({
   onSettings,
   configure,
   simulate,
+  previewTools = true,
+  healthAvailable = true,
 }: Props) {
   const [query, setQuery] = useState(session.query);
   const [searching, setSearching] = useState(session.searching);
@@ -126,6 +130,10 @@ export function Discovery({
     session.searching = searching;
     session.scenario = scenario;
   }, [session, query, searching, scenario]);
+  useEffect(
+    () => catalog.subscribe?.(() => setRevision((value) => value + 1)),
+    [catalog],
+  );
   useEffect(() => {
     window.location.hash = selected
       ? `/content/${encodeURIComponent(selected.id)}`
@@ -279,6 +287,7 @@ export function Discovery({
         selectionService={selectionService}
         rail={rail}
         hideArt={!hydrated}
+        healthAvailable={healthAvailable}
         onOpen={open}
       />
     ));
@@ -294,6 +303,7 @@ export function Discovery({
         selectionService={selectionService}
         onOpen={open}
         hideArt={!hydrated}
+        healthAvailable={healthAvailable}
         headingAction={
           <button onClick={() => update(patch)}>
             Ver todos <ArrowRight size={16} />
@@ -313,10 +323,10 @@ export function Discovery({
   );
   const hero = all.find((x) => x.type === "movie") ?? all[0];
   const heroSignal = hero
-    ? discoverySourceSignal(hero, selectionService)
+    ? discoverySourceSignal(hero, selectionService, healthAvailable)
     : undefined;
   const detailSignal = selected
-    ? discoverySourceSignal(selected, selectionService)
+    ? discoverySourceSignal(selected, selectionService, healthAvailable)
     : undefined;
   const recommendations = selected ? contentRecommendations(all, selected) : [];
   const scopeName = [...libraries, ...collections].find(
@@ -703,64 +713,70 @@ export function Discovery({
                   ? "Controle desconectado · teclado disponível"
                   : "Tab navegar · Enter selecionar · Esc voltar"}
           </span>
-          <span>Prévia em memória · reiniciar descarta alterações</span>
-          <details>
-            <summary>Cenários da prévia</summary>
-            <div>
-              <label>
-                Catálogo da Home
-                <select
-                  aria-label="Cenário da Home"
-                  value={scenario}
-                  onChange={(e) => {
-                    const s = e.target.value as DiscoveryScenario;
-                    configure(s);
-                    setScenario(s);
-                    setQuery(discoveryQuery());
-                    setNotice("");
+          <span>
+            {previewTools
+              ? "Prévia em memória · reiniciar descarta alterações"
+              : "Catálogo local persistido · Sync e Torrent Health ainda indisponíveis"}
+          </span>
+          {previewTools && (
+            <details>
+              <summary>Cenários da prévia</summary>
+              <div>
+                <label>
+                  Catálogo da Home
+                  <select
+                    aria-label="Cenário da Home"
+                    value={scenario}
+                    onChange={(e) => {
+                      const s = e.target.value as DiscoveryScenario;
+                      configure(s);
+                      setScenario(s);
+                      setQuery(discoveryQuery());
+                      setNotice("");
+                    }}
+                  >
+                    <option value="current">Meu catálogo atual</option>
+                    <option value="editorial">Prévia editorial</option>
+                    <option value="large">10.000 histórias</option>
+                    <option value="empty">Vazio</option>
+                    <option value="offline">Offline</option>
+                    <option value="error">Erro de leitura</option>
+                    <option value="slow">Busca lenta</option>
+                    <option value="missing">Sem imagens</option>
+                    <option value="hydration">Imagens chegando</option>
+                  </select>
+                </label>
+                <button
+                  onClick={() => {
+                    simulate("page-error");
+                    setNotice("A próxima página falhará uma vez.");
                   }}
                 >
-                  <option value="current">Meu catálogo atual</option>
-                  <option value="editorial">Prévia editorial</option>
-                  <option value="large">10.000 histórias</option>
-                  <option value="empty">Vazio</option>
-                  <option value="offline">Offline</option>
-                  <option value="error">Erro de leitura</option>
-                  <option value="slow">Busca lenta</option>
-                  <option value="missing">Sem imagens</option>
-                  <option value="hydration">Imagens chegando</option>
-                </select>
-              </label>
-              <button
-                onClick={() => {
-                  simulate("page-error");
-                  setNotice("A próxima página falhará uma vez.");
-                }}
-              >
-                Falhar próxima página
-              </button>
-              <button
-                disabled={!items[0]}
-                onClick={() => {
-                  simulate("rename", items[0]?.id);
-                  setRevision((x) => x + 1);
-                }}
-              >
-                Simular alteração externa
-              </button>
-              <button
-                disabled={!items[0]}
-                onClick={() => {
-                  simulate("remove", items[0]?.id);
-                  setRevision((x) => x + 1);
-                  focusPage.current = true;
-                }}
-              >
-                Simular remoção do primeiro resultado
-              </button>
-              {notice && <p role="status">{notice}</p>}
-            </div>
-          </details>
+                  Falhar próxima página
+                </button>
+                <button
+                  disabled={!items[0]}
+                  onClick={() => {
+                    simulate("rename", items[0]?.id);
+                    setRevision((x) => x + 1);
+                  }}
+                >
+                  Simular alteração externa
+                </button>
+                <button
+                  disabled={!items[0]}
+                  onClick={() => {
+                    simulate("remove", items[0]?.id);
+                    setRevision((x) => x + 1);
+                    focusPage.current = true;
+                  }}
+                >
+                  Simular remoção do primeiro resultado
+                </button>
+                {notice && <p role="status">{notice}</p>}
+              </div>
+            </details>
+          )}
         </footer>
       )}
       <Dialog.Root
@@ -814,6 +830,7 @@ export function Discovery({
                 movieDetailPage={movieDetailPage}
                 tvMode={tvMode}
                 selectionService={selectionService}
+                healthAvailable={healthAvailable}
                 preferences={preferences}
                 suspended={suspended}
                 onDownload={onDownload}

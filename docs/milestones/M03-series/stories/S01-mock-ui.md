@@ -33,3 +33,7 @@ Executar lint, typecheck e build; inspecionar superfícies em 1080p/1440p/4K e n
 ## Done When
 
 Fluxo mockado navegável e estados visuais disponíveis para S02, com boundary substituível identificado.
+
+## Ajuste de revisão — catálogo por categorias
+
+Em 2026-09-14, a lista padrão passou a usar trilhos panorâmicos como a Home: `Em destaque` e categorias editoriais derivadas dos gêneros. Busca e ordenações explícitas continuam em grade única. `CatalogRail` e o `MediaCard` compartilhado mantêm o padrão sem alterar série, temporada, episódio ou source. [Evidência](../../../execution/evidence/CATALOG_CATEGORY_RAILS.md).

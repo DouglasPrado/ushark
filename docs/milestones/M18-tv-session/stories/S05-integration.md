@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M18
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE localmente em 2026-09-14; ambiente físico pendente.
 
 ## Objetivo
 

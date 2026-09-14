@@ -9,6 +9,7 @@ import type { LibraryContent } from "@ushark/types/libraries";
 import type { DiscoveryItem } from "@ushark/types/discovery";
 import { MockLibraryPackagePreview, previewWork } from "./library-package";
 export class MockSubscriptionPreview implements SubscriptionPreview {
+  readonly runtime = "mock" as const;
   capturePreview() {
     return structuredClone({
       subscriptions: this.subscriptions,

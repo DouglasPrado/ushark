@@ -1,6 +1,6 @@
 # Checkpoint UX — M04
 
-Status: READY_FOR_REVIEW. Decisão: PENDING. S00–S02 concluídas em 2026-09-13.
+Status: APPROVED. Aprovação consolidada do usuário em 2026-09-14: “O frontend foi aprovado ja”. S00–S02 concluídas em 2026-09-13.
 
 ## Pré-condições e mocks
 
@@ -25,7 +25,7 @@ Disponíveis: [evidências e roteiro de acesso](evidence/VALIDATION.md), captura
 
 ## Requested Changes
 
-Solicitação de usar capa e demais imagens do IMDb registrada em 2026-09-13. Atendida no frontend com pôsteres verticais em Filmes/busca e backdrops horizontais no Hero/trilhos, todos locais e offline. O checkpoint continua PENDING até decisão explícita do usuário.
+Solicitação de usar capa e demais imagens do IMDb registrada em 2026-09-13. Atendida no frontend com pôsteres verticais em Filmes/busca e backdrops horizontais no Hero/trilhos, todos locais e offline. O ajuste está coberto pelo aceite consolidado de 2026-09-14.
 
 Solicitação de enriquecer o modal antes da abertura de Filme/Série registrada em 2026-09-13. Atendida com sinopse, metadata específica, badges, fatos, memberships, ações próximas e prévia local de trailer. A integração com provider de trailer e a reprodução real continuam adiadas; o checkpoint permanece PENDING até decisão explícita do usuário.
 
@@ -47,11 +47,11 @@ Solicitação de colocar a sinopse à direita, subir o título e manter os botõ
 
 ## Atribuição do aceite
 
-A citação “aprovado” que apareceu no STATE durante trabalho simultâneo corresponde ao [checkpoint M03](../M03-series/UX_CHECKPOINT.md), após correção do ícone de Séries. M04 não recebeu aceite nesta execução; seu estado é READY_FOR_REVIEW/PENDING.
+A citação “aprovado” histórica que apareceu no STATE durante trabalho simultâneo corresponde ao [checkpoint M03](../M03-series/UX_CHECKPOINT.md). M04 recebeu seu próprio aceite somente na revisão consolidada de 2026-09-14.
 
 ## Revisão final consolidada
 
-READY_FOR_REVIEW / decisão PENDING. A revisão intermediária foi adiada por instrução explícita, não aprovada. Usar o [roteiro único](../../execution/FRONTEND_REVIEW.md); resultados automatizados e inspeções não substituem sua decisão.
+APPROVED na revisão consolidada de 2026-09-14; [roteiro e evidência do aceite](../../execution/FRONTEND_REVIEW.md). O aceite cobre UX mockada, não integração funcional ou hardware físico.
 
 Solicitação de reutilizar em Recomendados o mesmo componente de `Filmes para descobrir` e `Continuar assistindo` registrada em 2026-09-13. Atendida com o trilho/card compartilhado, mantendo Health, qualidade, progresso opcional e navegação horizontal. A validação focada passou 19/19; o checkpoint permanece PENDING.
 

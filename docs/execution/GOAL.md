@@ -1,4 +1,24 @@
-# Política vigente — fase frontend M01–M22
+# Política vigente — integração M02–M22 até o checkpoint funcional
+
+Autorização explícita do usuário em 2026-09-14: “Vamos para o m02 ate o m22 deixando para o proximo checkpoint de cada um”. A UX consolidada M01–M22 já está aprovada. Executar M02–M22 em ordem topológica do plano, uma story por vez, cobrindo S03, S04 e S05 de cada milestone e parando-o em `FUNCTIONAL_CHECKPOINT / READY_FOR_REVIEW / PENDING`. Quando a ordem numérica conflitar com dependências explícitas, seguir a dependência documentada; em particular, M06 integra antes de M03.
+
+“Próximo checkpoint” significa o checkpoint funcional após S05. A autorização permite atravessar somente stories técnicas dentro de cada milestone; não aprova o checkpoint funcional, não autoriza S06–S08, não transforma validação local em hardware/CI/review/merge e não amplia M23–M28. Se uma integração depender de credencial, serviço, runtime ou hardware externo indisponível, entregar e testar o boundary real possível, registrar a lacuna honestamente no checkpoint e avançar apenas quando a própria story puder ser considerada concluída sem fabricar a integração ausente.
+
+Preservar os adapters mockados para browser/testes e substituir apenas o caminho principal Electron pela implementação real da capability atual. Manter Content, Source, Library, estado pessoal e runtime separados; IPC versionado e validado; entradas externas não confiáveis; operações críticas transacionais; migrations progressivas e recuperáveis. Atualizar `STATE.yaml`, a story, `UPDATE.md` e o checkpoint ao final de cada story/milestone.
+
+## Resultado anterior — M01 S03–S08
+
+Autorização explícita do usuário em 2026-09-14: “Registre a aprovação e execute M01 S03–S08”. A frase anterior “O frontend foi aprovado já” registra a aprovação UX final consolidada de M01–M22, preservando os aceites anteriores de M01–M03 e aprovando M04–M22.
+
+O escopo anterior executou somente M01: S03 contrato mínimo de configuração; S04 persistência local e biblioteca vazia; S05 integração Electron; S06 testes; S07 hardening; S08 auditoria/closure. A autorização para alcançar S08 não equivale a aprovação funcional humana nem a validação de Windows/TV/controle físicos.
+
+O adapter real de M01 permanece atrás do mesmo contrato, com renderer isolado, preload mínimo, IPC versionado/validado, escrita atômica e erros recuperáveis. O novo escopo acima substitui apenas o adiamento de M02–M22 até S05; M23–M28, S06–S08 de M02–M22, merge, deploy e publicação continuam fora do escopo.
+
+## Resultado M01 S03–S08
+
+Execução técnica concluída e auditada em 2026-09-14. Contrato v1, persistência SQLite atômica, biblioteca vazia, preload/IPC restritos, integração Electron, restart, seletor nativo, reset, recovery, testes e hardening foram entregues. Gates estáticos passaram, suíte focada M01 passou 27/27 e regressão integral serial passou 150/150 em 9,3 min. S08 permanece `EXECUTED_PENDING_GATES` e M01 `LOCAL_VALIDATED / READY_FOR_FUNCTIONAL_REVIEW`, pois aprovação funcional humana, Windows/TV/controle físicos e CI/review/merge não foram comprovados.
+
+## Histórico preservado — fase frontend M01–M22
 
 Autorização explícita do usuário em 2026-09-13: executar S00–S02 de M01–M22, uma story por vez, no checkout real, preservando alterações e evidências existentes. Ao validar cada frontend, avançar automaticamente ao próximo. Revisões UX intermediárias pendentes são adiadas, por instrução do usuário, para uma revisão única ao final: READY_FOR_REVIEW / decisão PENDING; atravessar checkpoint não é aprová-lo. Aceites M01–M03 preservados. Divergências históricas não autorizam fabricar aprovação.
 

@@ -1,6 +1,6 @@
 # M11 — Assistir episódios em sequência
 
-Status: frontend S00–S02 implementado; UX READY_FOR_REVIEW/PENDING adiada por instrução explícita até fim M01–M22. S03–S08 DEFERRED; funcional NOT_STARTED/PENDING. [Experiência](EXPERIENCE.md), [evidências](evidence/VALIDATION.md). Runtime real abaixo permanece futuro.
+Status: FUNCTIONAL_CHECKPOINT READY_FOR_REVIEW/PENDING — UX aprovada; S03–S05 concluídas. [Experiência](EXPERIENCE.md), [evidências](evidence/INTEGRATION_VALIDATION.md).
 
 ## Objetivo
 

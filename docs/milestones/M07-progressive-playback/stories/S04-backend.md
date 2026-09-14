@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M07
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14 — S04.1, S04.2 e S04.3 concluídas.
 
 ## Objetivo
 
@@ -28,7 +28,12 @@ Testes de fronteira/domínio de cada incremento e ensaios reais controlados: Fil
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+- [S04.1](../evidence/BACKEND_S04_1.md): probe parcial real, HEAD/TAIL e
+  mapping tempo/byte/piece, **8/8**.
+- [S04.2](../evidence/BACKEND_S04_2.md): scheduler limitado e aplicação real de
+  priorities/deadlines no libtorrent, **7/7** próprios; suíte combinada **20/20**.
+- [S04.3](../evidence/BACKEND_S04_3.md): delivery sparse contido ao MPV,
+  rebind, stop e última geração; serviço **4/4** e daemon real **6/6**.
 
 ## Done When
 
@@ -41,7 +46,9 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Filme e episódio de pack incompletos tocam; seek fora do cache e três seeks rápidos reproduzem a última posição; medir primeiro frame 1–5s/seek 1–3s em swarm controlado; inspecionar prioridade e limites RAM/disco. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Mapping estimado/indexado, offset/fronteiras, plano
+HEAD/TAIL, readiness limitada e `ffprobe` 9.0.1 real passaram **8/8**.
+[Evidência](../evidence/BACKEND_S04_1.md).
 
 ## S04.2 — scheduler HEAD/TAIL/deadlines e cache limitado
 
@@ -50,7 +57,9 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Filme e episódio de pack incompletos tocam; seek fora do cache e três seeks rápidos reproduzem a última posição; medir primeiro frame 1–5s/seek 1–3s em swarm controlado; inspecionar prioridade e limites RAM/disco. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Janelas 7/5/3, background por modo, target/cadência,
+budgets e proteção do ativo foram testados; aplicação real libtorrent e geração
+monotônica passaram. [Evidência](../evidence/BACKEND_S04_2.md).
 
 ## S04.3 — delivery ao MPV e cancelamento por geração
 
@@ -59,4 +68,6 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Filme e episódio de pack incompletos tocam; seek fora do cache e três seeks rápidos reproduzem a última posição; medir primeiro frame 1–5s/seek 1–3s em swarm controlado; inspecionar prioridade e limites RAM/disco. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Delivery parcial não expõe path ao renderer, sessão
+reidrata o torrent confirmado e três seeks rápidos entregam somente a última
+geração ao MPV. [Evidência](../evidence/BACKEND_S04_3.md).

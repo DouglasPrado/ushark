@@ -1,6 +1,6 @@
 # Checkpoint UX — M01
 
-Status: APPROVED. Aprovação explícita do usuário em 2026-09-12: “a ux esta aprovado”. Escopo: experiência frontend mockada de M01. Prévia implementada e testes automatizados aprovados. Fullscreen macOS validado; Windows/TV e controle físico ainda pendentes; ver [evidências](evidence/RESUME.md).
+Status: APPROVED. Aprovação explícita do usuário em 2026-09-12: “a ux esta aprovado”, reafirmada para o frontend consolidado em 2026-09-14: “O frontend foi aprovado ja”. Escopo: experiência frontend mockada de M01 e ajustes visuais posteriores. Fullscreen macOS validado; Windows/TV e controle físico ainda pendentes; ver [evidências](evidence/RESUME.md).
 
 Depois de S02: Percorrer onboarding e configurações por controle/teclado; revisar defaults, caminhos, loading/erro/offline, validação, retorno/restauração do foco e reset seletivo. Verificar TV/fullscreen/legibilidade e confirmar quais testes de hardware foram efetivamente feitos.
 

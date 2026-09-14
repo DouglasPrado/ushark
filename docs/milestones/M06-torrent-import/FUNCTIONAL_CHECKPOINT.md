@@ -2,11 +2,12 @@
 
 ## Status
 
-NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+READY_FOR_REVIEW em 2026-09-14. Decisão humana: PENDING.
 
 ## Pré-condições
 
-S03–S05 integradas após UX M01–M22 e dependências reais; só então READY_FOR_REVIEW.
+S03–S05 integradas após UX M01–M22 e M02. Contrato, adapters e jornada Electron
+possuem [evidência real](evidence/INTEGRATION_VALIDATION.md).
 
 ## Jornada para testar
 
@@ -26,10 +27,16 @@ Verificar ausência de mock no caminho principal, persistência pertinente após
 
 ## Evidências e decisão
 
-PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
+Automação local disponível: parser/staging, libtorrent real, IPC autenticado,
+SQLite/restart, arquivo `.torrent`, magnet público, timeout/pendência/retry,
+deduplicação e crash isolado. Suite afetada final: **47/47**.
+
+PENDENTES: percorrer a jornada humana; binário empacotado; Windows x64; TV,
+controle físico e Moonlight. Registrar a decisão humana com contexto; não inferir
+aprovação pelo silêncio. Este checkpoint não autoriza S06–S08.
 
 ## Mudanças solicitadas
 
 Nenhuma registrada; isso não equivale a aprovação.
 
-Frontend entregue somente em simulação; este checkpoint e S03–S08 continuam DEFERRED.
+Frontend aprovado; S03–S05 executadas. S06–S08 permanecem não autorizadas.

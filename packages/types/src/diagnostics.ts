@@ -8,6 +8,7 @@ export interface DiagnosticSnapshot {
   retention: { limit: number; days: number };
 }
 export interface DiagnosticPreview {
+  runtime?: "mock" | "desktop";
   collect(
     scenario: DiagnosticScenario,
     signal: AbortSignal,
@@ -24,4 +25,13 @@ export interface DiagnosticPreview {
   ): Promise<string>;
   retention(limit: number, days: number): void;
   burst(): void;
+}
+export interface DiagnosticDesktopApi {
+  protocolVersion: 1;
+  call(input: {
+    operation: string;
+    args: unknown[];
+  }): Promise<
+    { ok: true; value: unknown } | { ok: false; error: { message: string } }
+  >;
 }

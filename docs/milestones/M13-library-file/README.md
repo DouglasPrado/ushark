@@ -1,6 +1,6 @@
 # M13 — Trocar bibliotecas por arquivo
 
-Status: FRONTEND_IMPLEMENTED / READY_FOR_REVIEW. S00–S02 concluídas; UX PENDING adiada por instrução explícita até o fim de M01–M22. S03–S08 DEFERRED; não DONE.
+Status: FUNCTIONAL_READY_FOR_REVIEW. S00–S05 concluídas; UX aprovada de forma consolidada. Checkpoint funcional PENDING; S06–S08 não autorizadas; não DONE.
 
 ## Objetivo
 

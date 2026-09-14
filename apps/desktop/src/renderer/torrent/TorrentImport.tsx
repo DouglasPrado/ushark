@@ -40,6 +40,13 @@ export function TorrentImport({
     },
     [],
   );
+  useEffect(() => {
+    if (!service.hydratePending) return;
+    void service
+      .hydratePending()
+      .then(() => setPending(service.pending()))
+      .catch((cause) => setError((cause as Error).message));
+  }, [service]);
   useNavigation(close, open);
   useEffect(() => {
     onActive(open);
@@ -54,7 +61,8 @@ export function TorrentImport({
   }
   async function inspect(value = input) {
     if (lock.current) return;
-    const invalid = validateTorrentInput(value);
+    const invalid =
+      service.validateInput?.(value) ?? validateTorrentInput(value);
     if (invalid) {
       setError(invalid);
       return;
@@ -100,11 +108,12 @@ export function TorrentImport({
     setError("");
     try {
       await onConfirm(inspection, selected);
-      service.confirm(inspection);
+      await service.confirm(inspection);
       setPending(service.pending());
       setNotice(
         `Importação concluída. ${service.count()} origem(ns) disponíveis.`,
       );
+      if (service.chooseTorrentFile) setInput("");
       lock.current = false;
       setBusy(false);
       setOpen(false);
@@ -154,7 +163,7 @@ export function TorrentImport({
                 <label>
                   Magnet link
                   <input
-                    value={input}
+                    value={service.describeInput?.(input) ?? input}
                     disabled={busy}
                     onChange={(e) => {
                       setInput(e.target.value);
@@ -164,27 +173,48 @@ export function TorrentImport({
                   />
                 </label>
                 <div className="footer-actions">
-                  <Button
-                    variant="secondary"
-                    disabled={busy}
-                    onClick={() => setInput(previewMagnet)}
-                  >
-                    Preencher magnet
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    disabled={busy}
-                    onClick={() => setInput("fixture:filme.torrent")}
-                  >
-                    Selecionar filme.torrent
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    disabled={busy}
-                    onClick={() => setInput("fixture:serie.torrent")}
-                  >
-                    Selecionar serie.torrent
-                  </Button>
+                  {service.chooseTorrentFile ? (
+                    <Button
+                      variant="secondary"
+                      disabled={busy}
+                      onClick={() => {
+                        void service
+                          .chooseTorrentFile?.()
+                          .then((selected) => {
+                            if (!selected) return;
+                            setInput(selected.input);
+                            setError("");
+                          })
+                          .catch((cause) => setError((cause as Error).message));
+                      }}
+                    >
+                      Selecionar arquivo .torrent
+                    </Button>
+                  ) : (
+                    <>
+                      <Button
+                        variant="secondary"
+                        disabled={busy}
+                        onClick={() => setInput(previewMagnet)}
+                      >
+                        Preencher magnet
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        disabled={busy}
+                        onClick={() => setInput("fixture:filme.torrent")}
+                      >
+                        Selecionar filme.torrent
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        disabled={busy}
+                        onClick={() => setInput("fixture:serie.torrent")}
+                      >
+                        Selecionar serie.torrent
+                      </Button>
+                    </>
+                  )}
                 </div>
                 <Button disabled={busy} onClick={() => void inspect()}>
                   Resolver metadata
@@ -199,9 +229,10 @@ export function TorrentImport({
                       <div key={p}>
                         <span>
                           Pendente {i + 1} ·{" "}
-                          {p.startsWith("fixture:")
-                            ? "Arquivo torrent"
-                            : "Magnet"}
+                          {service.describeInput?.(p) ??
+                            (p.startsWith("fixture:")
+                              ? "Arquivo torrent"
+                              : "Magnet")}
                         </span>
                         <Button
                           variant="secondary"
@@ -217,8 +248,11 @@ export function TorrentImport({
                           variant="secondary"
                           disabled={busy}
                           onClick={() => {
-                            service.forget(p);
-                            setPending(service.pending());
+                            void Promise.resolve(service.forget(p))
+                              .then(() => setPending(service.pending()))
+                              .catch((cause) =>
+                                setError((cause as Error).message),
+                              );
                           }}
                         >
                           Remover pendência {i + 1}
@@ -289,12 +323,21 @@ export function TorrentImport({
                     </Button>
                     <Button
                       variant="secondary"
-                      disabled={busy || !!validateTorrentInput(input)}
+                      disabled={
+                        busy ||
+                        !!(
+                          service.validateInput?.(input) ??
+                          validateTorrentInput(input)
+                        )
+                      }
                       onClick={() => {
-                        service.remember(input);
-                        setPending(service.pending());
-                        setError("");
-                        setNotice("Importação salva como pendente.");
+                        void Promise.resolve(service.remember(input))
+                          .then(() => {
+                            setPending(service.pending());
+                            setError("");
+                            setNotice("Importação salva como pendente.");
+                          })
+                          .catch((cause) => setError((cause as Error).message));
                       }}
                     >
                       Salvar pendente
@@ -303,34 +346,36 @@ export function TorrentImport({
                 )}
               </div>
             )}
-            <details>
-              <summary>Opções avançadas</summary>
-              <label>
-                Condição da origem
-                <select
-                  disabled={busy}
-                  value={scenario}
-                  onChange={(e) =>
-                    setScenario(e.target.value as InspectionScenario)
-                  }
-                >
-                  {Object.entries({
-                    normal: "Normal",
-                    "no-peers": "Sem peers",
-                    timeout: "Timeout",
-                    daemon: "Daemon indisponível",
-                    offline: "Offline",
-                    ambiguous: "Seleção ambígua",
-                    hostile: "Path hostil",
-                    bencode: "Bencode inválido",
-                  }).map(([v, l]) => (
-                    <option key={v} value={v}>
-                      {l}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </details>
+            {!service.chooseTorrentFile && (
+              <details>
+                <summary>Opções avançadas</summary>
+                <label>
+                  Condição da origem
+                  <select
+                    disabled={busy}
+                    value={scenario}
+                    onChange={(e) =>
+                      setScenario(e.target.value as InspectionScenario)
+                    }
+                  >
+                    {Object.entries({
+                      normal: "Normal",
+                      "no-peers": "Sem peers",
+                      timeout: "Timeout",
+                      daemon: "Daemon indisponível",
+                      offline: "Offline",
+                      ambiguous: "Seleção ambígua",
+                      hostile: "Path hostil",
+                      bencode: "Bencode inválido",
+                    }).map(([v, l]) => (
+                      <option key={v} value={v}>
+                        {l}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </details>
+            )}
             <Button
               variant="secondary"
               disabled={busy && !abort.current}

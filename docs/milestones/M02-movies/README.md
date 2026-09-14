@@ -1,6 +1,6 @@
 # M02 — Cadastrar e organizar filmes
 
-Status: FRONTEND_UX_APPROVED — S00–S02 implementadas com mocks no checkout real; UX aprovada explicitamente em 2026-09-13: “UX Aprovada”. Integração e closure adiadas. [Evidências e capturas](evidence/VALIDATION.md).
+Status: READY_FOR_FUNCTIONAL_REVIEW — S00–S05 concluídas; UX aprovada e integração local validada. Persistência/IPC/adapter Electron são reais, browser preserva mock. Smoke TMDB com credencial, aprovação funcional, Windows/TV/controle e S06–S08 permanecem pendentes. [Evidências](evidence/INTEGRATION_VALIDATION.md).
 
 ## Objetivo e resultado
 

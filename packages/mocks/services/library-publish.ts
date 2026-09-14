@@ -7,6 +7,7 @@ import type {
 import type { LibraryContent, LibraryDraft } from "@ushark/types/libraries";
 import { previewWork } from "./library-package";
 export class MockLibraryPublishPreview implements LibraryPublishPreview {
+  readonly runtime = "mock" as const;
   authenticated = false;
   private versions: PublishedLibrary[] = [];
   list() {

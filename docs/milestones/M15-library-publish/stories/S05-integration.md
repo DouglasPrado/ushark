@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M15
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; integração controlada, produção pendente.
 
 ## Objetivo
 

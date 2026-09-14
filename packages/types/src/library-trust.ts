@@ -15,6 +15,7 @@ export interface TrustResult {
   message: string;
 }
 export interface LibraryTrustPreview {
+  runtime?: "mock" | "desktop";
   verify(
     snapshot: LibraryPackageSnapshot,
     scenario: TrustScenario,
@@ -31,4 +32,23 @@ export interface LibraryTrustPreview {
     unavailable: boolean,
     signal: AbortSignal,
   ): Promise<LibraryPackageSnapshot>;
+}
+export const LIBRARY_TRUST_PROTOCOL_VERSION = 1 as const;
+export type LibraryTrustResult<T> =
+  | { ok: true; value: T }
+  | { ok: false; error: { code: string; message: string; retryable: boolean } };
+export interface LibraryTrustDesktopApi {
+  protocolVersion: typeof LIBRARY_TRUST_PROTOCOL_VERSION;
+  verify(input: {
+    snapshot: LibraryPackageSnapshot;
+  }): Promise<LibraryTrustResult<TrustResult>>;
+  accept(input: {
+    libraryId: string;
+    key: string;
+    snapshot: LibraryPackageSnapshot;
+    mutation: { idempotencyKey: string };
+  }): Promise<LibraryTrustResult<void>>;
+  sign(input: {
+    snapshot: LibraryPackageSnapshot;
+  }): Promise<LibraryTrustResult<LibraryPackageSnapshot>>;
 }

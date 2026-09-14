@@ -8,4 +8,10 @@ UX READY_FOR_REVIEW/PENDING. Revisão humana adiada por instrução explícita p
 
 ## Auditoria transversal da fase frontend
 
+## S03–S05
+
+Fork persistente com identidade nova, provenance opcional, catálogo por
+referência e edição independente foi integrado; 4/4 incluindo regressão M12.
+Checkpoint READY_FOR_REVIEW/PENDING.
+
 Jornadas conectadas e correções finais registradas em [auditoria](../../execution/FRONTEND_COVERAGE_AUDIT.md) e [validação final](../../execution/evidence/FINAL_VALIDATION.md). Esta atualização não muda aceites humanos existentes. S03–S08 continuam adiadas.

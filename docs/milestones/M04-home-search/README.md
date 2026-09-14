@@ -1,6 +1,8 @@
 # M04 — Encontrar conteúdo e continuar pela Home
 
-Status: FRONTEND_UX_READY_FOR_REVIEW — S00–S02 concluídas; [evidências](evidence/VALIDATION.md). Aceite UX PENDING, integração/S03–S08 adiadas; M04 não está DONE.
+Status: READY_FOR_REVIEW — S00–S05 concluídas e UX aprovada. Checkpoint
+funcional pronto, com decisão humana PENDING; S06–S08 não foram iniciadas e
+M04 não está DONE.
 
 ## Objetivo e resultado
 

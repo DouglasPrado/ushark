@@ -7,9 +7,14 @@ test("M02 M03 catálogos buscam e ordenam por votos ou título", async ({
   await page.setViewportSize({ width: 1920, height: 1080 });
   await enterMovies(page, true, true);
 
+  await expect(
+    page.getByRole("searchbox", { name: "Buscar na lista de filmes" }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Buscar filmes" }).click();
   const movieSearch = page.getByRole("searchbox", {
     name: "Buscar na lista de filmes",
   });
+  await expect(movieSearch).toBeFocused();
   const movieSort = page.getByLabel("Ordenar filmes");
   await movieSearch.fill("viagem chihiro");
   await expect(page.locator(".movie-card")).toHaveCount(1);
@@ -50,9 +55,14 @@ test("M02 M03 catálogos buscam e ordenam por votos ou título", async ({
     .getByRole("button", { name: "Séries", exact: true })
     .click();
   await expect(page.getByText("Abrindo suas séries…")).toBeHidden();
+  await expect(
+    page.getByRole("searchbox", { name: "Buscar na lista de séries" }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Buscar séries" }).click();
   const seriesSearch = page.getByRole("searchbox", {
     name: "Buscar na lista de séries",
   });
+  await expect(seriesSearch).toBeFocused();
   const seriesSort = page.getByLabel("Ordenar séries");
   await seriesSearch.fill("ruptura");
   await expect(page.locator(".series-card")).toHaveCount(1);
@@ -83,6 +93,53 @@ test("M02 M03 catálogos buscam e ordenam por votos ou título", async ({
   );
 });
 
+test("M02 organiza o catálogo padrão em trilhos por categoria", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await enterMovies(page, true, true);
+
+  const categories = page.locator('[data-catalog-view="categories"]');
+  await expect(categories).toBeVisible();
+  await expect(
+    categories.getByRole("region", { name: "Em destaque", exact: true }),
+  ).toBeVisible();
+  const drama = categories.getByRole("region", {
+    name: "Drama",
+    exact: true,
+  });
+  await expect(drama).toBeVisible();
+  await expect(drama.locator('[data-orientation="landscape"]')).toHaveCount(5);
+  const dramaCard = drama.getByRole("button", {
+    name: "Na categoria Drama: abrir Interestelar",
+  });
+  await expect(dramaCard).toBeVisible();
+  await dramaCard.click();
+  await page
+    .getByRole("button", { name: "Todos os filmes", exact: true })
+    .click();
+  await expect(dramaCard).toBeFocused();
+
+  await page.getByRole("button", { name: "Buscar filmes" }).click();
+  await page
+    .getByRole("searchbox", { name: "Buscar na lista de filmes" })
+    .fill("Interestelar");
+  await expect(categories).toBeHidden();
+  await expect(page.locator(".movie-grid .movie-card")).toHaveCount(1);
+  await expect(page.locator(".movie-grid .movie-card")).toHaveAttribute(
+    "data-orientation",
+    "portrait",
+  );
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("searchbox", { name: "Buscar na lista de filmes" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Buscar filmes" }),
+  ).toBeFocused();
+  await expect(categories).toBeVisible();
+});
+
 test("catálogo padrão expõe os dados obtidos do IMDb", async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   await enterMovies(page, true, true);
@@ -96,7 +153,7 @@ test("catálogo padrão expõe os dados obtidos do IMDb", async ({ page }) => {
             (image as HTMLImageElement).complete &&
             (image as HTMLImageElement).naturalWidth > 0 &&
             (image as HTMLImageElement).src.includes("/movie-art/imdb/tt") &&
-            (image as HTMLImageElement).src.endsWith("-poster.jpg"),
+            (image as HTMLImageElement).src.endsWith("-backdrop.jpg"),
         ),
       ),
     )
@@ -138,14 +195,11 @@ test("catálogo padrão expõe os dados obtidos do IMDb", async ({ page }) => {
       ),
     )
     .toBe(true);
-  const facts = detail.locator(".discovery-detail-facts");
-  await expect(facts).toContainText("Título original");
-  await expect(facts).toContainText("Interstellar");
-  await expect(facts).toContainText("8.7 de 10");
-  await expect(facts).toContainText("2.605.028 votos");
-  await expect(facts).toContainText("tt0816692");
-  await expect(detail.locator(".discovery-detail-badges")).toContainText(
-    "2h 49min",
+  const badges = detail.locator(".discovery-detail-badges");
+  await expect(badges).toContainText("IMDb 8.7");
+  await expect(badges).toContainText("2h 49min");
+  await expect(detail.locator(".discovery-detail-overview")).toContainText(
+    "Exploradores atravessam o espaço",
   );
   await page.screenshot({
     path: "docs/milestones/M02-movies/evidence/imdb-details-1920.png",
@@ -583,7 +637,7 @@ test("lista e imagens com erro recuperam sem perder catálogo; provider não blo
   await expect(page.getByRole("alert")).toBeVisible();
   await movieScenario(page, "image-error");
   await expect(page.locator(".movie-card")).toHaveCount(4);
-  await expect(page.locator(".poster-fallback")).toHaveCount(4);
+  await expect(page.locator(".movie-card .poster-fallback")).toHaveCount(4);
   await movieScenario(page, "provider-error");
   await page
     .getByRole("button", { name: "Abrir Horizonte Azul", exact: true })

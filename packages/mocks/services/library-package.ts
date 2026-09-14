@@ -29,6 +29,7 @@ export function previewWork<T>(
   });
 }
 export class MockLibraryPackagePreview implements LibraryPackagePreview {
+  readonly runtime = "mock" as const;
   capturePreview() {
     return structuredClone({
       incoming: this.incoming,

@@ -39,6 +39,8 @@ export interface LibraryDraft {
   sections: LibrarySection[];
 }
 export interface LibraryPreviewService {
+  runtime?: "mock" | "desktop";
+  refresh?(): Promise<void>;
   storeFork(draft: LibraryDraft, catalog: LibraryContent[]): LibraryDraft;
   list(): LibraryDraft[];
   create(): LibraryDraft;
@@ -46,4 +48,31 @@ export interface LibraryPreviewService {
   catalog(): Promise<LibraryContent[]>;
   examples(): void;
   failSave: boolean;
+}
+
+export const LIBRARY_DRAFT_PROTOCOL_VERSION = 1 as const;
+export const LIBRARY_DRAFT_SCHEMA_VERSION = 1 as const;
+export type LibraryDraftErrorCode =
+  | "DRAFT_CONFLICT"
+  | "DRAFT_INVALID"
+  | "DRAFT_NOT_FOUND"
+  | "DRAFT_PROTOCOL_UNSUPPORTED"
+  | "DRAFT_STORAGE_FAILED"
+  | "DRAFT_UNAUTHORIZED";
+export interface LibraryDraftFailure {
+  code: LibraryDraftErrorCode;
+  message: string;
+  recoverable: boolean;
+  retryable: boolean;
+}
+export type LibraryDraftResult<T> =
+  { ok: true; value: T } | { ok: false; error: LibraryDraftFailure };
+export interface LibraryDraftDesktopApi {
+  protocolVersion: typeof LIBRARY_DRAFT_PROTOCOL_VERSION;
+  list(): Promise<LibraryDraftResult<LibraryDraft[]>>;
+  catalog(): Promise<LibraryDraftResult<LibraryContent[]>>;
+  save(input: {
+    draft: LibraryDraft;
+    mutation: { idempotencyKey: string };
+  }): Promise<LibraryDraftResult<LibraryDraft>>;
 }

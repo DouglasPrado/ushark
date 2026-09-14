@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M09
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE — S04.1, S04.2 e S04.3 comprovadas; próxima story S05.
 
 ## Objetivo
 
@@ -28,7 +28,9 @@ Testes de fronteira/domínio de cada incremento e ensaios reais controlados: Pau
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[S04.1](../evidence/BACKEND_S04_1.md),
+[S04.2](../evidence/BACKEND_S04_2.md) e
+[S04.3](../evidence/BACKEND_S04_3.md).
 
 ## Done When
 
@@ -41,7 +43,7 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Pausar/restart/retomar sem recheck global desnecessário; cancelar mantém Content; apagar dados exige outra confirmação; download concorrente cede ao playback; disco cheio pausa escrita. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. [Evidência](../evidence/BACKEND_S04_1.md).
 
 ## S04.2 — resume data e persistência de destino/prioridade
 
@@ -50,7 +52,7 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Pausar/restart/retomar sem recheck global desnecessário; cancelar mantém Content; apagar dados exige outra confirmação; download concorrente cede ao playback; disco cheio pausa escrita. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. [Evidência](../evidence/BACKEND_S04_2.md).
 
 ## S04.3 — recuperação e cancelamento separado da remoção
 
@@ -59,4 +61,4 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Pausar/restart/retomar sem recheck global desnecessário; cancelar mantém Content; apagar dados exige outra confirmação; download concorrente cede ao playback; disco cheio pausa escrita. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. [Evidência](../evidence/BACKEND_S04_3.md).

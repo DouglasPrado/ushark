@@ -14,6 +14,8 @@ export interface BackupSummary {
   parts: string[];
 }
 export interface RecoveryPreview {
+  runtime?: "mock" | "desktop";
+  refresh?(): Promise<void>;
   list(): BackupSummary[];
   create(
     name: string,
@@ -38,4 +40,13 @@ export interface RecoveryPreview {
   ): Promise<string>;
   rearm(component: string): void;
   shutdown(fail: boolean, signal: AbortSignal): Promise<void>;
+}
+export interface RecoveryDesktopApi {
+  protocolVersion: 1;
+  call(input: {
+    operation: string;
+    args: unknown[];
+  }): Promise<
+    { ok: true; value: unknown } | { ok: false; error: { message: string } }
+  >;
 }

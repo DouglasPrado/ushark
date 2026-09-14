@@ -1,6 +1,6 @@
 # S03 — Contrato de domínio — M05
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 
@@ -28,8 +28,12 @@ Revisão de contratos com fixtures UX e contra cenários reais planejados: Repro
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Contrato v1](../evidence/DOMAIN_CONTRACT.md) e
+[decisões D10/D11/D18/D21](../../../decisions/M05-D10-D11-D18-D21-playback-contract.md).
+DTOs, limites, erros, invariantes, ownership, idempotência, cancelamento e
+eventos foram materializados em `@ushark/types/player`.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido. Contrato e decisões estão fechados para iniciar S04.1; nenhuma
+capacidade de runtime foi alegada por esta story.

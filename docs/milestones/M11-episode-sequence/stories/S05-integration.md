@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M11
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; jornada integrada ao Electron.
 
 ## Objetivo
 
@@ -28,7 +28,8 @@ Desligar autoplay impede início; cancelar até o limite definido não toca pró
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Validação](../evidence/INTEGRATION_VALIDATION.md): IPC, adapter e ensaio
+Electron real; 6/6 casos focados passaram.
 
 ## Done When
 

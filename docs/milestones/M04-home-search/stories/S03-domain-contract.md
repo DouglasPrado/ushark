@@ -1,6 +1,6 @@
 # S03 — Contrato de leitura e indexação
 
-Status: DEFERRED. Preparar este arquivo não executa a story.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 
@@ -28,8 +28,12 @@ Tabela UI→query/evento→erros; revisão com fixtures, ordenação concorrente
 
 ## Evidências
 
-PENDENTES. Registrar arquivos, comandos/resultados, ambiente e limitações ao executar esta story.
+[Contrato e matriz UI→query/evento](../evidence/DOMAIN_CONTRACT.md) e
+[decisões D26–D29](../../../decisions/M04-D26-D29-discovery-index-contract.md).
+Protocolo/índice v1, identidade, FTS, acesso, cursor, budgets, invalidação,
+watcher e providers futuros foram delimitados. Formatação, lint e typecheck
+passaram.
 
 ## Done When
 
-Contrato suficiente para adapters reais e sub-stories S04.
+Cumprido. Contrato suficiente para adapters reais e sub-stories S04.

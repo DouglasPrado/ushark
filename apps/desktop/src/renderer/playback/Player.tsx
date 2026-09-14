@@ -27,9 +27,11 @@ import {
 } from "lucide-react";
 import type {
   PlaybackContent,
+  PlaybackSessionSnapshot,
   PlayerPreview,
   PlayerScenario,
 } from "@ushark/types/player";
+import { isPlayerRuntime } from "@ushark/types/player";
 import { useNavigation } from "../app/navigation";
 import "./player.css";
 const stamp = (n: number) =>
@@ -67,6 +69,9 @@ export function Player({
   service: PlayerPreview;
   onExit: () => void;
 }) {
+  const runtime = isPlayerRuntime(service) ? service : undefined;
+  const [runtimeSnapshot, setRuntimeSnapshot] =
+    useState<PlaybackSessionSnapshot>();
   const [sessionSource, setSessionSource] = useState({
     id: content.sourceId ?? content.id,
     name: content.sourceName ?? "Fonte não informada",
@@ -84,7 +89,7 @@ export function Player({
   const [buffer, setBuffer] = useState<StreamSnapshot | null>(null);
   const seekResume = useRef<"paused" | "playing">("playing");
   const nextLayer = useRef<(() => boolean) | null>(null);
-  const duration = content.duration || 5400;
+  const duration = runtimeSnapshot?.durationSeconds ?? content.duration ?? 5400;
   const [position, setPosition] = useState(
     service.progress(content.id)?.position ?? content.position ?? 0,
   );
@@ -128,36 +133,65 @@ export function Player({
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const active = useRef(false);
   const closing = useRef(false);
-  function exit() {
+  async function exit() {
     if (closing.current) return;
     closing.current = true;
     controller.current?.abort();
     if (seekTimer.current) clearTimeout(seekTimer.current);
-    if (active.current)
+    if (active.current && !runtime)
       service.save(content.id, confirmedPosition.current, watched);
     setStatus("closing");
     if (document.fullscreenElement && !tv?.mode)
       void document.exitFullscreen().catch(() => {});
+    if (runtime) await runtime.stop("user").catch(() => {});
     onExit();
   }
   useNavigation(() => {
     if (tracks) setTracks(false);
-    else if (!fallbackLayer.current?.() && !nextLayer.current?.()) exit();
+    else if (!fallbackLayer.current?.() && !nextLayer.current?.()) void exit();
   }, !suspended);
+  useEffect(() => {
+    if (!runtime) return;
+    return runtime.subscribe((snapshot, failure) => {
+      if (failure) {
+        setError(failure.message);
+        setStatus("error");
+        return;
+      }
+      if (!snapshot) return;
+      setError("");
+      setRuntimeSnapshot(snapshot);
+      setPosition(snapshot.positionSeconds);
+      confirmedPosition.current = snapshot.positionSeconds;
+      setVolume(snapshot.volumePercent);
+      setMuted(snapshot.muted);
+      if (snapshot.state === "playing" || snapshot.state === "paused")
+        setStatus(snapshot.state);
+      else if (snapshot.state === "seeking") setStatus("seeking");
+      else if (snapshot.state === "error") setStatus("error");
+    });
+  }, [runtime]);
+  useEffect(() => {
+    if (!runtime) return;
+    document.documentElement.classList.add("native-playback-surface");
+    return () =>
+      document.documentElement.classList.remove("native-playback-surface");
+  }, [runtime]);
   useEffect(() => {
     const abort = new AbortController();
     controller.current = abort;
     if (seekTimer.current) clearTimeout(seekTimer.current);
     setStatus("preparing");
     setError("");
-    const prepare = progressive
-      ? stream.request(position, streamScenario, abort.signal, setBuffer)
-      : service.prepare(content, scenario, abort.signal);
+    const prepare =
+      progressive && !runtime
+        ? stream.request(position, streamScenario, abort.signal, setBuffer)
+        : service.prepare(content, scenario, abort.signal);
     prepare
       .then(() => {
         if (!abort.signal.aborted) {
           active.current = true;
-          setStatus("playing");
+          if (!runtime) setStatus("playing");
         }
       })
       .catch((e: Error) => {
@@ -175,6 +209,7 @@ export function Player({
     progressive,
     streamScenario,
     stream,
+    runtime,
   ]);
   useEffect(() => {
     first.current?.focus();
@@ -189,7 +224,7 @@ export function Player({
     };
   }, []);
   useEffect(() => {
-    if (status !== "playing") {
+    if (status !== "playing" || runtime) {
       setControls(true);
       return;
     }
@@ -199,13 +234,17 @@ export function Player({
       1000,
     );
     return () => clearInterval(timer);
-  }, [status, duration]);
+  }, [status, duration, runtime]);
   useEffect(() => {
-    if (active.current && (status === "playing" || status === "paused")) {
+    if (
+      !runtime &&
+      active.current &&
+      (status === "playing" || status === "paused")
+    ) {
       confirmedPosition.current = position;
       service.save(content.id, position, watched);
     }
-  }, [position, watched, content.id, service, status]);
+  }, [position, watched, content.id, service, status, runtime]);
   useEffect(() => {
     if (position >= duration && status === "playing") setStatus("paused");
   }, [position, duration, status]);
@@ -222,7 +261,8 @@ export function Player({
   }, [status, tracks]);
   useEffect(() => {
     if (tv?.state.active && !tv.state.connected) {
-      service.save(content.id, confirmedPosition.current, watched);
+      if (!runtime)
+        service.save(content.id, confirmedPosition.current, watched);
       if (tv.state.policy === "pause") {
         controller.current?.abort();
         if (seekTimer.current) clearTimeout(seekTimer.current);
@@ -242,6 +282,16 @@ export function Player({
   function seek(next: number) {
     fallbackSeek.current?.();
     if (!usable) return;
+    if (runtime) {
+      setStatus("seeking");
+      void runtime
+        .seek(Math.max(0, Math.min(duration, next)))
+        .catch((e: Error) => {
+          setError(e.message);
+          setStatus("error");
+        });
+      return;
+    }
     if (status !== "seeking")
       seekResume.current = status === "paused" ? "paused" : "playing";
     const resume = seekResume.current;
@@ -280,6 +330,8 @@ export function Player({
       ref={root}
       className="player-preview"
       data-tv-mode={consumerMode || undefined}
+      data-player-runtime={runtime ? "desktop" : "preview"}
+      data-player-status={status}
       onPointerMove={reveal}
       onPointerDown={reveal}
       onKeyDown={reveal}
@@ -288,7 +340,7 @@ export function Player({
         className="player-scene"
         aria-label={`Reprodução de ${content.title}`}
       >
-        <img src="/movie-art/orbitas.svg" alt="" />
+        {!runtime && <img src="/movie-art/orbitas.svg" alt="" />}
         {!consumerPlayer && (
           <span>Simulação de reprodução · nenhum vídeo ou processo real</span>
         )}
@@ -407,7 +459,7 @@ export function Player({
                     ? "Cancelar preparação"
                     : "Voltar aos detalhes"
                 }
-                onClick={exit}
+                onClick={() => void exit()}
               >
                 <ArrowLeft aria-hidden="true" />
               </Button>
@@ -416,9 +468,17 @@ export function Player({
                 disabled={!usable}
                 aria-label={status === "paused" ? "Reproduzir" : "Pausar"}
                 title={status === "paused" ? "Reproduzir" : "Pausar"}
-                onClick={() =>
-                  setStatus((s) => (s === "paused" ? "playing" : "paused"))
-                }
+                onClick={() => {
+                  if (runtime)
+                    void runtime
+                      .setPaused(status !== "paused")
+                      .catch((e: Error) => {
+                        setError(e.message);
+                        setStatus("error");
+                      });
+                  else
+                    setStatus((s) => (s === "paused" ? "playing" : "paused"));
+                }}
               >
                 {status === "paused" ? (
                   <Play aria-hidden="true" fill="currentColor" />
@@ -462,7 +522,14 @@ export function Player({
                 aria-pressed={muted}
                 aria-label={muted ? "Ativar som" : "Silenciar"}
                 title={muted ? "Ativar som" : "Silenciar"}
-                onClick={() => setMuted(!muted)}
+                onClick={() => {
+                  const next = !muted;
+                  setMuted(next);
+                  if (runtime)
+                    void runtime
+                      .setMuted(next)
+                      .catch((e: Error) => setTrackError(e.message));
+                }}
               >
                 {muted ? (
                   <VolumeX aria-hidden="true" />
@@ -478,7 +545,14 @@ export function Player({
                   min="0"
                   max="100"
                   value={volume}
-                  onChange={(e) => setVolume(Number(e.target.value))}
+                  onChange={(e) => {
+                    const next = Number(e.target.value);
+                    setVolume(next);
+                    if (runtime)
+                      void runtime
+                        .setVolume(next)
+                        .catch((error: Error) => setTrackError(error.message));
+                  }}
                 />
               </label>
               <span className="player-time" aria-label="Posição da reprodução">
@@ -493,7 +567,14 @@ export function Player({
                 aria-label="Áudio e legendas"
                 title="Áudio e legendas"
                 onClick={() => {
-                  setDraft(settings);
+                  setDraft({
+                    ...settings,
+                    audio:
+                      runtimeSnapshot?.selectedAudioTrackId ?? settings.audio,
+                    subtitle:
+                      runtimeSnapshot?.selectedSubtitleTrackId ??
+                      (runtime ? "" : settings.subtitle),
+                  });
                   setTrackError("");
                   setTracks(true);
                 }}
@@ -509,7 +590,15 @@ export function Player({
                   watched ? "Marcar não assistido" : "Marcar assistido"
                 }
                 title={watched ? "Marcar não assistido" : "Marcar assistido"}
-                onClick={() => setWatched(!watched)}
+                onClick={() => {
+                  if (runtime) {
+                    setNotice(
+                      "O conteúdo será marcado como assistido ao chegar a 90% ou ao terminar.",
+                    );
+                    return;
+                  }
+                  setWatched(!watched);
+                }}
               >
                 <CheckCircle2
                   aria-hidden="true"
@@ -584,9 +673,10 @@ export function Player({
           autoplay={autoplay}
           preflight={nextPreflight}
           onNext={(next) => {
-            service.save(content.id, position, true);
+            if (!runtime) service.save(content.id, position, true);
             controller.current?.abort();
-            onNext(next);
+            if (runtime) void runtime.stop("ended").finally(() => onNext(next));
+            else onNext(next);
           }}
           onSimulateEnd={() => {
             setPosition(duration);
@@ -701,8 +791,18 @@ export function Player({
                 value={draft.audio}
                 onChange={(e) => setDraft({ ...draft, audio: e.target.value })}
               >
-                <option>Português</option>
-                <option>English</option>
+                {runtime ? (
+                  runtimeSnapshot?.audioTracks.map((track) => (
+                    <option key={track.id} value={track.id}>
+                      {track.title ?? track.language ?? `Faixa ${track.id}`}
+                    </option>
+                  ))
+                ) : (
+                  <>
+                    <option>Português</option>
+                    <option>English</option>
+                  </>
+                )}
               </select>
             </label>
             <label>
@@ -713,19 +813,38 @@ export function Player({
                   setDraft({ ...draft, subtitle: e.target.value })
                 }
               >
-                <option>Desativada</option>
-                {scenario !== "no-subtitles" && (
-                  <>
-                    <option>Português</option>
-                    <option>English</option>
-                  </>
-                )}
+                <option value={runtime ? "" : "Desativada"}>Desativada</option>
+                {runtime
+                  ? runtimeSnapshot?.subtitleTracks.map((track) => (
+                      <option key={track.id} value={track.id}>
+                        {track.title ?? track.language ?? `Faixa ${track.id}`}
+                      </option>
+                    ))
+                  : scenario !== "no-subtitles" && (
+                      <>
+                        <option>Português</option>
+                        <option>English</option>
+                      </>
+                    )}
                 {draft.subtitle.startsWith("Externa:") && (
                   <option>{draft.subtitle}</option>
                 )}
               </select>
             </label>
-            {!consumerPlayer && (
+            {runtime && (
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  void runtime
+                    .chooseExternalSubtitle()
+                    .then(() => setTrackError(""))
+                    .catch((error: Error) => setTrackError(error.message));
+                }}
+              >
+                Adicionar legenda local
+              </Button>
+            )}
+            {!consumerPlayer && !runtime && (
               <>
                 <label>
                   Nome da legenda externa simulada
@@ -815,8 +934,20 @@ export function Player({
                     );
                     return;
                   }
-                  setSettings(draft);
-                  setTracks(false);
+                  if (runtime) {
+                    const apply = async () => {
+                      if (draft.audio) await runtime.selectAudio(draft.audio);
+                      await runtime.selectSubtitle(draft.subtitle || undefined);
+                      setSettings(draft);
+                      setTracks(false);
+                    };
+                    void apply().catch((error: Error) =>
+                      setTrackError(error.message),
+                    );
+                  } else {
+                    setSettings(draft);
+                    setTracks(false);
+                  }
                 }}
               >
                 Aplicar

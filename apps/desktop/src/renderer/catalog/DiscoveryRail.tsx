@@ -60,6 +60,7 @@ export const discoveryTypeName = {
 export function discoverySourceSignal(
   item: Pick<DiscoveryItem, "sources" | "type">,
   selectionService: SelectionPreview,
+  healthAvailable = true,
 ) {
   const quality = bestQuality(item.sources.map((source) => source.quality));
   const uniqueSources = Array.from(
@@ -80,8 +81,9 @@ export function discoverySourceSignal(
     });
   return {
     quality,
-    health:
-      item.type !== "movie"
+    health: !healthAvailable
+      ? undefined
+      : item.type !== "movie"
         ? averageTorrentHealth(
             uniqueSources.map(healthFor),
             "discovery-average",
@@ -98,6 +100,7 @@ export function DiscoveryCard({
   rail = false,
   hideArt = false,
   accessibleLabel,
+  healthAvailable = true,
   onOpen,
 }: {
   item: DiscoveryItem;
@@ -105,9 +108,14 @@ export function DiscoveryCard({
   rail?: boolean;
   hideArt?: boolean;
   accessibleLabel?: string;
+  healthAvailable?: boolean;
   onOpen: (item: DiscoveryItem) => void;
 }) {
-  const { quality, health } = discoverySourceSignal(item, selectionService);
+  const { quality, health } = discoverySourceSignal(
+    item,
+    selectionService,
+    healthAvailable,
+  );
   const generatedId = useId();
   const healthId = health ? `torrent-health-${generatedId}` : undefined;
   const image = rail ? (item.backdrop ?? item.poster) : item.poster;
@@ -171,6 +179,7 @@ export function DiscoveryRail({
   maxItems = 10,
   className = "",
   accessibleLabel,
+  healthAvailable = true,
 }: {
   title: string;
   titleId?: string;
@@ -182,6 +191,7 @@ export function DiscoveryRail({
   maxItems?: number;
   className?: string;
   accessibleLabel?: (item: DiscoveryItem) => string;
+  healthAvailable?: boolean;
 }) {
   if (!items.length) return null;
   return (
@@ -202,6 +212,7 @@ export function DiscoveryRail({
             rail
             hideArt={hideArt}
             accessibleLabel={accessibleLabel?.(item)}
+            healthAvailable={healthAvailable}
             onOpen={onOpen}
           />
         ))}

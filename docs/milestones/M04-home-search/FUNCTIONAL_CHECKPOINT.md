@@ -1,6 +1,6 @@
 # Checkpoint funcional — M04
 
-Status: NOT_STARTED — integração adiada. Decisão: PENDING.
+Status: READY_FOR_REVIEW. Decisão humana: PENDING.
 
 ## Pré-condições e integrações reais
 
@@ -19,4 +19,15 @@ UX M01–M22 aprovada, M02/M03 integrados e S03–S05 concluídas. Perfil/pasta 
 
 ## Evidências e decisão
 
-PENDENTES: versões/ambiente, corpus, comandos/resultados, traces de queries/eventos, banco após restart e limitações. Nenhum mock acidental na leitura/indexação principal. Identidade/acesso corretos, persistência, atualização incremental, recuperação e budgets aplicáveis precisam de evidências reais. Aprovação humana PENDING; só após aceite iniciar S06. Fluxos produtores futuros permanecem com seus owners e revalidam o contrato quando integrados.
+[Evidência S05](evidence/INTEGRATION_VALIDATION.md): caminho principal
+Electron/preload/IPC/SQLite/FTS5 real, sincronização automática de mutações,
+busca offline, invalidação do renderer e restart persistente. A suíte afetada
+M01–M06 passou **71/71** com CPython 3.12/libtorrent 2.1.1.0 real; a regressão
+visual/comportamental M02/M04 passou **34/34**. Corpus de 10.000 Contents,
+queries fixas, eventos de filesystem e recovery estão nas evidências S04.1–S04.3.
+
+Pendências explícitas: produtores reais de progresso/coleções/subscriptions
+continuam em M05/M12/M16; M04 comprovou sua leitura com dados locais
+controlados sem alegar esses fluxos. Runtime empacotado, métricas finais S07 e
+Windows/TV/controle/Moonlight físicos permanecem pendentes. Aprovação humana
+continua `PENDING`; S06 não foi iniciado.

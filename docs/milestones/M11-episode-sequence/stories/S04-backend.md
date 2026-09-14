@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M11
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; S04.1–S04.3 executadas sequencialmente.
 
 ## Objetivo
 
@@ -28,7 +28,9 @@ Testes de fronteira/domínio de cada incremento e ensaios reais controlados: Des
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Backend](../evidence/BACKEND.md); `tests/next-episode-service.spec.ts` passou
+3/3, cobrindo ordem/fim/lacuna/especial, preflight único e
+cancelamento/claim idempotentes.
 
 ## Done When
 

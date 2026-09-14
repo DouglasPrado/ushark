@@ -88,6 +88,7 @@ export const sourceFixtures: MovieSource[] = [
     channels: "2.0",
     size: "2,4 GB",
     bitrate: "3 Mb/s",
+    availability: "available",
     fileAvailable: true,
   },
   {
@@ -99,11 +100,13 @@ export const sourceFixtures: MovieSource[] = [
     hdr: "HDR10",
     channels: "5.1",
     size: "8,1 GB",
+    availability: "available",
     fileAvailable: true,
   },
   {
     id: "source:example-unknown",
     name: "Origem sem metadados",
+    availability: "declared",
     fileAvailable: false,
   },
 ];
@@ -284,6 +287,7 @@ export class MockMovieCatalog implements MovieCatalog {
       videoCodec: index === 0 ? "HEVC" : "H.264",
       audioCodec: "EAC3",
       channels: "5.1",
+      availability: "available",
       fileAvailable: true,
     };
   }
@@ -383,9 +387,16 @@ export class MockMovieCatalog implements MovieCatalog {
     current.metadata = { ...metadata, id: current.id };
   }
   private declaredSource(source: MovieSource): MovieSource {
+    const fileAvailable =
+      source.fileAvailable && !this.deletedFiles.has(source.id);
     return {
       ...structuredClone(source),
-      fileAvailable: source.fileAvailable && !this.deletedFiles.has(source.id),
+      availability: fileAvailable
+        ? "available"
+        : source.availability === "available"
+          ? "missing"
+          : source.availability,
+      fileAvailable,
     };
   }
   async addSource(id: string, source: MovieSource) {
@@ -411,7 +422,10 @@ export class MockMovieCatalog implements MovieCatalog {
     this.deletedFiles.add(sourceId);
     for (const movie of this.movies) {
       for (const linked of movie.sources)
-        if (linked.id === sourceId) linked.fileAvailable = false;
+        if (linked.id === sourceId) {
+          linked.availability = "missing";
+          linked.fileAvailable = false;
+        }
     }
   }
 }

@@ -22,6 +22,7 @@ export function validateLibrary(draft: LibraryDraft) {
   return "";
 }
 export class MockLibraryPreviewService implements LibraryPreviewService {
+  readonly runtime = "mock" as const;
   capturePreview() {
     return structuredClone({
       drafts: this.drafts,

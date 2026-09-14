@@ -5,3 +5,11 @@ S00–S02 implementadas: próximo por identidade, countdown, cancelamento/autopl
 ## Auditoria transversal da fase frontend
 
 Jornadas conectadas e correções finais registradas em [auditoria](../../execution/FRONTEND_COVERAGE_AUDIT.md) e [validação final](../../execution/evidence/FINAL_VALIDATION.md). Esta atualização não muda aceites humanos existentes. S03–S08 continuam adiadas.
+
+## S03–S05 — integração real
+
+Contrato v1 e D10 fixam countdown de 5 s, ordem estrita, uma preparação e claim
+idempotente. O serviço SQLite resolve a hierarquia M03 e usa o preflight M08 sem
+abrir um segundo stream. IPC/preload e adapter Electron substituem o mock. Seis
+testes focados, incluindo perfil Electron isolado, passaram. Checkpoint
+funcional READY_FOR_REVIEW/PENDING; S06–S08 e hardware permanecem pendentes.

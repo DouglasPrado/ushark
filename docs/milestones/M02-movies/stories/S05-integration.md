@@ -1,6 +1,6 @@
 # S05 — Integração do catálogo
 
-Status: DEFERRED. Preparar este arquivo não conclui a story.
+Status: DONE. Executada e validada localmente em 2026-09-14.
 
 ## Objetivo
 
@@ -28,8 +28,13 @@ Roteiro FUNCTIONAL_CHECKPOINT.md em perfil temporário; inspecionar persistênci
 
 ## Evidências
 
-PENDENTES. Registrar arquivos, comandos/resultados e ambiente após execução em UPDATE e nos checkpoints correspondentes.
+- [Validação de integração](../evidence/INTEGRATION_VALIDATION.md).
+- `MovieCatalogApplicationService`, IPC/preload e `DesktopMovieCatalog` substituem o mock no Electron; browser preserva o mock.
+- Catálogo vazio → cadastro manual → favorito → Home → reload/restart foi comprovado offline no Electron.
+- Provider não configurado apresenta erro recuperável e permite cadastro manual; nenhum mock de provider é usado no caminho Electron.
+- 49/49 testes afetados passaram; typecheck, lint afetado e build passaram.
+- Smoke TMDB real, Windows/TV/controle físicos e gates externos permanecem explícitos no checkpoint.
 
 ## Conclusão
 
-Evidências reais prontas para checkpoint funcional humano; aguardar aceite antes de S06.
+Evidências locais prontas para checkpoint funcional humano; aguardar aceite e completar os gates externos aplicáveis antes de S06.

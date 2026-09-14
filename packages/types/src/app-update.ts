@@ -9,6 +9,8 @@ export type UpdateScenario =
   | "migration"
   | "offline";
 export interface UpdateCandidate {
+  url?: string;
+  size?: number;
   version: string;
   checksum: string;
   channel: UpdateChannel;
@@ -19,6 +21,7 @@ export interface UpdateCandidate {
   provenance: string;
 }
 export interface AppUpdatePreview {
+  runtime?: "mock" | "desktop";
   version: string;
   installed: boolean;
   check(
@@ -33,4 +36,26 @@ export interface AppUpdatePreview {
     phase: (value: string) => void,
   ): Promise<void>;
   uninstall(signal: AbortSignal): Promise<void>;
+}
+export interface AppUpdateDesktopApi {
+  protocolVersion: 1;
+  state(): Promise<
+    | { ok: true; value: { version: string; installed: boolean } }
+    | { ok: false; error: { message: string } }
+  >;
+  check(input: {
+    channel: UpdateChannel;
+  }): Promise<
+    | { ok: true; value: UpdateCandidate | null }
+    | { ok: false; error: { message: string } }
+  >;
+  apply(input: {
+    candidate: UpdateCandidate;
+  }): Promise<
+    | { ok: true; value: { staged: boolean } }
+    | { ok: false; error: { message: string } }
+  >;
+  uninstall(): Promise<
+    { ok: true; value: null } | { ok: false; error: { message: string } }
+  >;
 }

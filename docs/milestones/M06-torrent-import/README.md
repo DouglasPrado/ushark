@@ -1,6 +1,9 @@
 # M06 — Adicionar torrents e resolver arquivos
 
-Status: frontend S00–S02 implementado; UX READY_FOR_REVIEW/PENDING, revisão adiada por instrução do usuário para fim M01–M22. S03–S08 DEFERRED; funcional NOT_STARTED/PENDING. [Experiência](EXPERIENCE.md), [evidências](evidence/VALIDATION.md). Objetivos de runtime abaixo permanecem integração futura.
+Status: UX S00–S02 aprovada; S03–S05 DONE; checkpoint funcional
+READY_FOR_REVIEW/PENDING. S06–S08 não autorizadas. [Experiência](EXPERIENCE.md),
+[contrato](evidence/DOMAIN_CONTRACT.md),
+[integração](evidence/INTEGRATION_VALIDATION.md).
 
 ## Objetivo
 

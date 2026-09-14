@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M07
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; checkpoint funcional aberto sem aprovação inferida.
 
 ## Objetivo
 
@@ -28,8 +28,13 @@ Filme e episódio de pack incompletos tocam; seek fora do cache e três seeks r�
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Validação integrada](../evidence/INTEGRATION_VALIDATION.md): Electron usa IPC
+real e `DesktopProgressivePlayer`; swarm local iniciou primeiro frame em
+2.764 ms com 31/174 pieces, seek fora do cache em 509 ms e geração 4 venceu
+três seeks rápidos. Suíte focada: **27/27**.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido no ambiente local controlado. Windows/TV/Moonlight e controle físico
+permanecem como validação humana/ambiental do checkpoint; S06–S08 não foram
+iniciados.

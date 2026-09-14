@@ -1,6 +1,6 @@
 # S03 — Contrato mínimo de configuração
 
-Status: PLANNED. Preparação documental; não executada.
+Status: DONE. Executada e validada localmente em 2026-09-14.
 
 ## Objetivo
 
@@ -34,8 +34,11 @@ Cotejar contrato com evidência UX; revisar serialização, paths e erros; regis
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+- Contrato e decisões: [CONFIGURATION_CONTRACT](../evidence/CONFIGURATION_CONTRACT.md).
+- Tipos públicos versionados em `packages/types/src/index.ts`.
+- `MockConfigurationService` atualizado para implementar o mesmo snapshot, conclusão atômica conceitual, reset seletivo e seleção de diretório.
+- Validação: typecheck e testes contratuais registrados nas stories seguintes.
 
 ## Conclusão
 
-Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+Contrato derivado da UX aprovada, limitado a M01 e pronto para a implementação S04. A decisão não aprova o checkpoint funcional nem introduz domínios futuros.

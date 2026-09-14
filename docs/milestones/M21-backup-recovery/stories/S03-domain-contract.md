@@ -1,6 +1,6 @@
 # S03 — Contrato de domínio — M21
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 

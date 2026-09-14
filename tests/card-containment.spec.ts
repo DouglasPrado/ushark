@@ -74,7 +74,7 @@ test("badges permanecem dentro dos cards de filmes", async ({ page }) => {
 
   await expectOverlaysInside(page, page.locator(".movie-card-media"));
   await expectMovieContentInside(page);
-  await expect(page.locator(".movie-card-copy")).toHaveCount(4);
+  await expect(page.locator(".movie-card > .movie-card-copy")).toHaveCount(4);
 });
 
 test("metadata do catálogo padrão permanece dentro dos cards", async ({
@@ -84,7 +84,7 @@ test("metadata do catálogo padrão permanece dentro dos cards", async ({
 
   await expectOverlaysInside(page, page.locator(".movie-card-media"));
   await expectMovieContentInside(page);
-  await expect(page.locator(".movie-card-copy")).toHaveCount(8);
+  await expect(page.locator(".movie-card > .movie-card-copy")).toHaveCount(8);
   await page.setViewportSize({ width: 761, height: 1000 });
   await page.screenshot({
     path: "docs/milestones/M02-movies/evidence/card-internals-761.png",

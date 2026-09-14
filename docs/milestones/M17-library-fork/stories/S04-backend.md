@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M17
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; S04.1–S04.3 integradas.
 
 ## Objetivo
 

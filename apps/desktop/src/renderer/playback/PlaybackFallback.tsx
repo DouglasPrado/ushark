@@ -155,24 +155,26 @@ export function PlaybackFallback({
               trigger.current?.focus();
             }}
           >
-            <Dialog.Title>Fonte degradada · recuperação simulada</Dialog.Title>
+            <Dialog.Title>Fonte degradada · recuperação</Dialog.Title>
             <Dialog.Description>
-              Prepare uma alternativa antes de trocar. Compatibilidade e medidas
-              são fixtures; nenhuma troca real de stream acontece.
+              Prepare uma alternativa antes de trocar. A fonte atual fica ativa
+              até o preparo concluir.
             </Dialog.Description>
             <p>
               Fonte atual: {current || "não identificada"} · escolha original
               preservada fora desta sessão
             </p>
-            <label>
-              <input
-                type="checkbox"
-                checked={auto}
-                disabled={!!busy}
-                onChange={(e) => setAuto(e.target.checked)}
-              />
-              Permitir troca automática nesta sessão
-            </label>
+            {service.runtime !== "desktop" && (
+              <label>
+                <input
+                  type="checkbox"
+                  checked={auto}
+                  disabled={!!busy}
+                  onChange={(e) => setAuto(e.target.checked)}
+                />
+                Permitir troca automática nesta sessão
+              </label>
+            )}
             <label>
               Cenário de recuperação
               <select
@@ -239,9 +241,11 @@ export function PlaybackFallback({
                 {busy ? "Cancelar preparo" : "Voltar ao player"}
               </Button>
             </div>
-            <Button variant="secondary" onClick={onSeek}>
-              Simular seek concorrente +30s
-            </Button>
+            {service.runtime !== "desktop" && (
+              <Button variant="secondary" onClick={onSeek}>
+                Simular seek concorrente +30s
+              </Button>
+            )}
             <details>
               <summary>Histórico agregado local (simulação)</summary>
               {!history.length ? (

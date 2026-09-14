@@ -48,6 +48,23 @@
   color: rgb(226 232 240 / 68%);
 }
 
+html.native-playback-surface,
+html.native-playback-surface body,
+html.native-playback-surface #root {
+  background: transparent;
+}
+
+.player-preview[data-player-runtime="desktop"],
+.player-preview[data-player-runtime="desktop"] .player-scene {
+  background: transparent;
+}
+
+.player-preview[data-player-runtime="desktop"][data-player-status="preparing"],
+.player-preview[data-player-runtime="desktop"][data-player-status="error"],
+.player-preview[data-player-runtime="desktop"][data-player-status="closing"] {
+  background: #020307;
+}
+
 .player-controls {
   position: relative;
   z-index: 2;

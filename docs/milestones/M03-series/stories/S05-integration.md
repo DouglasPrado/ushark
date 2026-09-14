@@ -1,6 +1,6 @@
 # S05 — Integração de packs e episódios
 
-Status: DEFERRED. Preparar este arquivo não executa a story.
+Status: DONE em 2026-09-14. Checkpoint funcional pronto para revisão humana.
 
 ## Objetivo
 
@@ -28,8 +28,12 @@ Executar o roteiro do `FUNCTIONAL_CHECKPOINT.md` em perfil temporário e arquivo
 
 ## Evidências
 
-PENDENTES. Registrar arquivos, comandos/resultados, fixtures e ambiente ao executar S05.
+[Integração real e validação](../evidence/INTEGRATION_VALIDATION.md): adapter
+Electron sem mock acidental, pack multifile, especial, legenda independente,
+arte segura, falha parcial recuperável, retry, restart e regressão afetada
+**86/86**.
 
 ## Done When
 
-Evidências reais prontas para checkpoint funcional humano; aguardar aceite antes de S06.
+Cumprido. Evidências reais prontas para checkpoint funcional humano; S06
+permanece não autorizado até aceite.

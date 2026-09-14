@@ -9,6 +9,7 @@ import {
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@ushark/ui";
 import { MockTvSessionPreview } from "@ushark/mocks/tv";
+import { DesktopTvSessionPreview } from "./desktop-tv-session";
 import type { TvSessionPreview, TvSessionState } from "@ushark/types/tv";
 import { useNavigation } from "../app/navigation";
 import "./tv.css";
@@ -26,7 +27,11 @@ export function useTv() {
   return useContext(TvContext);
 }
 export function TvSessionProvider({ children }: { children: ReactNode }) {
-  const [service] = useState(() => new MockTvSessionPreview()),
+  const [service] = useState(() =>
+      window.ushark?.tvSession
+        ? new DesktopTvSessionPreview(window.ushark.tvSession)
+        : new MockTvSessionPreview(),
+    ),
     [state, setState] = useState({ ...service.state }),
     [menu, setMenu] = useState(false),
     [launch] = useState(() => {
@@ -289,9 +294,9 @@ export function TvSetup({
         <h1>Sessão de TV</h1>
       </header>
       <p>
-        Prévia de sala usando a mesma biblioteca e player. Sunshine captura no
-        computador; Moonlight é o cliente da TV. Integração real permanece
-        pendente.
+        {tv.service.runtime === "desktop"
+          ? "Sessão local iniciada explicitamente por --tv; Sunshine captura no computador e Moonlight é o cliente da TV."
+          : "Prévia de sala usando a mesma biblioteca e player. Sunshine captura no computador; Moonlight é o cliente da TV. Integração real permanece pendente."}
       </p>
       <section className="workspace-list">
         <article>

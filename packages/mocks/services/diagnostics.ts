@@ -21,6 +21,7 @@ export function sanitizeDiagnosticLog(value: Record<string, unknown>) {
   };
 }
 export class MockDiagnosticPreview implements DiagnosticPreview {
+  readonly runtime = "mock" as const;
   private logs = [
     sanitizeDiagnosticLog({
       event: "preview_started",

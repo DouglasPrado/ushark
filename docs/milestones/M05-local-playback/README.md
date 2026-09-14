@@ -1,6 +1,8 @@
 # M05 — Assistir mídia local e retomar
 
-Status: frontend S00–S02 implementado no checkout real. UX READY_FOR_REVIEW / decisão PENDING; revisão humana adiada para fim M01–M22 por instrução explícita. S03–S08 DEFERRED; funcional NOT_STARTED/PENDING. [Experiência](EXPERIENCE.md) e [validação](evidence/VALIDATION.md). Descrições MPV/runtime abaixo são objetivo de integração futura; entrega atual é simulação em memória.
+Status: READY_FOR_REVIEW/PENDING — UX aprovada e S03–S05 concluídas. S06–S08,
+aceite funcional e validação física continuam pendentes; M05 não está DONE.
+[Contrato](evidence/DOMAIN_CONTRACT.md) e [experiência](EXPERIENCE.md).
 
 ## Objetivo
 
@@ -74,4 +76,18 @@ S00–S07 concluídas com evidências reais, ambos os checkpoints aprovados expl
 
 ## Estado da fase frontend M01–M22
 
-S00–S02 implementadas no checkout real com mocks. UX READY_FOR_REVIEW; decisão PENDING. Revisão adiada por instrução explícita para o fim da fase frontend. S03–S08 DEFERRED; não DONE. [Roteiro único](../../execution/FRONTEND_REVIEW.md), [auditoria](../../execution/FRONTEND_COVERAGE_AUDIT.md) e [regressão final](../../execution/evidence/FINAL_VALIDATION.md). Planos futuros neste README continuam sujeitos à integração e autorização.
+No encerramento da fase frontend, S00–S02 estavam implementadas com mocks e
+S03–S08 adiadas. A aprovação UX consolidada e a autorização posterior
+permitiram executar S03–S05; o estado atual está na seção seguinte. S06–S08
+continuam pendentes e M05 não está DONE. [Roteiro único](../../execution/FRONTEND_REVIEW.md),
+[auditoria](../../execution/FRONTEND_COVERAGE_AUDIT.md) e
+[regressão final](../../execution/evidence/FINAL_VALIDATION.md).
+
+## Estado da integração S03–S05
+
+Contrato v1, processo MPV isolado, persistência SQLite, tracks/legenda externa,
+coordenador, preload/IPC e renderer desktop estão integrados. O smoke Electron
+real passou de Details ao restart com progresso preservado; regressão integral
+**222 passed, 6 skipped, 0 failed**. [Evidência](evidence/INTEGRATION_VALIDATION.md)
+e [checkpoint](FUNCTIONAL_CHECKPOINT.md). O checkpoint funcional aguarda
+decisão humana; S06 não foi iniciado.

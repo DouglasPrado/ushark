@@ -1,5 +1,35 @@
 # Atualização — UX frontend de M02 aprovada
 
+## Reparo pós-checkpoint — merge de Content importado
+
+Em 2026-09-14, o merge passou a migrar também
+`content_source_selectors`, na mesma transação que move `content_sources`.
+Isso impede que o cascade do Content provisório apague o arquivo torrent
+selecionado antes da reprodução. O teste de merge agora cobre a relação real e
+o banco local foi reparado após backup. Evidência cruzada:
+[M07 — importação até exibição](../M07-progressive-playback/evidence/POST_CHECKPOINT_DISPLAY_REPAIR.md).
+M02 continua `READY_FOR_REVIEW/PENDING`.
+
+## S03 — contrato real do catálogo — 2026-09-14
+
+Definidos schema/protocolo v1, limites, snapshot/revisão, taxonomia de erros e capability Core/preload para leitura, busca de metadata, save/merge, favorito, refresh, sources, memberships e delete gerenciado. Mutations usam idempotência e revisão opcional; o renderer nunca envia path para exclusão. D03/D19 foram resolvidas com merge conservador e precedência de apresentação explícita. [Contrato](evidence/DOMAIN_CONTRACT.md) · [decisão](../../decisions/M02-D03-D19-catalog-identity-and-presentation.md).
+
+## S04.1 — catálogo SQLite transacional — 2026-09-14
+
+O banco do M01 recebeu migration aditiva v2 para `contents`, `movies`, `sources`, relações, memberships, estado pessoal, revisões e idempotência. O Core persiste e reabre o catálogo mantendo ordem; merge é uma transação conservadora, com rollback integral, e remoções de vínculo/source não apagam Content nem arquivo. Seis testes de store passaram junto de typecheck e lint afetado.
+
+## S04.2 — provider TMDB e cache — 2026-09-14
+
+Implementado adapter TMDB real no Core com base HTTPS fixa, token fora do renderer, cache SQLite, limites, validação de payload, timeout, cancelamento e fallback degradado. Cinco testes do provider e onze testes combinados de backend passaram. Não existe `USHARK_TMDB_TOKEN` configurado neste ambiente, portanto nenhuma chamada externa foi alegada; o smoke real continua pendente no checkpoint funcional.
+
+## S04.3 — imagens e arquivo gerenciados — 2026-09-14
+
+O cache de imagens aceita somente `https://image.tmdb.org/t/p/`, valida tamanho e magic bytes, grava por hash de forma atômica e expõe apenas URI `ushark-asset://`. Downloads cancelados não deixam parcial. Exclusão recebe IDs e confirmação, resolve o path apenas no Core e rejeita arquivo fora da raiz gerenciada; source e Content permanecem após delete. O conjunto S04 passou 15/15 testes, typecheck e lint afetado.
+
+## S05 — integração Electron — 2026-09-14
+
+O Electron passou a usar `MovieCatalogApplicationService` por IPC/preload restritos e o renderer ganhou `DesktopMovieCatalog`; o browser continua com mocks. Ferramentas de fixture e integrações simuladas futuras ficam ocultas no caminho real. A jornada catálogo vazio → provider não configurado → cadastro manual → favorito → Home → reload/restart foi comprovada offline. A suíte afetada passou 49/49, além de typecheck, lint e build. M02 está [pronto para checkpoint funcional](FUNCTIONAL_CHECKPOINT.md), com decisão humana, smoke TMDB e hardware ainda pendentes.
+
 S00–S02 implementadas no checkout real: lista, cadastro manual/busca mockada, revisão de identificação/duplicata/merge, detalhes com assets locais, favoritos, fontes e remoções distintas. Cancelamento, retry e foco têm validação. Dados ficam em memória e sobrevivem à navegação pela Home; reload reinicia a sessão.
 
 Estado: FRONTEND_UX_APPROVED. O usuário confirmou explicitamente em 2026-09-13: “UX Aprovada”. Próxima ação: preparar M03 quando autorizado. S03–S08 de M02 permanecem adiadas até a fase frontend M01–M22 aprovada; M02 não está DONE. M01 mantém UX aprovada e integração adiada.
@@ -87,3 +117,11 @@ O Hero da página canônica passou a centralizar verticalmente o bloco de títul
 ## Ajuste posterior — faixa redundante removida
 
 Na página canônica compartilhada com M04, a faixa de título original, avaliação, disponibilidade, IMDb e memberships deixou de repetir os dados do Hero. A composição principal subiu discretamente e Recomendados passou a ser o primeiro bloco após o Hero, antes dos cenários de revisão. Série permanece em modal com seus fatos. A validação direcionada passou **3/3** e a geometria responsiva passou em 1920/2560/3840/480 sem overflow. O aceite histórico de M02 permanece preservado; esta alteração posterior aguarda confirmação visual.
+
+## Ajuste posterior — catálogo por categorias
+
+Em 2026-09-14, Filmes adotou trilhos panorâmicos como a Home. A tela padrão reúne `Em destaque` e categorias de gêneros relacionados. Busca, Favoritos, `Mais votados` e `A–Z` preservam a grade única. O retorno do detalhe restaura o card exato. [Evidência e validação](../../execution/evidence/CATALOG_CATEGORY_RAILS.md).
+
+## Ajuste posterior — busca recolhida
+
+A busca permanente saiu da sequência inicial de foco. Uma lupa à direita, junto de Todos/Favoritos, expande o campo somente quando ativada; fechar ou usar Voltar/Escape limpa a consulta e restaura o foco na lupa. [Evidência e validação](../../execution/evidence/COLLAPSED_CATALOG_SEARCH.md).

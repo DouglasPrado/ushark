@@ -40,6 +40,10 @@ export function LibraryFiles({
     origin = useRef<HTMLElement | null>(null),
     first = useRef<HTMLButtonElement>(null);
   useEffect(() => {
+    void Promise.resolve(service.refresh?.()).then(() => {
+      setExports(service.exports());
+      setReceived(service.received());
+    });
     first.current?.focus();
     return () => controller.current?.abort();
   }, []);
@@ -103,8 +107,9 @@ export function LibraryFiles({
         <h1>Arquivos de biblioteca</h1>
       </header>
       <p>
-        Transferência simulada entre perfis em memória. Nenhum arquivo .tslib é
-        lido ou gravado.
+        {service.runtime === "desktop"
+          ? "Transferência local por arquivo .tslib canônico, validado antes de qualquer commit."
+          : "Transferência simulada entre perfis em memória. Nenhum arquivo .tslib é lido ou gravado."}
       </p>
       {error && <p role="alert">{error}</p>}
       {notice && <p role="status">{notice}</p>}
@@ -173,7 +178,9 @@ export function LibraryFiles({
                   });
                 }}
               >
-                Preparar pacote simulado
+                {service.runtime === "desktop"
+                  ? "Exportar .tslib"
+                  : "Preparar pacote simulado"}
               </Button>
             </article>
             <article>
@@ -181,9 +188,20 @@ export function LibraryFiles({
               <Button
                 disabled={!!busy}
                 variant="secondary"
-                onClick={() => inspect(service.fixture())}
+                onClick={() => {
+                  if (!service.choose) inspect(service.fixture());
+                  else
+                    void run("Validando arquivo .tslib…", async (signal) => {
+                      const value = await service.choose!(signal);
+                      if (value && !signal.aborted) {
+                        setReview(value);
+                        setStage(true);
+                      }
+                    });
+                }}
               >
-                Escolher .tslib sintético
+                Escolher .tslib
+                {service.runtime === "desktop" ? "" : " sintético"}
               </Button>
               {exports.map((p) => (
                 <div key={p.key}>
@@ -220,43 +238,45 @@ export function LibraryFiles({
           </section>
         </>
       )}
-      <details className="workspace-scenarios">
-        <summary>Cenários de arquivo</summary>
-        <label>
-          Estado do pacote
-          <select
-            disabled={!!busy || !!review}
-            value={scenario}
-            onChange={(e) => {
-              setScenario(e.target.value as PackageScenario);
-              setError("");
-            }}
-          >
-            {Object.entries({
-              normal: "Válido",
-              minor: "Minor compatível",
-              major: "Major incompatível",
-              invalid: "Manifest inválido",
-              asset: "Asset ausente",
-              signature: "Assinatura não suportada",
-              traversal: "Traversal",
-              absolute: "Caminho absoluto",
-              symlink: "Symlink",
-              bomb: "ZIP bomb",
-              code: "Código executável",
-              limits: "Limites excedidos",
-              protocol: "Protocolo proibido",
-              conflict: "Conflito de versão",
-              "commit-error": "Falha ao importar",
-              offline: "Offline",
-            }).map(([id, label]) => (
-              <option key={id} value={id}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </details>
+      {service.runtime !== "desktop" && (
+        <details className="workspace-scenarios">
+          <summary>Cenários de arquivo</summary>
+          <label>
+            Estado do pacote
+            <select
+              disabled={!!busy || !!review}
+              value={scenario}
+              onChange={(e) => {
+                setScenario(e.target.value as PackageScenario);
+                setError("");
+              }}
+            >
+              {Object.entries({
+                normal: "Válido",
+                minor: "Minor compatível",
+                major: "Major incompatível",
+                invalid: "Manifest inválido",
+                asset: "Asset ausente",
+                signature: "Assinatura não suportada",
+                traversal: "Traversal",
+                absolute: "Caminho absoluto",
+                symlink: "Symlink",
+                bomb: "ZIP bomb",
+                code: "Código executável",
+                limits: "Limites excedidos",
+                protocol: "Protocolo proibido",
+                conflict: "Conflito de versão",
+                "commit-error": "Falha ao importar",
+                offline: "Offline",
+              }).map(([id, label]) => (
+                <option key={id} value={id}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </details>
+      )}
       <Dialog.Root
         open={!!review || !!detail}
         onOpenChange={(open) => {
@@ -277,12 +297,14 @@ export function LibraryFiles({
                 ? active?.catalog.find((c) => c.id === detail)?.title
                 : stage
                   ? "Revisar importação"
-                  : "Revisar exportação simulada"}
+                  : `Revisar exportação${service.runtime === "desktop" ? "" : " simulada"}`}
             </Dialog.Title>
             <Dialog.Description>
               {detail
                 ? "Mídia não acompanha o pacote. Fontes declarativas não iniciam download automaticamente."
-                : "Revise o snapshot antes de confirmar. Identificador de integridade demonstrativo, sem verificação criptográfica."}
+                : service.runtime === "desktop"
+                  ? "Revise o snapshot canônico antes de concluir. A integridade SHA-256 já foi calculada."
+                  : "Revise o snapshot antes de confirmar. Identificador de integridade demonstrativo, sem verificação criptográfica."}
             </Dialog.Description>
             {detail ? (
               <Button variant="secondary" onClick={() => setDetail(null)}>
@@ -297,7 +319,13 @@ export function LibraryFiles({
                     {review.draft.memberships.length} conteúdos · versão{" "}
                     {review.version} · schema {review.schema}
                   </p>
-                  <p>Integridade demonstrativa: {review.integrity}</p>
+                  <p>
+                    Integridade
+                    {service.runtime === "desktop"
+                      ? " SHA-256"
+                      : " demonstrativa"}
+                    : {review.integrity}
+                  </p>
                   <p>
                     Inclui curadoria, fontes selecionadas e referências às artes
                     sintéticas. Exclui vídeo, progresso, favoritos, preferências
@@ -330,38 +358,49 @@ export function LibraryFiles({
                       <h3>Assinar pacote próprio</h3>
                       <p>
                         {review.signature
-                          ? "Assinatura demonstrativa anexada; sem criptografia real."
+                          ? service.runtime === "desktop"
+                            ? "Assinatura Ed25519 anexada ao arquivo."
+                            : "Assinatura demonstrativa anexada; sem criptografia real."
                           : "Pacote não assinado."}
                       </p>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={storageUnavailable}
-                          onChange={(e) =>
-                            setStorageUnavailable(e.target.checked)
-                          }
-                        />
-                        Simular armazenamento seguro indisponível
-                      </label>
+                      {trust.runtime !== "desktop" && (
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={storageUnavailable}
+                            onChange={(e) =>
+                              setStorageUnavailable(e.target.checked)
+                            }
+                          />
+                          Simular armazenamento seguro indisponível
+                        </label>
+                      )}
                       <Button
                         disabled={!!busy}
                         variant="secondary"
                         onClick={() =>
-                          void run("Assinando simulação…", async (signal) => {
-                            const value = await trust.sign(
-                              review,
-                              storageUnavailable,
-                              signal,
-                            );
-                            if (!signal.aborted) {
-                              service.attachSignature(value);
-                              setReview(value);
-                              setExports(service.exports());
-                            }
-                          })
+                          void run(
+                            trust.runtime === "desktop"
+                              ? "Assinando pacote…"
+                              : "Assinando simulação…",
+                            async (signal) => {
+                              const value = await trust.sign(
+                                review,
+                                storageUnavailable,
+                                signal,
+                              );
+                              if (!signal.aborted) {
+                                service.attachSignature(value);
+                                setReview(value);
+                                setExports(service.exports());
+                              }
+                            },
+                          )
                         }
                       >
-                        Assinar simulação
+                        {trust.runtime === "desktop"
+                          ? "Assinar pacote"
+                          : "Assinar simulação"}
                       </Button>
                     </section>
                   )}
@@ -399,7 +438,8 @@ export function LibraryFiles({
                           )
                         }
                       >
-                        Confirmar importação simulada
+                        Confirmar importação
+                        {service.runtime === "desktop" ? "" : " simulada"}
                       </Button>
                     ) : (
                       <Button
@@ -407,11 +447,14 @@ export function LibraryFiles({
                         onClick={() => {
                           setReview(null);
                           setNotice(
-                            "Pacote disponível na lista desta sessão. Nenhum arquivo gravado.",
+                            service.runtime === "desktop"
+                              ? `Arquivo ${review.fileName ?? ".tslib"} exportado.`
+                              : "Pacote disponível na lista desta sessão. Nenhum arquivo gravado.",
                           );
                         }}
                       >
-                        Concluir exportação simulada
+                        Concluir exportação
+                        {service.runtime === "desktop" ? "" : " simulada"}
                       </Button>
                     )}
                     <Button

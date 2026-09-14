@@ -1,6 +1,6 @@
 # S04 — Salvar configuração e biblioteca vazia
 
-Status: PLANNED. Preparação documental; não executada.
+Status: DONE. Executada e validada localmente em 2026-09-14.
 
 ## Objetivo
 
@@ -34,8 +34,11 @@ Testes em diretório temporário de salvar/reabrir, erro parcial e reset; inspe�
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+- `packages/core/src/configuration-store.cjs`: SQLite local, migration v1, WAL, `busy_timeout`, transação atômica, validação de paths e recovery de snapshot inválido.
+- O schema cria somente `schema_migrations`, `settings` e `local_libraries`; nenhum domínio futuro foi antecipado.
+- `tests/configuration-store.spec.ts`: 3/3 testes passaram cobrindo restart/identidade estável, diretório inválido sem perda do snapshot anterior, reset seletivo e recovery.
+- `pnpm typecheck` e lint dos arquivos afetados passaram no macOS; nenhuma afirmação de Windows/TV físicos.
 
 ## Conclusão
 
-Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+Persistência mínima implementada e validada isoladamente. A exposição restrita pelo preload e a jornada Electron pertencem a S05.

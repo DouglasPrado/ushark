@@ -1,0 +1,15 @@
+{
+  "protocol": "ushark-torrentd/1",
+  "python": "3.12",
+  "libtorrent": "2.1.1",
+  "artifacts": {
+    "macos-arm64-cp312": {
+      "filename": "libtorrent-2.1.1-cp312-cp312-macosx_15_0_arm64.whl",
+      "sha256": "188aa0f03a2d6e967956a45534cbfd04d81641deb7b92b816e56723fc7ae5078"
+    },
+    "windows-x64-cp312": {
+      "filename": "libtorrent-2.1.1-cp312-cp312-win_amd64.whl",
+      "sha256": "493954405d15f14b9d9f9b1762ae78e7fecc5a44699f74cb433a9800fa3a7b45"
+    }
+  }
+}

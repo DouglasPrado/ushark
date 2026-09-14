@@ -5,6 +5,7 @@ import type {
 } from "@ushark/types/recovery";
 import { previewWork } from "./library-package";
 export class MockRecoveryPreview<T> implements RecoveryPreview {
+  readonly runtime = "mock" as const;
   private backups = new Map<string, { summary: BackupSummary; data: T }>();
   private count = 0;
   private attempts = new Map<string, number>();

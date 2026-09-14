@@ -108,9 +108,9 @@ test("reset do adapter preserva dados pessoais, paths e cache", async () => {
     preferences: { ...initial.preferences, strategy: "quality" },
   });
   const reset = await service.resetPlayback();
-  expect(reset.cacheGB).toBe(450);
-  expect(reset.name).toBe("Filmes");
-  expect(reset.preferences.strategy).toBe("balanced");
+  expect(reset.configuration.cacheGB).toBe(450);
+  expect(reset.configuration.name).toBe("Filmes");
+  expect(reset.configuration.preferences.strategy).toBe("balanced");
   expect(service.personalData).toEqual(data);
 });
 test("controle mapeia botões/analógico e retorna ao soltar", () => {
@@ -161,6 +161,70 @@ test("setas navegam com foco visível e controle virtual confirma", async ({
     }),
   );
 });
+
+test("navegação local observa p95 e frame pacing sem rede", async ({
+  page,
+}, testInfo) => {
+  await page.addInitScript(() =>
+    window.localStorage.setItem("ushark.onboarding.completed.v1", "true"),
+  );
+  await page.goto("/");
+  const metrics = await page.evaluate(async () => {
+    const memory = () =>
+      (
+        performance as Performance & {
+          memory?: { usedJSHeapSize: number };
+        }
+      ).memory?.usedJSHeapSize ?? null;
+    const heapBefore = memory();
+    const frame = () =>
+      new Promise<number>((resolve) => requestAnimationFrame(resolve));
+    const transitions: number[] = [];
+    for (let index = 0; index < 50; index++) {
+      const label = index % 2 === 0 ? "Ajustar preferências" : "Voltar";
+      const button = [...document.querySelectorAll("button")].find(
+        (candidate) =>
+          candidate.getAttribute("aria-label") === label ||
+          candidate.textContent?.trim() === label,
+      );
+      if (!button) throw new Error(`Ação local ausente: ${label}`);
+      const started = performance.now();
+      button.click();
+      await frame();
+      await frame();
+      transitions.push(performance.now() - started);
+    }
+    const frameDeltas: number[] = [];
+    let previous = await frame();
+    for (let index = 0; index < 60; index++) {
+      const current = await frame();
+      frameDeltas.push(current - previous);
+      previous = current;
+    }
+    const percentile95 = (values: number[]) =>
+      [...values].sort((a, b) => a - b)[Math.ceil(values.length * 0.95) - 1];
+    const heapAfter = memory();
+    return {
+      transitionP95Ms: percentile95(transitions),
+      frameP95Ms: percentile95(frameDeltas),
+      heapBeforeBytes: heapBefore,
+      heapAfterBytes: heapAfter,
+      heapGrowthBytes:
+        heapBefore === null || heapAfter === null
+          ? null
+          : heapAfter - heapBefore,
+    };
+  });
+  testInfo.annotations.push({
+    type: "M01 local metrics",
+    description: JSON.stringify(metrics),
+  });
+  expect(metrics.transitionP95Ms).toBeLessThan(100);
+  expect(metrics.frameP95Ms).toBeLessThan(100);
+  if (metrics.heapGrowthBytes !== null)
+    expect(metrics.heapGrowthBytes).toBeLessThan(64 * 1024 * 1024);
+});
+
 for (const [width, height] of [
   [1920, 1080],
   [2560, 1440],

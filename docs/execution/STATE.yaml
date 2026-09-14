@@ -1,24 +1,42 @@
 project: ushark
-status: awaiting_final_ux_review
-mode: UX_CHECKPOINT
+status: awaiting_M02_to_M22_functional_reviews
+mode: EXECUTE_MILESTONE
 planning_artifacts: approved
 implementation_authorized: true
-execution_scope: M01_M22_frontend_S00_S02_final_UX_review
-ux_review_policy: intermediate_pending_reviews_deferred_by_explicit_user_instruction
-backend_policy: deferred_requires_UX_and_new_explicit_authorization
+execution_scope: M02_M22_S03_S05
+ux_review_policy: final_frontend_UX_approved_by_user_2026_09_14
+backend_policy: M02_M22_integrations_authorized_through_each_functional_checkpoint
 current:
   milestone: M22
-  phase: frontend_ready_for_final_review
-  story: null
-next_action: await_human_final_UX_review_M04_M22
+  phase: functional_checkpoint
+  story: S05
+  substory: null
+next_action: await_M02_M22_functional_checkpoint_reviews
 checkpoints:
   milestone_plan: approved
   milestone_plan_evidence: "Usuário: aprovadissimo"
-  ux: ready_for_review
+  ux: approved
+  ux_evidence_quote: "Usuário: O frontend foi aprovado ja"
   ux_evidence: docs/execution/FRONTEND_REVIEW.md
   previous_M03_ux: approved
   previous_M03_ux_evidence_quote: "Usuário: aprovado, após correção do ícone de Séries"
   previous_M03_ux_evidence: docs/milestones/M03-series/UX_CHECKPOINT.md
+  previous_M03_functional: ready_for_review
+  previous_M03_functional_evidence: docs/milestones/M03-series/FUNCTIONAL_CHECKPOINT.md
+  previous_M04_functional: ready_for_review
+  previous_M04_functional_evidence: docs/milestones/M04-home-search/FUNCTIONAL_CHECKPOINT.md
+  previous_M05_functional: ready_for_review
+  previous_M05_functional_evidence: docs/milestones/M05-local-playback/FUNCTIONAL_CHECKPOINT.md
+  previous_M07_functional: ready_for_review
+  previous_M07_functional_evidence: docs/milestones/M07-progressive-playback/FUNCTIONAL_CHECKPOINT.md
+  previous_M08_functional: ready_for_review
+  previous_M08_functional_evidence: docs/milestones/M08-source-selection/FUNCTIONAL_CHECKPOINT.md
+  previous_M09_functional: ready_for_review
+  previous_M09_functional_evidence: docs/milestones/M09-downloads/FUNCTIONAL_CHECKPOINT.md
+  previous_M02_functional: ready_for_review
+  previous_M02_functional_evidence: docs/milestones/M02-movies/FUNCTIONAL_CHECKPOINT.md
+  previous_M06_functional: ready_for_review
+  previous_M06_functional_evidence: docs/milestones/M06-torrent-import/FUNCTIONAL_CHECKPOINT.md
   previous_M02_ux: approved
   previous_M02_ux_evidence_quote: "Usuário: UX Aprovada"
   previous_M02_ux_evidence: docs/milestones/M02-movies/UX_CHECKPOINT.md
@@ -26,30 +44,59 @@ checkpoints:
   previous_M01_ux_evidence: docs/milestones/M01-onboarding/UX_CHECKPOINT.md
   previous_M01_desktop_tv_validation: macos_passed_physical_hardware_pending
   desktop_tv_validation: macos_electron_passed_windows_tv_physical_gamepad_pending
-  functional: not_started
+  previous_M10_functional: ready_for_review
+  previous_M10_functional_evidence: docs/milestones/M10-storage-retention/FUNCTIONAL_CHECKPOINT.md
+  previous_M13_functional: ready_for_review
+  previous_M13_functional_evidence: docs/milestones/M13-library-file/FUNCTIONAL_CHECKPOINT.md
+  previous_M14_functional: ready_for_review
+  previous_M14_functional_evidence: docs/milestones/M14-library-trust/FUNCTIONAL_CHECKPOINT.md
+  previous_M15_functional: ready_for_review
+  previous_M15_functional_evidence: docs/milestones/M15-library-publish/FUNCTIONAL_CHECKPOINT.md
+  previous_M16_functional: ready_for_review
+  previous_M16_functional_evidence: docs/milestones/M16-library-subscriptions/FUNCTIONAL_CHECKPOINT.md
+  previous_M17_functional: ready_for_review
+  previous_M17_functional_evidence: docs/milestones/M17-library-fork/FUNCTIONAL_CHECKPOINT.md
+  previous_M18_functional: ready_for_review_physical_gate_pending
+  previous_M18_functional_evidence: docs/milestones/M18-tv-session/FUNCTIONAL_CHECKPOINT.md
+  previous_M19_functional: ready_for_review
+  previous_M19_functional_evidence: docs/milestones/M19-playback-fallback/FUNCTIONAL_CHECKPOINT.md
+  previous_M20_functional: ready_for_review
+  previous_M20_functional_evidence: docs/milestones/M20-diagnostics/FUNCTIONAL_CHECKPOINT.md
+  previous_M21_functional: ready_for_review
+  previous_M21_functional_evidence: docs/milestones/M21-backup-recovery/FUNCTIONAL_CHECKPOINT.md
+  previous_M22_functional: ready_for_review_release_gates_pending
+  previous_M22_functional_evidence: docs/milestones/M22-release-update/FUNCTIONAL_CHECKPOINT.md
+  functional: ready_for_review
+  previous_M11_functional: ready_for_review
+  previous_M11_functional_evidence: docs/milestones/M11-episode-sequence/FUNCTIONAL_CHECKPOINT.md
+  previous_M12_functional: ready_for_review
+  previous_M12_functional_evidence: docs/milestones/M12-curation-editor/FUNCTIONAL_CHECKPOINT.md
+  functional_evidence: docs/milestones/M22-release-update/FUNCTIONAL_CHECKPOINT.md
+  functional_execution_beyond_checkpoint_authorized: false
+  functional_human_decision: pending
 milestones:
-  M01: frontend_ux_approved_integration_deferred
-  M02: frontend_ux_approved_integration_deferred
-  M03: frontend_ux_approved_integration_deferred
-  M04: frontend_ux_ready_for_review
-  M05: frontend_ux_ready_for_review
-  M06: frontend_ux_ready_for_review
-  M07: frontend_ux_ready_for_review
-  M08: frontend_ux_ready_for_review
-  M09: frontend_ux_ready_for_review
-  M10: frontend_ux_ready_for_review
-  M11: frontend_ux_ready_for_review
-  M12: frontend_ux_ready_for_review
-  M13: frontend_ux_ready_for_review
-  M14: frontend_ux_ready_for_review
-  M15: frontend_ux_ready_for_review
-  M16: frontend_ux_ready_for_review
-  M17: frontend_ux_ready_for_review
-  M18: frontend_ux_ready_for_review
-  M19: frontend_ux_ready_for_review
-  M20: frontend_ux_ready_for_review
-  M21: frontend_ux_ready_for_review
-  M22: frontend_ux_ready_for_review
+  M01: local_validated_ready_for_functional_review
+  M02: ready_for_functional_review
+  M03: ready_for_functional_review
+  M04: ready_for_functional_review
+  M05: ready_for_functional_review
+  M06: ready_for_functional_review
+  M07: ready_for_functional_review
+  M08: ready_for_functional_review
+  M09: ready_for_functional_review
+  M10: ready_for_functional_review
+  M11: ready_for_functional_review
+  M12: ready_for_functional_review
+  M13: ready_for_functional_review
+  M14: ready_for_functional_review
+  M15: ready_for_functional_review
+  M16: ready_for_functional_review
+  M17: ready_for_functional_review
+  M18: ready_for_functional_review_physical_gate_pending
+  M19: ready_for_functional_review
+  M20: ready_for_functional_review
+  M21: ready_for_functional_review
+  M22: ready_for_functional_review_release_gates_pending
   M23: deferred_not_specified
   M24: deferred_not_specified
   M25: deferred_not_specified
@@ -60,9 +107,37 @@ current_story_statuses:
   S00: done
   S01: done
   S02: done
-  S03_S08: deferred
+  S03: done
+  S04: done_local_external_gates_pending
+  S05: done_local_external_gates_pending
+  S06: not_authorized
+  S07: not_authorized
+  S08: not_authorized
 planning_evidence: docs/milestones/PLAN.md
-last_update: "2026-09-13"
+last_update: "2026-09-14"
+post_checkpoint_repairs:
+  torrent_import_display:
+    status: locally_validated_ready_for_human_review
+    selector_merge: preserved_transactionally_7_movie_store_tests_passed
+    discovery_locality: torrent_availability_separated_from_local_file
+    progressive_prepare: early_ready_preserved_and_resolving_cancelled
+    focused_regression: 20_passed_plus_6_progressive_service_passed
+    live_evidence: macos_tv_single_mpv_partial_file_position_advancing
+    database_backup: ushark-before-selector-repair-20260914-1139.db
+    evidence: docs/milestones/M07-progressive-playback/evidence/POST_CHECKPOINT_DISPLAY_REPAIR.md
+    human_decision: pending
+    physical_windows_tv_moonlight: pending
+  native_player_composition:
+    status: locally_validated_ready_for_human_review
+    human_feedback: external_mpv_window_rejected
+    engine: isolated_mpv_process_preserved
+    composition: borderless_mpv_behind_transparent_electron_overlay
+    geometry: initial_and_move_resize_fullscreen_synchronized
+    macos_live_evidence: first_frame_position_advancing_bounds_aligned
+    focused_regression: mpv_adapter_3_passed_playback_electron_1_passed
+    evidence: docs/milestones/M05-local-playback/evidence/POST_CHECKPOINT_WINDOW_COMPOSITION.md
+    human_decision: pending
+    physical_windows_tv_moonlight: pending
 prepared_milestone_evidence:
   M01: docs/milestones/M01-onboarding/README.md
   M02: docs/milestones/M02-movies/README.md
@@ -79,7 +154,6 @@ prepared_milestone_evidence:
   M13: docs/milestones/M13-library-file/README.md
   M14: docs/milestones/M14-library-trust/README.md
   M15: docs/milestones/M15-library-publish/README.md
-  M16: docs/milestones/M16-library-subscriptions/README.md
   M17: docs/milestones/M17-library-fork/README.md
   M18: docs/milestones/M18-tv-session/README.md
   M19: docs/milestones/M19-playback-fallback/README.md
@@ -96,24 +170,26 @@ preparation:
   note: "Preparação preservada; autorização atual em GOAL amplia execução frontend M01–M22."
 state_discrepancies:
   M04_ux:
-    status: resolved_checkpoint_scope
-    historical_recorded_state: approved
+    status: resolved_by_consolidated_frontend_approval
     historical_quote: "Usuário: aprovado"
-    evidence: docs/milestones/M03-series/UX_CHECKPOINT.md
-    resolution: "Citação corresponde ao aceite M03; M04 READY_FOR_REVIEW, decisão PENDING."
+    historical_resolution: "A citação histórica pertencia ao M03; M04 continuou pendente naquele momento."
+    current_quote: "Usuário: O frontend foi aprovado ja"
+    resolution: "M04 e os demais checkpoints UX M01-M22 foram aprovados de forma consolidada em 2026-09-14."
 
 frontend_phase:
   scope: M01_M22_S00_S02
-  status: implemented_validated_ready_for_review
+  status: implemented_validated_ux_approved
   stories_completed: 66
   audit: docs/execution/FRONTEND_COVERAGE_AUDIT.md
   requirements_inventory: docs/execution/FRONTEND_REQUIREMENTS_AUDIT.md
   review_guide: docs/execution/FRONTEND_REVIEW.md
   validation: docs/execution/evidence/FINAL_VALIDATION.md
-  regression: 141_passed_0_failed_0_skipped
+  regression: 150_passed_0_failed_0_skipped_serial
   latest_targeted_validation: movie_detail_redundant_facts_removed_recommendations_directly_after_hero_3_passed_plus_1920_2560_3840_and_480_geometry_passed
   latest_synopsis_transparency_validation: shared_movie_detail_8_passed_1920_2560_3840
-  latest_full_regression: 141_passed_in_2_2_minutes_5_workers_trace_off
+  latest_full_regression: 150_passed_in_9_3_minutes_1_worker_trace_off
+  latest_catalog_category_validation: browser_142_passed_in_2_1_minutes_plus_M02_M03_electron_2_passed
+  latest_collapsed_catalog_search_validation: browser_144_passed_in_2_2_minutes_plus_M02_M03_electron_2_passed
   latest_typecheck: passed
   latest_build: passed_with_known_chunk_size_warning
   latest_changed_files_lint_and_format: passed
@@ -141,10 +217,11 @@ frontend_phase:
     backdrop_files: 8
     commercial_license: not_established
     evidence: docs/milestones/M03-series/evidence/IMDB_SERIES_SEED.md
-  human_review: pending_M02_M03_post_approval_adjustments_and_M04_M22_previous_M01_M03_approvals_preserved
-  S03_S08: deferred
-  milestone_closure: not_performed
-  actual_backend_integrations: not_implemented
+  human_review: approved_M01_M22_by_user_2026_09_14
+  human_review_evidence_quote: "Usuário: O frontend foi aprovado ja"
+  S03_S08: M01_executed_M02_M22_S03_S05_authorized
+  milestone_closure: M01_executed_pending_functional_hardware_and_external_gates
+  actual_backend_integrations: M01_configuration_M02_catalog_TMDB_assets_M03_series_M04_discovery_M05_MPV_M06_libtorrent_M07_progressive_M08_health_M09_downloads_M10_storage_M11_sequence_M12_drafts_M13_tslib_M14_Ed25519_M15_registry_M16_sync_M17_fork_M18_tv_session_M19_fallback_M20_diagnostics_M21_recovery_M22_update_staging
   hardware: windows_TV_physical_controller_media_runtime_pending
   PR: created_open
   PR_number: 1
@@ -190,3 +267,139 @@ frontend_phase:
     - M02_M04_movie_detail_vertical_center_and_shared_content_guides
     - M02_M04_movie_synopsis_card_background_58_percent_opacity
     - M02_M04_movie_redundant_facts_removed_and_recommendations_directly_after_hero
+    - M02_M03_default_catalogs_grouped_in_home_style_category_rails
+    - M02_M03_catalog_search_collapsed_to_right_action_icon
+
+M01_integration:
+  scope: S03_S08
+  status: local_validated_ready_for_functional_review
+  contract: configuration_schema_and_protocol_v1
+  persistence: SQLite_WAL_atomic_configuration_and_empty_library
+  integration: restricted_preload_IPC_native_directory_picker_and_restart_hydration
+  focused_regression: 27_passed_0_failed
+  full_regression: 150_passed_0_failed_serial_in_9_3_minutes
+  static_gates: format_lint_typecheck_build_diff_check_passed
+  functional_human_decision: pending
+  hardware: windows_TV_physical_controller_hotplug_Sunshine_Moonlight_pending
+  external_delivery: CI_review_merge_pending
+
+integration_wave:
+  scope: M02_M22_S03_S05
+  status: local_integration_complete_awaiting_functional_reviews
+  authorization_quote: "Usuário: Vamos para o m02 ate o m22 deixando para o proximo checkpoint de cada um"
+  target_checkpoint: functional_ready_for_review_pending_human_decision
+  current_milestone: M22
+  current_story: functional_checkpoint
+  completed_milestones:
+    - M02
+    - M06
+    - M03
+    - M04
+    - M05
+    - M07
+    - M08
+    - M09
+    - M10
+    - M11
+    - M12
+    - M13
+    - M14
+    - M15
+    - M16
+    - M17
+    - M18
+    - M19
+    - M20
+    - M21
+    - M22
+  local_validation_M13_M22: 21_passed_0_failed
+  full_regression_M01_M22: 316_passed_0_failed_serial_in_10_2_minutes
+  static_gates_M02_M22: format_lint_typecheck_build_release_evidence_passed
+  external_gates: registry_credentials_windows_tv_hardware_installer_code_signing_CI_promotion_pending
+  M02:
+    status: ready_for_functional_review
+    focused_validation: 49_passed_0_failed
+    provider_smoke: pending_missing_USHARK_TMDB_TOKEN
+    hardware: windows_TV_physical_controller_pending
+    human_decision: pending
+  M04:
+    status: ready_for_functional_review
+    focused_validation: 14_passed_0_failed
+    affected_validation: 71_passed_0_failed
+    browser_validation: 34_passed_0_failed
+    hardware: windows_TV_physical_controller_pending
+    future_producers: M05_progress_M12_collections_M16_subscriptions
+    human_decision: pending
+  M06:
+    status: ready_for_functional_review
+    focused_validation: 47_passed_0_failed
+    real_runtime: CPython_3_12_14_libtorrent_2_1_1_0_macos_arm64
+    public_magnet_smoke: ubuntu_26_04_1_metadata_ready_in_6_6_seconds
+    local_runtime_repair: paths_verified_renderer_poll_fallback_test_1_passed
+    packaging: pending
+    hardware: windows_TV_physical_controller_Moonlight_pending
+    human_decision: pending
+  M03:
+    status: ready_for_functional_review
+    domain_contract: docs/milestones/M03-series/evidence/DOMAIN_CONTRACT.md
+    hierarchy_store: docs/milestones/M03-series/evidence/BACKEND_S04_1.md
+    episode_mapping: docs/milestones/M03-series/evidence/BACKEND_S04_2.md
+    hierarchical_metadata: docs/milestones/M03-series/evidence/BACKEND_S04_3.md
+    integration: docs/milestones/M03-series/evidence/INTEGRATION_VALIDATION.md
+    focused_validation: 86_passed_0_failed
+    real_runtime: Electron_44_3_0_CPython_3_12_14_libtorrent_2_1_1_0_macos_arm64
+    provider_smoke: pending_missing_USHARK_TMDB_TOKEN
+    hardware: windows_TV_physical_controller_Moonlight_pending
+    human_decision: pending
+  M05:
+    status: ready_for_functional_review
+    domain_contract: docs/milestones/M05-local-playback/evidence/DOMAIN_CONTRACT.md
+    mpv_adapter: docs/milestones/M05-local-playback/evidence/BACKEND_S04_1.md
+    playback_state: docs/milestones/M05-local-playback/evidence/BACKEND_S04_2.md
+    tracks_and_subtitles: docs/milestones/M05-local-playback/evidence/BACKEND_S04_3.md
+    integration: docs/milestones/M05-local-playback/evidence/INTEGRATION_VALIDATION.md
+    focused_validation: 13_passed_0_failed
+    electron_validation: 1_passed_plus_3_concurrent_repetitions
+    full_regression: 222_passed_6_skipped_0_failed
+    real_runtime: Electron_44_3_0_MPV_0_41_0_macos_arm64
+    hardware: windows_TV_physical_controller_Moonlight_pending
+    human_decision: pending
+  M07:
+    status: ready_for_functional_review
+    domain_contract: docs/milestones/M07-progressive-playback/evidence/DOMAIN_CONTRACT.md
+    partial_probe_mapping: docs/milestones/M07-progressive-playback/evidence/BACKEND_S04_1.md
+    S04_1_validation: 8_passed_0_failed
+    real_probe: FFprobe_9_0_1_macos_arm64
+    scheduler: docs/milestones/M07-progressive-playback/evidence/BACKEND_S04_2.md
+    S04_2_validation: 7_passed_0_failed_20_combined
+    real_scheduler: CPython_3_12_14_libtorrent_2_1_1_0_macos_arm64
+    delivery: docs/milestones/M07-progressive-playback/evidence/BACKEND_S04_3.md
+    integration: docs/milestones/M07-progressive-playback/evidence/INTEGRATION_VALIDATION.md
+    focused_validation: 27_passed_0_failed
+    controlled_swarm: first_frame_3053ms_stream_ready_2699ms_seek_510ms_47_of_174_pieces_at_first_frame
+    real_runtime: Electron_44_3_0_MPV_0_41_0_FFprobe_9_0_1_CPython_3_12_14_libtorrent_2_1_1_0_macos_arm64
+    hardware: windows_TV_physical_controller_Moonlight_pending
+    human_decision: pending
+  M08:
+    status: ready_for_functional_review
+    domain_contract: docs/milestones/M08-source-selection/evidence/DOMAIN_CONTRACT.md
+    health_sampler: docs/milestones/M08-source-selection/evidence/BACKEND_S04_1.md
+    health_engine: docs/milestones/M08-source-selection/evidence/BACKEND_S04_2.md
+    ranking_persistence: docs/milestones/M08-source-selection/evidence/BACKEND_S04_3.md
+    integration: docs/milestones/M08-source-selection/evidence/INTEGRATION_VALIDATION.md
+    focused_validation: 16_passed_0_failed
+    electron_validation: 1_passed_0_failed
+    real_runtime: Electron_44_3_0_CPython_3_12_14_libtorrent_2_1_1_0_macos_arm64
+    hardware: windows_TV_physical_controller_Moonlight_pending
+    human_decision: pending
+  M09:
+    status: ready_for_functional_review
+    domain_contract: docs/milestones/M09-downloads/evidence/DOMAIN_CONTRACT.md
+    queue_limits: docs/milestones/M09-downloads/evidence/BACKEND_S04_1.md
+    resume_priority: docs/milestones/M09-downloads/evidence/BACKEND_S04_2.md
+    recovery_removal: docs/milestones/M09-downloads/evidence/BACKEND_S04_3.md
+    integration: docs/milestones/M09-downloads/evidence/INTEGRATION_VALIDATION.md
+    focused_validation: 14_passed_0_failed
+    real_runtime: Electron_44_3_0_CPython_3_12_14_libtorrent_2_1_1_0_macos_arm64
+    hardware: windows_TV_physical_controller_Moonlight_pending
+    human_decision: pending

@@ -25,6 +25,8 @@ for (const tv of [false, true]) {
     });
     try {
       const page = await app.firstWindow();
+      const requestedUrls: string[] = [];
+      page.on("request", (request) => requestedUrls.push(request.url()));
       await expect(
         page.getByRole("button", { name: "Começar", exact: true }),
       ).toBeVisible();
@@ -45,6 +47,7 @@ for (const tv of [false, true]) {
             sandbox?: boolean;
             contextIsolation?: boolean;
             nodeIntegration?: boolean;
+            webSecurity?: boolean;
           };
         };
         const prefs = contents.getLastWebPreferences();
@@ -54,13 +57,23 @@ for (const tv of [false, true]) {
           sandbox: prefs.sandbox,
           contextIsolation: prefs.contextIsolation,
           nodeIntegration: prefs.nodeIntegration,
+          webSecurity: prefs.webSecurity,
+          devToolsOpened: contents.isDevToolsOpened(),
         };
       });
       expect(state).toMatchObject({
         sandbox: true,
         contextIsolation: true,
         nodeIntegration: false,
+        webSecurity: true,
+        devToolsOpened: false,
       });
+      await expect(
+        page.locator('meta[http-equiv="Content-Security-Policy"]'),
+      ).toHaveAttribute("content", /default-src 'self'/);
+      expect(
+        await page.evaluate(() => window.open("https://example.com")),
+      ).toBeNull();
       if (tv) expect(state.bounds).toEqual(state.display);
       await page.context().setOffline(true);
       await page.getByRole("button", { name: "Começar", exact: true }).click();
@@ -108,6 +121,11 @@ for (const tv of [false, true]) {
           page.getByRole("heading", { name: "Minha biblioteca", exact: true }),
         ).toBeVisible();
       }
+      expect(
+        requestedUrls.every(
+          (url) => url.startsWith("file:") || url.startsWith("data:"),
+        ),
+      ).toBe(true);
     } finally {
       await app.close();
     }
@@ -126,14 +144,145 @@ test("Electron reabre na Home depois do onboarding concluído", async ({
     env: electronEnv,
     args,
   });
+  let selectedLibraryPath: string;
   try {
     const page = await firstRun.firstWindow();
+    expect(
+      await page.evaluate(() => ({
+        root: Object.keys(window.ushark ?? {}).sort(),
+        configuration: Object.keys(window.ushark?.configuration ?? {}).sort(),
+        discovery: Object.keys(window.ushark?.discovery ?? {}).sort(),
+        movieCatalog: Object.keys(window.ushark?.movieCatalog ?? {}).sort(),
+        playback: Object.keys(window.ushark?.playback ?? {}).sort(),
+        seriesCatalog: Object.keys(window.ushark?.seriesCatalog ?? {}).sort(),
+        torrentInspection: Object.keys(
+          window.ushark?.torrentInspection ?? {},
+        ).sort(),
+      })),
+    ).toEqual({
+      root: [
+        "appUpdate",
+        "configuration",
+        "diagnostics",
+        "discovery",
+        "downloads",
+        "fallback",
+        "libraryDrafts",
+        "libraryFork",
+        "libraryPackage",
+        "libraryPublish",
+        "libraryTrust",
+        "movieCatalog",
+        "nextEpisode",
+        "playback",
+        "recovery",
+        "seriesCatalog",
+        "sourceSelection",
+        "storage",
+        "stream",
+        "subscriptions",
+        "torrentInspection",
+        "tvSession",
+      ],
+      configuration: [
+        "chooseDirectory",
+        "protocolVersion",
+        "read",
+        "resetPlayback",
+        "save",
+      ],
+      discovery: [
+        "cancelRequest",
+        "protocolVersion",
+        "readHome",
+        "readScope",
+        "rebuildSearchIndex",
+        "search",
+        "subscribe",
+      ],
+      movieCatalog: [
+        "addSource",
+        "cancelMetadataRequest",
+        "deleteManagedFile",
+        "protocolVersion",
+        "read",
+        "refreshMetadata",
+        "removeMembership",
+        "removeSource",
+        "save",
+        "searchMetadata",
+        "toggleFavorite",
+      ],
+      playback: [
+        "cancelPreparation",
+        "chooseExternalSubtitle",
+        "prepare",
+        "protocolVersion",
+        "readProgress",
+        "readSession",
+        "seek",
+        "selectAudio",
+        "selectSubtitle",
+        "setMuted",
+        "setPaused",
+        "setVolume",
+        "start",
+        "stop",
+        "subscribe",
+      ],
+      seriesCatalog: [
+        "beginReview",
+        "cancelMetadataRequest",
+        "confirmImport",
+        "correctMapping",
+        "protocolVersion",
+        "readCatalog",
+        "readEpisodes",
+        "readReview",
+        "readSeries",
+        "readSourceReview",
+        "refreshMetadata",
+        "searchMetadata",
+        "setEpisodeArtwork",
+      ],
+      torrentInspection: [
+        "cancel",
+        "capabilities",
+        "chooseTorrentFile",
+        "confirm",
+        "get",
+        "getFiles",
+        "listPending",
+        "protocolVersion",
+        "removePending",
+        "retry",
+        "savePending",
+        "start",
+        "subscribe",
+      ],
+    });
     await page.getByRole("button", { name: "Começar", exact: true }).click();
+    await page.getByLabel("Nome da biblioteca").fill("Cinema persistente");
+    selectedLibraryPath = await firstRun.evaluate(({ app, dialog }) => {
+      const selected = `${app.getPath("userData")}/selected-library`;
+      dialog.showOpenDialog = async () => ({
+        canceled: false,
+        filePaths: [selected],
+        bookmarks: [],
+      });
+      return selected;
+    });
+    await page.getByRole("button", { name: "Escolher pasta" }).click();
+    await expect(page.getByText(selectedLibraryPath)).toBeVisible();
     await page.getByRole("button", { name: "Continuar", exact: true }).click();
+    await page.getByLabel("Limite do cache").fill("321");
     await page.getByRole("button", { name: "Continuar", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Melhor qualidade", exact: true })
+      .click();
     await page.getByRole("button", { name: "Abrir minha biblioteca" }).click();
     await expect(
-      page.getByRole("heading", { name: "Minha biblioteca", exact: true }),
+      page.getByRole("heading", { name: "Cinema persistente", exact: true }),
     ).toBeVisible();
   } finally {
     await firstRun.close();
@@ -147,11 +296,18 @@ test("Electron reabre na Home depois do onboarding concluído", async ({
   try {
     const page = await reopened.firstWindow();
     await expect(
-      page.getByRole("heading", { name: "Minha biblioteca", exact: true }),
+      page.getByRole("heading", { name: "Cinema persistente", exact: true }),
     ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Começar", exact: true }),
     ).toHaveCount(0);
+    await page.getByRole("button", { name: "Ajustar preferências" }).click();
+    await expect(
+      page.getByRole("button", { name: "Melhor qualidade", exact: true }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByLabel("Limite do cache")).toHaveValue("321");
+    await expect(page.getByText(selectedLibraryPath)).toBeVisible();
+    await expect(page.getByText("salvas neste dispositivo")).toBeVisible();
   } finally {
     await reopened.close();
   }

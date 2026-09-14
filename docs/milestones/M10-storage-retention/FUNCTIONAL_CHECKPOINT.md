@@ -2,7 +2,7 @@
 
 ## Status
 
-NOT_STARTED. Decisão: PENDING. Roteiro preparado; nenhuma aprovação ou validação executada.
+READY_FOR_REVIEW. Decisão: PENDING. S03–S05 concluídas em 2026-09-14; nenhuma aprovação funcional foi inferida.
 
 ## Pré-condições
 
@@ -26,10 +26,13 @@ Verificar ausência de mock no caminho principal, persistência pertinente após
 
 ## Evidências e decisão
 
-PENDENTES. Registrar decisão humana com contexto e evidência; não inferir aprovação pelo silêncio. Alterações de UX exigidas na integração voltam à revisão correspondente. Este roteiro não autoriza execução nem fecha S08.
+[Integração](evidence/INTEGRATION_VALIDATION.md), contratos e testes focados
+comprovam o caminho local no macOS/Electron. A decisão humana continua
+PENDING; Windows/TV, gamepad físico, Moonlight e volume removível real seguem
+pendentes. Este checkpoint não autoriza S06–S08.
 
 ## Mudanças solicitadas
 
 Nenhuma registrada; isso não equivale a aprovação.
 
-Frontend validado somente em simulação; este checkpoint e S03–S08 permanecem adiados.
+Frontend aprovado pelo usuário; S03–S05 foram integradas. S06–S08 permanecem não autorizadas.

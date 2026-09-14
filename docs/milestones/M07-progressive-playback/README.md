@@ -1,6 +1,8 @@
 # M07 — Reproduzir torrent progressivamente e buscar outra posição
 
-Status: frontend S00–S02 implementado no checkout real. UX READY_FOR_REVIEW/PENDING, revisão adiada por instrução do usuário até fim M01–M22. S03–S08 DEFERRED; funcional NOT_STARTED/PENDING. [Experiência](EXPERIENCE.md), [evidências](evidence/VALIDATION.md). Runtime abaixo é objetivo futuro; entrega atual somente simulada.
+Status: READY_FOR_REVIEW — UX aprovada; S03–S05 concluídas; decisão funcional
+PENDING. S06–S08 não autorizadas e M07 não está DONE.
+[Contrato](evidence/DOMAIN_CONTRACT.md), [experiência](EXPERIENCE.md).
 
 ## Objetivo
 

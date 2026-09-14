@@ -1,6 +1,6 @@
 # S05 — Integração local
 
-Status: DEFERRED. Preparar este arquivo não executa a story.
+Status: DONE em 2026-09-14. Checkpoint funcional aguardando revisão humana.
 
 ## Objetivo
 
@@ -28,8 +28,11 @@ Roteiro FUNCTIONAL_CHECKPOINT.md, inspeção de banco/queries/eventos e restart;
 
 ## Evidências
 
-PENDENTES. Registrar arquivos, comandos/resultados, ambiente e limitações ao executar esta story.
+[Integração e validação](../evidence/INTEGRATION_VALIDATION.md): adapter real no
+renderer, preload/IPC restritos, sincronização após mutações M02/M03, eventos de
+invalidação, Home/busca offline no Electron e persistência após restart.
 
 ## Done When
 
-Evidências reais prontas para aceite funcional humano; aguardar decisão antes de S06.
+Cumprido. Evidências reais prontas para aceite funcional humano; S06 permanece
+não autorizado até decisão explícita.

@@ -1,5 +1,7 @@
 # Checkpoint UX — M02
 
+Aprovação consolidada registrada em 2026-09-14: “O frontend foi aprovado ja”. Ela reafirma o aceite anterior e cobre os ajustes frontend posteriores descritos neste arquivo; integração, runtime e hardware físico permanecem fora desse aceite.
+
 Status: APPROVED. Decisão: APPROVED em 2026-09-13. Confirmação explícita do usuário: “UX Aprovada”.
 
 ## Pré-condições
@@ -51,3 +53,7 @@ Solicitação posterior registrada em 2026-09-13: reutilizar em Recomendados o m
 Solicitação posterior registrada em 2026-09-13: alinhar verticalmente os elementos da página. Atendida centralizando as duas colunas do Hero no mesmo eixo e alinhando fatos, cenários e Recomendados pela mesma guia lateral. Em telas estreitas, os blocos empilham sem overflow. O aceite histórico permanece preservado e não aprova automaticamente este refinamento.
 
 Solicitação posterior registrada em 2026-09-13: remover a faixa redundante de título original, avaliação e afins, subir a composição e puxar Recomendados logo abaixo. Atendida na página canônica compartilhada: os fatos duplicados saíram e o trilho passa a seguir imediatamente o Hero; Série continua com fatos no modal. A validação direcionada passou 3/3 e a geometria passou em 1920/2560/3840/480. O aceite histórico permanece preservado e não aprova automaticamente este refinamento.
+
+Solicitação posterior registrada em 2026-09-14: categorizar Filmes e Séries de forma semelhante à Home. Filmes agora apresenta `Em destaque` e trilhos panorâmicos por categorias de gênero; busca, Favoritos e ordenações continuam em grade única. Abrir por qualquer trilho e voltar restaura o card exato. [Evidência conjunta M02/M03](../../execution/evidence/CATALOG_CATEGORY_RAILS.md). O aceite anterior permanece preservado; este refinamento foi implementado sem inferir nova decisão humana.
+
+Novo refinamento em 2026-09-14: a busca do catálogo fica recolhida como lupa à direita e o campo só aparece mediante ativação. Abrir, fechar e Voltar/Escape preservam uma sequência de foco previsível. [Evidência](../../execution/evidence/COLLAPSED_CATALOG_SEARCH.md). O aceite anterior permanece preservado, sem aprovação automática desta alteração.

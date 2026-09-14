@@ -1,6 +1,6 @@
 # S03 — Contrato de série, episódio e selector
 
-Status: DEFERRED. Preparar este arquivo não executa a story.
+Status: DONE em 2026-09-14.
 
 ## Objetivo
 
@@ -28,8 +28,12 @@ Revisão do contrato contra fixtures/UX e tabela de invariantes; casos de colis�
 
 ## Evidências
 
-PENDENTES. Registrar contrato, decisões e resultados de revisão ao executar S03.
+Contrato tipado, tabela de invariantes e validações em
+[`DOMAIN_CONTRACT.md`](../evidence/DOMAIN_CONTRACT.md). As decisões de identidade,
+inferência, selectors, paginação, limites e transação estão no ADR
+[`M03-D23-D25`](../../../decisions/M03-D23-D25-series-episode-contract.md).
 
 ## Done When
 
-Contrato suficiente para S04, com todas as decisões rastreáveis e sem expandir o escopo.
+Cumprido. O contrato é suficiente para S04, mantém as decisões rastreáveis e não
+expande playback, scheduler, busca global ou curadoria.

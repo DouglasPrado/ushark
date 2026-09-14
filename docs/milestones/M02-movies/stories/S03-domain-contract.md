@@ -1,6 +1,6 @@
 # S03 — Contrato de catálogo e identidade
 
-Status: DEFERRED. Preparar este arquivo não conclui a story.
+Status: DONE. Executada e validada localmente em 2026-09-14.
 
 ## Objetivo
 
@@ -28,8 +28,12 @@ Revisão do contrato contra fixtures/UX, matriz de preservação e casos de conf
 
 ## Evidências
 
-PENDENTES. Registrar arquivos, comandos/resultados e ambiente após execução em UPDATE e nos checkpoints correspondentes.
+- [Contrato de domínio](../evidence/DOMAIN_CONTRACT.md).
+- [Decisão D03/D19](../../../decisions/M02-D03-D19-catalog-identity-and-presentation.md).
+- `packages/types/src/movies.ts`: schema/protocolo v1, limites, snapshots/revisões, erros e capabilities Core/preload.
+- `MovieSource.availability` distingue source declarada, disponível, ausente, indisponível e erro; ausência continua representada por lista vazia.
+- Mutação exige idempotência e admite revisão otimista; delete aceita apenas IDs e confirmação, nunca path do renderer.
 
 ## Conclusão
 
-Contratos e políticas suficientes para S04, com decisões rastreáveis.
+Contratos e políticas suficientes para S04, com D03/D19 resolvidas e rastreáveis.

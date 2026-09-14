@@ -2,7 +2,7 @@
 
 ## Status
 
-READY_FOR_REVIEW. Decisão: PENDING. Revisão humana adiada para fim M01–M22 por instrução explícita do usuário. [Evidências frontend](evidence/VALIDATION.md). Sem aceite humano atribuído.
+APPROVED. Aprovação consolidada do usuário em 2026-09-14: “O frontend foi aprovado ja”. [Evidências frontend](evidence/VALIDATION.md).
 
 ## Pré-condições
 
@@ -30,8 +30,8 @@ PENDENTES. Registrar decisão humana com contexto e evidência; não inferir apr
 
 ## Mudanças solicitadas
 
-Durante a revisão, o usuário solicitou que a exibição se aproximasse das plataformas de streaming: toolbar sutil e transparente no rodapé, desaparecimento por inatividade, botões por ícones sem textos visuais e controles alinhados ao tempo/posição. Implementado e automatizado; confirmação UX continua pendente e não é inferida desta alteração.
+Durante a revisão, o usuário solicitou que a exibição se aproximasse das plataformas de streaming: toolbar sutil e transparente no rodapé, desaparecimento por inatividade, botões por ícones sem textos visuais e controles alinhados ao tempo/posição. Implementado e automatizado; o ajuste está coberto pelo aceite consolidado de 2026-09-14.
 
 ## Revisão final consolidada
 
-READY_FOR_REVIEW / decisão PENDING. A revisão intermediária foi adiada por instrução explícita, não aprovada. Usar o [roteiro único](../../execution/FRONTEND_REVIEW.md); resultados automatizados e inspeções não substituem sua decisão.
+APPROVED na revisão consolidada de 2026-09-14; [roteiro e evidência do aceite](../../execution/FRONTEND_REVIEW.md). O aceite cobre UX mockada, não integração funcional ou hardware físico.

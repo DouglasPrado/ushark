@@ -28,7 +28,7 @@ test("M03 catálogo inicial usa séries e artes reais do snapshot IMDb", async (
   ).toContainText("1080p");
   await expect(cards.first().locator("img")).toHaveAttribute(
     "src",
-    "./series-art/imdb/tt0903747-poster.jpg",
+    "./series-art/imdb/tt0903747-backdrop.jpg",
   );
   await expect
     .poll(() =>
@@ -86,6 +86,53 @@ test("M03 catálogo inicial usa séries e artes reais do snapshot IMDb", async (
     fullPage: true,
     path: "docs/milestones/M03-series/evidence/imdb-series-episodes-1920.png",
   });
+});
+
+test("M03 organiza o catálogo padrão em trilhos por categoria", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await enterSeries(page, true, true);
+
+  const categories = page.locator('[data-catalog-view="categories"]');
+  await expect(categories).toBeVisible();
+  await expect(
+    categories.getByRole("region", { name: "Em destaque", exact: true }),
+  ).toBeVisible();
+  const drama = categories.getByRole("region", {
+    name: "Drama",
+    exact: true,
+  });
+  await expect(drama).toBeVisible();
+  await expect(drama.locator('[data-orientation="landscape"]')).toHaveCount(7);
+  const dramaCard = drama.getByRole("button", {
+    name: "Na categoria Drama: abrir Breaking Bad",
+  });
+  await expect(dramaCard).toBeVisible();
+  await dramaCard.click();
+  await page
+    .getByRole("button", { name: "Todas as séries", exact: true })
+    .click();
+  await expect(dramaCard).toBeFocused();
+
+  await page.getByRole("button", { name: "Buscar séries" }).click();
+  await page
+    .getByRole("searchbox", { name: "Buscar na lista de séries" })
+    .fill("Ruptura");
+  await expect(categories).toBeHidden();
+  await expect(page.locator(".series-grid .series-card")).toHaveCount(1);
+  await expect(page.locator(".series-grid .series-card")).toHaveAttribute(
+    "data-orientation",
+    "portrait",
+  );
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("searchbox", { name: "Buscar na lista de séries" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Buscar séries" }),
+  ).toBeFocused();
+  await expect(categories).toBeVisible();
 });
 
 test("M03 episódio aceita imagem ou GIF e atualiza o card na sessão", async ({

@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M12
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14; editor integrado ao runtime Electron real.
 
 ## Objetivo
 
@@ -28,7 +28,8 @@ Reabrir mantém IDs/ordem/draft; preview equivale ao layout; reordenar não alte
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Validação](../evidence/INTEGRATION_VALIDATION.md), incluindo persistência após
+restart e ausência de controles sintéticos no caminho desktop.
 
 ## Done When
 

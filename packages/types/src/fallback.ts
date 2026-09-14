@@ -17,6 +17,7 @@ export interface HealthHistory {
   algorithm: string;
 }
 export interface FallbackPreview {
+  runtime?: "mock" | "desktop";
   alternatives(
     contentId: string,
     current: string,
@@ -33,4 +34,13 @@ export interface FallbackPreview {
   penalty(sourceId: string): number;
   cooldown(sourceId: string): boolean;
   advance(seconds: number): void;
+}
+export interface FallbackDesktopApi {
+  protocolVersion: 1;
+  call(input: {
+    operation: string;
+    args: unknown[];
+  }): Promise<
+    { ok: true; value: unknown } | { ok: false; error: { message: string } }
+  >;
 }

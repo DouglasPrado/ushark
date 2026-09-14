@@ -11,7 +11,8 @@
     "format": "prettier --write apps packages tests *.json *.yaml",
     "format:check": "prettier --check apps packages tests *.json *.yaml",
     "lint": "eslint apps packages tests",
-    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+    "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "release:evidence": "node scripts/release-evidence.mjs"
   },
   "dependencies": {
     "@ushark/mocks": "workspace:*",

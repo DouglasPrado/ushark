@@ -6,6 +6,7 @@
   "main": "src/main/index.cjs",
   "dependencies": {
     "@radix-ui/react-dialog": "1.1.23",
+    "@ushark/core": "workspace:*",
     "@ushark/mocks": "workspace:*",
     "@ushark/types": "workspace:*",
     "@ushark/ui": "workspace:*",

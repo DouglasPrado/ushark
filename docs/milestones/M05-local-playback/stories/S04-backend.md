@@ -1,6 +1,6 @@
 # S04 — Adapters reais mínimos — M05
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE em 2026-09-14 — S04.1, S04.2 e S04.3 concluídas.
 
 ## Objetivo
 
@@ -28,11 +28,16 @@ Testes de fronteira/domínio de cada incremento e ensaios reais controlados: Rep
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+- [S04.1](../evidence/BACKEND_S04_1.md): adapter/processo/IPC/primeiro frame e
+  MPV 0.41.0 real, **3/3**.
+- [S04.2](../evidence/BACKEND_S04_2.md): SQLite v10, journal/stop/restart,
+  **3/3**.
+- [S04.3](../evidence/BACKEND_S04_3.md): tracks e legenda externa segura,
+  **3/3**.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido para os adapters: **9/9**. A jornada integrada Electron é S05.
 
 ## S04.1 — Adapter MPV isolado e primeiro frame
 
@@ -41,7 +46,9 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Reproduzir fixture local autorizada offline, trocar áudio/legenda sem reiniciar source, sair/reabrir e verificar posição; matar MPV e comprovar UI viva e progresso dentro do budget definido. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Processo isolado, IPC privado, comandos, primeiro frame,
+crash/cleanup e direct play com MPV 0.41.0 real foram comprovados em
+[S04.1](../evidence/BACKEND_S04_1.md).
 
 ## S04.2 — estado/progresso periódico e saída
 
@@ -50,7 +57,9 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Reproduzir fixture local autorizada offline, trocar áudio/legenda sem reiniciar source, sair/reabrir e verificar posição; matar MPV e comprovar UI viva e progresso dentro do budget definido. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Migration v10, sessões/progresso/histórico,
+idempotência, journal de 5 s, flush/stop, watched e recovery passaram **3/3**.
+[Evidência](../evidence/BACKEND_S04_2.md).
 
 ## S04.3 — tracks e legenda externa validada
 
@@ -59,4 +68,6 @@ Critérios de aceite e validação satisfeitos, com evidências suficientes e de
 **Fora de escopo:** demais incrementos, mudanças de UX e dependências futuras.
 **Aceite:** comportamento observável correspondente atende ao contrato; falha e cancelamento preservam estado e não deixam recursos sem proprietário.
 **Validação:** testes de fronteira desse incremento e sua contribuição aos cenários: Reproduzir fixture local autorizada offline, trocar áudio/legenda sem reiniciar source, sair/reabrir e verificar posição; matar MPV e comprovar UI viva e progresso dentro do budget definido. Registrar qual parcela foi comprovada; prova integral em S05.
-**Done When:** incremento comprovado com evidência antes de avançar ao seguinte.
+**Done When:** cumprido. Track inexistente falha fechado; áudio, legenda interna,
+off e externa usam o mesmo adapter; staging/allowlist/limites/cleanup passaram
+**3/3**. [Evidência](../evidence/BACKEND_S04_3.md).

@@ -41,7 +41,9 @@ export function NextEpisode({
     [revision, setRevision] = useState(0);
   const operation = useRef<AbortController | null>(null),
     started = useRef(false),
+    claiming = useRef(false),
     origin = useRef<HTMLElement | null>(null);
+  const desktop = service.runtime === "desktop";
   const ended = position >= duration,
     near = position >= Math.max(0, duration - 30);
   useEffect(() => {
@@ -79,7 +81,7 @@ export function NextEpisode({
     setReady(false);
     setError("");
     service
-      .prepare(failure, abort.signal)
+      .prepare(failure, abort.signal, selectedNext)
       .then(() => {
         if (!abort.signal.aborted) {
           setPreparing(false);
@@ -108,14 +110,31 @@ export function NextEpisode({
   const open = ended && !!result?.next && !cancelled && !started.current;
   function cancel() {
     operation.current?.abort();
+    void service.cancel?.(new AbortController().signal);
     setCancelled(true);
     setPreparing(false);
   }
-  function start() {
-    if (started.current || !selectedNext || !ready || needsChoice) return;
-    started.current = true;
-    operation.current?.abort();
-    onNext(selectedNext);
+  async function start() {
+    if (
+      started.current ||
+      claiming.current ||
+      !selectedNext ||
+      !ready ||
+      needsChoice
+    )
+      return;
+    claiming.current = true;
+    try {
+      const claimed = await service.claimStart?.(new AbortController().signal);
+      if (claimed === false) return;
+      started.current = true;
+      operation.current?.abort();
+      onNext(selectedNext);
+    } catch (cause) {
+      setError((cause as Error).message);
+    } finally {
+      claiming.current = false;
+    }
   }
   useEffect(() => {
     cancelLayer.current = () => {
@@ -130,7 +149,7 @@ export function NextEpisode({
   useEffect(() => {
     if (!open || !auto || !ready || error) return;
     const timer = setTimeout(() => {
-      if (seconds <= 1) start();
+      if (seconds <= 1) void start();
       else setSeconds((n) => n - 1);
     }, 1000);
     return () => clearTimeout(timer);
@@ -141,7 +160,7 @@ export function NextEpisode({
   if (result?.kind === "not-episode") return null;
   return (
     <section className="next-episode">
-      {!consumerMode && (
+      {!consumerMode && !desktop && (
         <details>
           <summary>Sequência de episódios</summary>
           <p>{result?.message ?? "Consultando sequência…"}</p>
@@ -256,11 +275,14 @@ export function NextEpisode({
             ) : (
               <p role="status">
                 {auto
-                  ? `Próximo em ${seconds} segundos${consumerMode ? "" : " (simulado)"}`
+                  ? `Próximo em ${seconds} segundos${consumerMode || desktop ? "" : " (simulado)"}`
                   : "Autoplay desligado. Inicie quando quiser."}
               </p>
             )}
-            <Button disabled={!ready || !!error || needsChoice} onClick={start}>
+            <Button
+              disabled={!ready || !!error || needsChoice}
+              onClick={() => void start()}
+            >
               Tocar agora
             </Button>
             <Button variant="secondary" onClick={cancel}>

@@ -1,5 +1,7 @@
 import type {
   Configuration,
+  ConfigurationDirectoryKind,
+  ConfigurationSaveOptions,
   ConfigurationService,
   Scenario,
 } from "@ushark/types";
@@ -37,6 +39,7 @@ export class MockConfigurationService implements ConfigurationService {
   }
 
   private value = structuredClone(initial);
+  private completed = false;
   scenario: Scenario = "normal";
   readonly personalData = {
     history: ["fixture-progress"],
@@ -45,9 +48,9 @@ export class MockConfigurationService implements ConfigurationService {
   };
   async read() {
     await this.delay();
-    return structuredClone(this.value);
+    return this.snapshot();
   }
-  async save(value: Configuration) {
+  async save(value: Configuration, options: ConfigurationSaveOptions = {}) {
     await this.delay();
     const error = validate(value);
     if (error) throw new Error(error);
@@ -58,6 +61,8 @@ export class MockConfigurationService implements ConfigurationService {
     if (this.scenario === "folder-error")
       throw new Error("Não foi possível acessar a pasta. Escolha outro local.");
     this.value = structuredClone(value);
+    if (options.completeOnboarding) this.completed = true;
+    return this.snapshot();
   }
   async resetPlayback() {
     const next = {
@@ -66,6 +71,16 @@ export class MockConfigurationService implements ConfigurationService {
     };
     await this.save(next);
     return this.read();
+  }
+  async chooseDirectory(kind: ConfigurationDirectoryKind) {
+    return kind === "library" ? "D:\\Cinema\\Library" : "D:\\Cinema\\Cache";
+  }
+  private snapshot() {
+    return structuredClone({
+      schemaVersion: 1 as const,
+      completed: this.completed,
+      configuration: this.value,
+    });
   }
   private delay() {
     return scenarioDelay(this.scenario === "loading", 180, 2500);

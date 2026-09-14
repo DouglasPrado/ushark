@@ -37,3 +37,67 @@ O `Episode` recebeu arte opcional e o `SeriesCatalog` uma operação substituív
 A lista de Séries recebeu busca local por título localizado, título original e gêneros, ignorando acentos/caixa e aceitando termos separados. O seletor oferece `Em destaque`, `Mais votados` e `A–Z`; a primeira opção conserva a curadoria atual, enquanto votos usam o snapshot IMDb. [Captura 1080p](evidence/catalog-search-sort-1920.png). O teste conjunto com Filmes e a regressão completa passaram **132/132 em 2,3 min**. O aceite histórico de M03 é preservado; esta alteração posterior aguarda confirmação própria.
 
 No ajuste transversal seguinte, a marca `Ushark` do cabeçalho deixou de ser botão e saiu da sequência de foco/controle; `Início` é a ação explícita para voltar à Home. A regressão completa passou 133/133. O aceite histórico de M03 permanece preservado.
+
+## Ajuste posterior — catálogo por categorias
+
+Em 2026-09-14, Séries adotou trilhos panorâmicos como a Home. A tela padrão reúne `Em destaque` e categorias de gêneros relacionados. Busca, `Mais votados` e `A–Z` preservam a grade única. O retorno da hierarquia restaura o card exato. [Evidência e validação](../../execution/evidence/CATALOG_CATEGORY_RAILS.md).
+
+## Ajuste posterior — busca recolhida
+
+A busca permanente saiu da sequência inicial de foco. Uma lupa à direita expande o campo somente quando ativada; fechar ou usar Voltar/Escape limpa a consulta e restaura o foco na lupa. [Evidência e validação](../../execution/evidence/COLLAPSED_CATALOG_SEARCH.md).
+
+# Integração funcional M03
+
+## S03 — contrato de série, episódio e selector
+
+Contrato real v1 fechado em 2026-09-14. Série e episódio têm identidades
+independentes; temporada é projeção paginada; especiais usam temporada zero; e
+uma source pode servir muitos episódios sem compartilhar selector. Inferência
+fica limitada aos padrões aprovados e retorna estados revisáveis para
+ambiguidade, colisão e arquivo multi-episódio. Correção, legenda da mesma source,
+idempotência, transação, provider offline e limites mensuráveis foram
+formalizados. Prettier, ESLint e typecheck passaram.
+[Evidência](evidence/DOMAIN_CONTRACT.md). Próximo incremento: S04.1, hierarquia
+persistente e índices.
+
+## S04.1 — hierarquia persistente e índices
+
+SQLite v6 agora aceita conteúdos `series`/`episode`, preserva o catálogo M02 e
+mantém parentesco, unique tuple, especiais, revision, idempotência e cursor
+opaco. O teste de upgrade/restart/rollback passou; um corpus de **50.000**
+episódios foi inserido em cerca de **444 ms** e paginado pelo índice previsto no
+host macOS arm64. Suíte focada: **3/3**; regressão dos stores afetados: **26/26**.
+[Evidência](evidence/BACKEND_S04_1.md). Próximo incremento: S04.2, inferência e
+selectors por episódio.
+
+## S04.2 — inferência e selectors por episódio
+
+Os três padrões aprovados, especiais e fronteiras de token foram implementados.
+Ambiguidade, colisão, arquivo não reconhecido e mídia multi-episódio permanecem
+revisáveis. Correções, skip, legenda, selectors por episódio, source
+compartilhada, restart, source alterada e retry idempotente foram comprovados.
+[Evidência](evidence/BACKEND_S04_2.md).
+
+## S04.3 — metadata hierárquica e recuperação
+
+O TMDB real de M02 agora cobre busca de série, detalhes e episódios por
+temporada, usando cache SQLite e fallback degradado. O service localiza imagens,
+preserva IDs locais e mantém a hierarquia intacta em falha/cancelamento. Suíte
+S04 conjunta: **16/16**. O smoke de rede real está pendente por ausência de
+`USHARK_TMDB_TOKEN`. [Evidência](evidence/BACKEND_S04_3.md). Próxima story: S05,
+integração Electron e jornada completa.
+
+## S05 — integração real e checkpoint funcional
+
+Em 2026-09-14, a tela aprovada foi conectada ao catálogo real por
+`DesktopSeriesCatalog`, preload/IPC restrito, Core e SQLite. O fluxo Electron
+importou `.torrent` multifile, preservou temporada, especial, legenda e
+selectors independentes numa source compartilhada, persistiu arte após validar
+magic bytes e reabriu tudo offline após restart. Uma falha após criação parcial
+retornou estado recuperável e o retry concluiu idempotentemente.
+
+Lint, typecheck, build e `git diff --check` passaram. A suíte afetada de
+M02/M03/M06, incluindo Electron com CPython 3.12.14 e libtorrent 2.1.1.0,
+passou **86/86**. [Evidência](evidence/INTEGRATION_VALIDATION.md).
+[Checkpoint funcional](FUNCTIONAL_CHECKPOINT.md): `READY_FOR_REVIEW/PENDING`;
+S06–S08 não foram iniciadas.

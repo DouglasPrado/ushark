@@ -1,10 +1,10 @@
 # Checkpoint funcional — M02
 
-Status: NOT_STARTED — integração adiada. Decisão: PENDING.
+Status: READY_FOR_REVIEW. Decisão humana: PENDING.
 
 ## Pré-condições e integrações reais
 
-UX M01–M22 aprovada, M01 integrado e S03–S05 concluídas. Persistência local, adapter TMDB, metadata e imagens em cache reais; boundary principal sem mocks. Perfil e arquivos temporários dedicados para ensaios.
+UX M01–M22 aprovada, M01 integrado e S03–S05 concluídas. Persistência local, adapter TMDB, metadata/cache/assets e boundary Electron reais; browser mantém mock deliberado. Perfil e arquivos temporários dedicados usados nos ensaios.
 
 ## Jornada para revisar
 
@@ -18,4 +18,6 @@ UX M01–M22 aprovada, M01 integrado e S03–S05 concluídas. Persistência loca
 
 ## Evidências e decisão
 
-PENDENTES: versões/ambiente, fixtures, comandos, inspeção após restart, falhas exercitadas e resultados. Critérios: persistência real, limites de acesso, ausência de mock acidental, sucesso refletido na UI e erro recuperável. Aprovação humana PENDENTE; só após aceite iniciar S06. Não encerrar M02 antes de S08.
+[Validação S03–S05](evidence/INTEGRATION_VALIDATION.md): 49/49 testes afetados, Electron offline/restart, boundaries, migrations, merge/rollback, cache e segurança passaram localmente.
+
+Pendências para decisão completa: configurar `USHARK_TMDB_TOKEN` e executar smoke real de busca/refresh/assets; executar os itens aplicáveis em Windows/TV/controle físico; confirmar a jornada humana. CI/review/merge continuam separados. Aprovação humana PENDENTE; só após aceite iniciar S06. Não encerrar M02 antes de S08.

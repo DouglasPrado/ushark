@@ -7,6 +7,7 @@ import type {
 import type { SourceCandidate } from "@ushark/types/selection";
 import { previewWork } from "./library-package";
 export class MockFallbackPreview implements FallbackPreview {
+  readonly runtime = "mock" as const;
   clear() {
     this.events.clear();
     this.blocked.clear();

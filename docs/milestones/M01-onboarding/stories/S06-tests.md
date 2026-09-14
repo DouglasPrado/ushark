@@ -1,6 +1,6 @@
 # S06 — Comprovar o primeiro acesso
 
-Status: PLANNED. Preparação documental; não executada.
+Status: DONE. Executada e validada localmente em 2026-09-14.
 
 ## Objetivo
 
@@ -34,8 +34,12 @@ Executar suíte proporcional e gates existentes uma vez após mudanças; não cr
 
 ## Evidências
 
-Ainda não existem evidências de execução. Registrar arquivos alterados, comandos/resultados, ambiente e demonstração pertinente quando a story for executada.
+- [INTEGRATION_VALIDATION](../evidence/INTEGRATION_VALIDATION.md).
+- 27/27 testes focados passaram: store, IPC, Electron, onboarding, navegação, estrutura e scrollbar.
+- A regressão integral serial passou 150/150 em 9,3 min.
+- Três repetições do budget local passaram; amostra registrada: transição p95 33,90 ms, frame p95 16,70 ms e crescimento de heap reportado 0 em 50 transições.
+- Ambiente e limites separam Chromium/Electron macOS de Windows/TV/controle físicos.
 
 ## Conclusão
 
-Aceite e validação satisfeitos, com evidências e revisão/gates aplicáveis. Preparar este arquivo não conclui a story. Implementação permanece dependente de autorização de execução e dos checkpoints indicados.
+Testes e budgets proporcionais de M01 estão verdes localmente. O hardening restante segue em S07; checkpoint funcional humano e hardware real continuam pendentes.

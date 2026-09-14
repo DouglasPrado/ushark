@@ -39,3 +39,11 @@ Ajuste posterior: a lista busca termos sem acento/caixa em título localizado, o
 ## Done When
 
 S00–S02 atendem ao contrato frontend e o checkpoint UX está pronto, sem aprovação implícita.
+
+## Ajuste de revisão — comportamento dos trilhos
+
+Cada categoria expõe navegação horizontal e rótulo acessível. Cards repetidos conservam a identidade da série e a origem de foco; voltar restaura exatamente o card acionado. Itens fora da taxonomia aparecem em `Outros`, e a busca retorna à grade sem duplicação. Testes cobrem categorização, orientação, busca e restauração de foco.
+
+## Ajuste de revisão — busca recolhida
+
+A busca do catálogo começa como lupa no grupo à direita e só cria o campo após ativação explícita. O campo recebe foco ao abrir. Fechar ou usar Voltar/Escape limpa a consulta, recolhe o campo e devolve foco à lupa antes de sair da tela. [Evidência](../../../execution/evidence/COLLAPSED_CATALOG_SEARCH.md).

@@ -81,6 +81,7 @@ interface ContentDetailsProps {
   notice?: string;
   error?: string;
   backAccessibleName?: string;
+  healthAvailable?: boolean;
 }
 
 export function ContentDetails({
@@ -106,6 +107,7 @@ export function ContentDetails({
   notice,
   error,
   backAccessibleName,
+  healthAvailable = true,
 }: ContentDetailsProps) {
   const actionBlock = (
     <div className="discovery-detail-actions">
@@ -114,7 +116,10 @@ export function ContentDetails({
         sources={item.sources.map((source) => ({
           id: source.id,
           name: source.quality,
-          local: source.fileAvailable !== false,
+          local:
+            source.fileAvailable === true ||
+            (!source.id.startsWith("source:torrent:") &&
+              !source.id.startsWith("torrent:")),
           resolution: source.quality.includes("4K")
             ? 2160
             : parseInt(source.quality) || undefined,
@@ -261,6 +266,7 @@ export function ContentDetails({
       accessibleLabel={(recommendation) =>
         `Abrir recomendação ${recommendation.title}`
       }
+      healthAvailable={healthAvailable}
     />
   );
 

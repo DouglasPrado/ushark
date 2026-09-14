@@ -1,6 +1,6 @@
 # M12 — Criar curadoria e visualizar como assinante
 
-Status: FRONTEND_IMPLEMENTED / READY_FOR_REVIEW. S00–S02 concluídas; UX PENDING, revisão humana adiada por instrução explícita até o fim de M01–M22. S03–S08 DEFERRED; não DONE.
+Status: FUNCTIONAL_CHECKPOINT READY_FOR_REVIEW/PENDING — UX aprovada; S03–S05 concluídas.
 
 ## Objetivo
 

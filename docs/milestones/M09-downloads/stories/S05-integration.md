@@ -1,6 +1,6 @@
 # S05 — Integração da jornada — M09
 
-Status: DEFERRED; preparada documentalmente, não executada.
+Status: DONE; integração real comprovada e checkpoint funcional preparado.
 
 ## Objetivo
 
@@ -28,8 +28,11 @@ Pausar/restart/retomar sem recheck global desnecessário; cancelar mantém Conte
 
 ## Evidências
 
-Pendentes de execução. Registrar arquivos, comandos/resultados, ambiente, observações e limitações no UPDATE e checkpoint pertinente. Preparação documental não é evidência funcional.
+[Validação](../evidence/INTEGRATION_VALIDATION.md),
+`tests/download.electron.spec.ts`, `tests/download-service.spec.ts`,
+`tests/download-ipc.spec.ts` e `tests/desktop-downloads.spec.ts`.
 
 ## Done When
 
-Critérios de aceite e validação satisfeitos, com evidências suficientes e dependências/gates desta story atendidos; STATE/UPDATE sincronizados. Preparar este arquivo não conclui a story.
+Cumprido tecnicamente. Decisão humana permanece no checkpoint; S06–S08 não
+foram iniciadas.

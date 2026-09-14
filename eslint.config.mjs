@@ -1,3 +1,33 @@
-import js from '@eslint/js';
-import ts from 'typescript-eslint';
-export default ts.config({ignores:['**/dist/**','**/node_modules/**']},js.configs.recommended,...ts.configs.recommended,{files:['**/*.{ts,tsx,mjs,cjs}'],languageOptions:{globals:{document:'readonly',window:'readonly',navigator:'readonly',requestAnimationFrame:'readonly',cancelAnimationFrame:'readonly',HTMLElement:'readonly',KeyboardEvent:'readonly',HTMLButtonElement:'readonly',HTMLHeadingElement:'readonly',Gamepad:'readonly',setTimeout:'readonly',structuredClone:'readonly',process:'readonly',URL:'readonly',console:'readonly',require:'readonly',__dirname:'readonly'}},rules:{'@typescript-eslint/no-require-imports':'off'}});
+import js from "@eslint/js";
+import ts from "typescript-eslint";
+export default ts.config(
+  { ignores: ["**/dist/**", "**/node_modules/**"] },
+  js.configs.recommended,
+  ...ts.configs.recommended,
+  {
+    files: ["**/*.{ts,tsx,mjs,cjs}"],
+    languageOptions: {
+      globals: {
+        document: "readonly",
+        window: "readonly",
+        navigator: "readonly",
+        requestAnimationFrame: "readonly",
+        cancelAnimationFrame: "readonly",
+        HTMLElement: "readonly",
+        KeyboardEvent: "readonly",
+        HTMLButtonElement: "readonly",
+        HTMLHeadingElement: "readonly",
+        Gamepad: "readonly",
+        setTimeout: "readonly",
+        structuredClone: "readonly",
+        process: "readonly",
+        URL: "readonly",
+        console: "readonly",
+        require: "readonly",
+        module: "readonly",
+        __dirname: "readonly",
+      },
+    },
+    rules: { "@typescript-eslint/no-require-imports": "off" },
+  },
+);

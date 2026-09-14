@@ -65,6 +65,7 @@ export function Subscriptions({
     first = useRef<HTMLButtonElement>(null),
     backoff = useRef(0);
   useEffect(() => {
+    void Promise.resolve(service.refresh?.()).then(refresh);
     first.current?.focus();
     return () => c.current?.abort();
   }, []);

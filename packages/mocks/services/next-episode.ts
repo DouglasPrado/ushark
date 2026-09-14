@@ -8,6 +8,7 @@ import type {
   SelectionPreferences,
 } from "@ushark/types/selection";
 export class MockNextEpisodePreview implements NextEpisodePreview {
+  readonly runtime = "mock" as const;
   constructor(
     private catalog: SeriesCatalog,
     private selection: SelectionPreview,
