@@ -1,5 +1,12 @@
 # Atualização — M01
 
+Fundação de estado do frontend reorganizada em 2026-09-13: TanStack Query
+gerencia leitura/mutações/cache do adapter de configuração; Zustand separa o
+rascunho de domínio do estado visual; Zod centraliza tipos e validação do
+contrato. O mock continua substituível, sem backend ou persistência real.
+Format, lint, typecheck, build e 11 testes passaram; o estado anterior de UX e
+as pendências físicas foram preservados.
+
 Barra superior removida a pedido do usuário. Conteúdo ocupa o espaço liberado; acesso às preferências na Home e botão Voltar nas configurações preservados.
 
 Ajuste solicitado: removidos os textos LOCAL FIRST e PRÉVIA · DADOS SIMULADOS do cabeçalho, junto com seus estilos exclusivos.

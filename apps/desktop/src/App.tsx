@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   ArrowLeft,
@@ -16,18 +16,16 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "../../../packages/ui/src";
-import {
-  defaults,
-  initial,
-  MockConfigurationService,
-  validate,
-} from "../../../packages/mocks/src";
 import type {
   Configuration,
   Preferences,
   Scenario,
 } from "../../../packages/types/src";
+import { configurationError } from "../../../packages/types/src";
+import { useConfigurationController } from "./features/configuration/useConfigurationController";
 import { useNavigation } from "./navigation";
+import { useConfigurationStore } from "./state/configuration.store";
+import { useUiStore, type AppModal } from "./state/ui.store";
 
 const steps = [
   "Boas-vindas",
@@ -35,17 +33,16 @@ const steps = [
   "Espaço para assistir",
   "Do seu jeito",
 ];
-type Modal = "libraryPath" | "cachePath" | "reset" | null;
-function Options({
+function Options<Value extends string>({
   label,
   value,
   options,
   onChange,
 }: {
   label: string;
-  value: string;
-  options: [string, string][];
-  onChange: (value: string) => void;
+  value: Value;
+  options: readonly (readonly [Value, string])[];
+  onChange: (value: Value) => void;
 }) {
   return (
     <fieldset>
@@ -96,22 +93,34 @@ function Toggle({
   );
 }
 export function App() {
-  const service = useRef(new MockConfigurationService()).current;
-  const [config, setConfig] = useState<Configuration>(structuredClone(initial));
-  const [route, setRoute] = useState("onboarding");
-  const [step, setStep] = useState(0);
-  const [modal, setModal] = useState<Modal>(null);
-  const [scenario, setScenario] = useState<Scenario>("normal");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-  const [advanced, setAdvanced] = useState(false);
+  const config = useConfigurationStore((state) => state.configuration);
+  const updateConfiguration = useConfigurationStore(
+    (state) => state.updateConfiguration,
+  );
+  const updatePreference = useConfigurationStore(
+    (state) => state.updatePreference,
+  );
+  const route = useUiStore((state) => state.route);
+  const step = useUiStore((state) => state.step);
+  const modal = useUiStore((state) => state.modal);
+  const scenario = useUiStore((state) => state.scenario);
+  const error = useUiStore((state) => state.error);
+  const notice = useUiStore((state) => state.notice);
+  const advanced = useUiStore((state) => state.advanced);
+  const setRoute = useUiStore((state) => state.navigate);
+  const setStep = useUiStore((state) => state.setStep);
+  const setModal = useUiStore((state) => state.setModal);
+  const setError = useUiStore((state) => state.setError);
+  const clearFeedback = useUiStore((state) => state.clearFeedback);
+  const setAdvanced = useUiStore((state) => state.setAdvanced);
+  const { busy, save, reset, changeScenario } = useConfigurationController();
   const heading = useRef<HTMLHeadingElement>(null);
   const actionOrigin = useRef<HTMLElement | null>(null);
   const primary = useRef<HTMLButtonElement>(null);
   function navigate(next: string) {
-    setError("");
-    setNotice("");
+    if (next !== "onboarding" && next !== "home" && next !== "settings") {
+      return;
+    }
     setRoute(next);
     window.location.hash = "/" + next;
   }
@@ -138,62 +147,24 @@ export function App() {
     key: K,
     value: Configuration[K],
   ) => {
-    setConfig((c) => ({ ...c, [key]: value }));
-    setError("");
-    setNotice("");
+    updateConfiguration(key, value);
+    clearFeedback();
   };
   function preference<K extends keyof Preferences>(
     key: K,
     value: Preferences[K],
   ) {
-    setConfig((c) => ({
-      ...c,
-      preferences: { ...c.preferences, [key]: value },
-    }));
-    setNotice("");
-  }
-  async function save() {
-    const invalid = validate(config);
-    if (invalid) {
-      setError(invalid);
-      return;
-    }
-    setBusy(true);
-    setError("");
-    try {
-      await service.save(config);
-      if (route === "onboarding") navigate("home");
-      else setNotice("Preferências atualizadas nesta sessão.");
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
-  async function reset() {
-    setBusy(true);
-    setError("");
-    try {
-      await service.save({ ...config, preferences: { ...defaults } });
-      setConfig((c) => ({ ...c, preferences: { ...defaults } }));
-      setModal(null);
-      setNotice(
-        "Preferências de reprodução restauradas. Biblioteca e cache mantidos.",
-      );
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
+    updatePreference(key, value);
+    clearFeedback();
   }
   function advance() {
-    setError("");
+    clearFeedback();
     if (step === 1 && !config.name.trim()) {
       setError("Dê um nome à biblioteca.");
       return;
     }
     if (step === 2) {
-      const invalid = validate(config);
+      const invalid = configurationError(config);
       if (invalid) {
         setError(invalid);
         return;
@@ -202,7 +173,7 @@ export function App() {
     if (step < 3) setStep(step + 1);
     else void save();
   }
-  const open = (kind: Modal) => {
+  const open = (kind: AppModal) => {
     actionOrigin.current = document.activeElement as HTMLElement;
     setError("");
     setModal(kind);
@@ -587,9 +558,7 @@ export function App() {
             value={scenario}
             onChange={(e) => {
               const v = e.target.value as Scenario;
-              service.scenario = v;
-              setScenario(v);
-              setError("");
+              changeScenario(v);
             }}
           >
             {[

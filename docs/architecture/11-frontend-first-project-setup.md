@@ -233,7 +233,23 @@ React
 TypeScript
 Tailwind
 shadcn/ui
+TanStack Query
+Zustand
+Zod
 ```
+
+Responsabilidade dos estados no renderer:
+
+```text
+TanStack Query = leitura, mutação e cache de dados dos adapters
+Zustand = rascunhos e estado compartilhado da experiência
+Zod = validação nas fronteiras e tipos derivados dos contratos
+React local state/refs = estado efêmero restrito a um componente ou elemento DOM
+```
+
+Não duplicar o cache de dados assíncronos no Zustand. Stores devem permanecer
+pequenos e separados por responsabilidade; adapters reais substituem mocks sem
+alterar os consumidores da UI.
 
 ---
 
